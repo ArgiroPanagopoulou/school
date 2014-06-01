@@ -1,0 +1,53 @@
+<?php
+
+namespace School\UserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Teacher
+ */
+class Teacher
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    protected $users;
+    
+    protected $courseClasses;
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set users
+     *
+     * @param \School\UserBundle\Entity\User $users
+     * @return Teacher
+     */
+    public function setUsers(\School\UserBundle\Entity\User $users = null)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get users
+     *
+     * @return \School\UserBundle\Entity\User 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+}

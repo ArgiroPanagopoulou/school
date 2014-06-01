@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+{% if is_granted('ADMIN_ROLE') %}
+    <p>kati</p>
+    <a href="..">kjsad</a>
+{% endif %}
+Hello {{ name }}!
+<p>Username: {{ app.user.username }}</p>
+<p>Email: {{ app.user.email }}</p>
+{% endblock %}

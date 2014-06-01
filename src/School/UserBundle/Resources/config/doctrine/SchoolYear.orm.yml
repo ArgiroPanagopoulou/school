@@ -1,0 +1,27 @@
+School\UserBundle\Entity\SchoolYear:
+    type: entity
+    table: school_year
+    repositoryClass: School\UserBundle\Entity\SchoolYearRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name: 
+            type: string
+            length: 100
+        dateFrom:
+            type: date
+        dateTo:
+            type: date  
+    oneToMany:
+        schoolClasses:
+            targetEntity: SchoolClass
+            mappedBy: schoolYear
+    oneToMany:
+        courses:
+            targetEntity: Course
+            mappedBy: schoolYear
+    lifecycleCallbacks: {  }

@@ -1,0 +1,22 @@
+School\UserBundle\Entity\CourseClass:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        course_id:
+            type: integer
+        class_id:
+            type: integer
+    manyToOne:
+        teacher:
+            targetEntity: Teacher
+            inversedBy: courseClasses
+            joinColumn:
+                name: teacher_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

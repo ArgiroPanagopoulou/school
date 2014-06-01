@@ -1,0 +1,33 @@
+school_user:
+    resource: "@SchoolUserBundle/Resources/config/routing.yml"
+    prefix:   /
+    
+homepage:
+    path: /
+    defaults: { _controller:SchoolUserBundle:Homepage:homepage }
+
+login: 
+    path: /login
+    defaults: { _controller: SchoolUserBundle:Default:login }
+    
+login_check:
+    path: /login_check
+    
+logout:
+    path: /logout
+    
+login_success:
+    path: /login_success
+    defaults: { _controller: SchoolUserBundle:Default:loginSuccess }
+   
+admin_area:
+    pattern: /admin/
+    defaults: { _controller: SchoolUserBundle:Admin:admin }
+    
+teacher_area:
+    pattern: /teacher/
+    defaults: { _controller: SchoolUserBundle:Default:teacher }
+    
+student_area:
+    pattern: /student/
+    defaults: { _controller: SchoolUserBundle:Default:student }

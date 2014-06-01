@@ -1,0 +1,33 @@
+security:
+    encoders:
+        School\UserBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+    
+    role_hierarchy:
+        ROLE_TEACHER: ROLE_STUDENT
+        ROLE_ADMIN: [ROLE_TEACHER, ROLE_ALLOWED_TO_SWITCH ]
+        
+    providers:
+        main:
+            entity: 
+                class: School\UserBundle\Entity\User
+                property: username
+            
+    firewalls:
+        admin_area:
+            pattern: ^/
+            anonymous: ~
+            #http_basic: ~
+            form_login: 
+                login_path: login 
+                check_path: login_check
+                default_target_path: login_success
+            logout:
+                path: /logout
+                target: /
+            
+    access_control:
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/teacher/, roles: ROLE_TEACHER }
+        - { path: ^/student/, roles: ROLE_STUDENT }

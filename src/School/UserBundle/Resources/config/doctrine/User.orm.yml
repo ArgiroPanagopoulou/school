@@ -1,0 +1,25 @@
+School\UserBundle\Entity\User:
+    type: entity
+    repositoryClass: School\UserBundle\Entity\UserRepository
+    table: users
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        username:
+            type: string
+            length: 25
+        password:
+            type: string
+            length: 64
+        email:
+            type: string
+            length: 60
+        is_active: 
+            type: boolean
+    manyToMany:
+        roles: 
+            targetEntity: Role
+            inversedBy: users
+        

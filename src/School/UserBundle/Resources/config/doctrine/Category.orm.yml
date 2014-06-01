@@ -1,0 +1,18 @@
+School\UserBundle\Entity\Category:
+    type: entity
+    table: category
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 100
+    oneToMany:
+        tasks:
+            targetEntity: Task
+            mappedBy: category
+    lifecycleCallbacks: {  }

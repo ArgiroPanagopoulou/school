@@ -1,0 +1,25 @@
+School\UserBundle\Entity\Task:
+    type: entity
+    table: task
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        description:
+            type: string
+            length: 100
+    manyToOne:
+        category:
+            targetEntity: Category
+            inversedBy: tasks
+            joinColumn: 
+                name: category_id
+                referencedColumnName: id
+    oneToMany:
+        tags:
+            targetEntity: Tag
+            mappedBy: task
+    lifecycleCallbacks: {  }

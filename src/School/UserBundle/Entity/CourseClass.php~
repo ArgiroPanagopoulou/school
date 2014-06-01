@@ -1,0 +1,33 @@
+<?php
+
+namespace School\UserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CourseClass
+ */
+class CourseClass
+{
+    /**
+     * @var integer
+     */
+    private $id;
+    
+    private $course_id;
+    
+    private $class_id;
+    
+    protected $teacher;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

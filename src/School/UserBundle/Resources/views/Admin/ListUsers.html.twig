@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}List of Users{% endblock %}
+{% block body %}
+<h2>List of Users</h2>
+<table border="1" style="width:300px">
+        <tr>
+            <th>Username</th>
+            <th>Roles</th>
+        </tr>
+        
+            {% for u in users_view %}
+                <tr>
+                <td><a href="{{ path('admin_user_edit', {'userId': u.id }) }}"> {{u.username}}</a></td>
+                
+                    {% for r in u.roles %}
+                    <td>{{r.name}}</td>
+                    {% endfor %}
+                
+         </tr>
+            {% endfor %}
+</table>
+
+<div><a href="{{ path('admin_user_add') }}"> Add new user </a></div>
+{% endblock %}
+ 

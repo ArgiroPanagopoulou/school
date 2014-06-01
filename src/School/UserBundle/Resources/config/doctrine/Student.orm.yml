@@ -1,0 +1,26 @@
+School\UserBundle\Entity\Student:
+    type: entity
+    table: student
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        registrationDate:
+            type: date
+    oneToOne:
+        users:
+            targetEntity: User
+            joinColumn: 
+                name: user_id
+                referencedColumnName: id  
+    manyToOne:
+        schoolClass:
+            targetEntity: SchoolClass
+            inversedBy: students
+            joinColumn:
+                name: schoolClass_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

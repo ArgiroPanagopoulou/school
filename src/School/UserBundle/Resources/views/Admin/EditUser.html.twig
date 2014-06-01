@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <h2>Edit User {{user.username}}</h2>
+    <div>Role for this user: 
+    {% for role in roles %}
+        {{role.name}}</div>
+    {% endfor %}
+    <p>
+        {{ form_start(form) }}
+    
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    {{ form_row(form.isActive) }}
+    <h3>Roles</h3>
+    <ul class="roles">
+        {# iterate over each existing role and render its only field: name #}
+        {% for role in form.roles %}
+            <li>{{ form_row(role.name) }}</li>
+            <li>{{ form_row(role.role) }}</li>
+            
+        {% endfor %}
+    </ul> 
+{{ form_end(form) }}
+    </p>
+
+    
+{% endblock %}

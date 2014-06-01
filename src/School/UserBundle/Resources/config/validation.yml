@@ -1,0 +1,5 @@
+School\UserBundle\Entity\User:
+    properties:
+        username:
+            - NotBlank: ~
+            

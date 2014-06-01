@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<h2> Add new user</h2>
+    {{ form_start(form) }}
+    
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    {{ form_row(form.isActive) }}
+    {# {{ form.vars.value.roles_test }} #}
+    <h3>Roles</h3>
+    <ul class="roles">
+        {#iterate over each existing role and render its only field: name #}
+        {% for role in form.roles %}
+            <li>{{ form_row(role.name) }}</li>           
+        {% endfor %}
+
+    {{ form_end(form) }}
+{% endblock %}

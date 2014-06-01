@@ -1,0 +1,25 @@
+School\UserBundle\Entity\SchoolClass:
+    type: entity
+    table: school_class
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 100
+    manyToOne:
+        schoolYear:
+            targetEntity: SchoolYear
+            inversedBy: schoolClasses
+            joinColumn: 
+                name: schoolYear_id
+                referencedColumnName: id
+    oneToMany:
+        students:
+            targetEntity: Student
+            mappedBy: schoolClass
+    lifecycleCallbacks: {  }

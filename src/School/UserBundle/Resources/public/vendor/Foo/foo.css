@@ -1,0 +1,8 @@
+input[type="text"] {
+    padding: 4px;
+    border: solid 1px silver;
+}
+
+input[type="text"]:focus {
+    border: solid 1px orange;
+}

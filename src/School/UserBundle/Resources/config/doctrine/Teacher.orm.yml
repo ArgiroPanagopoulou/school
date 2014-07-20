@@ -1,5 +1,6 @@
 School\UserBundle\Entity\Teacher:
     type: entity
+    repositoryClass: School\UserBundle\Entity\TeacherRepository
     table: null
     id:
         id:
@@ -8,8 +9,9 @@ School\UserBundle\Entity\Teacher:
             generator:
                 strategy: AUTO
     oneToOne:
-        users:
-            targetEntity: User 
+        user:
+            targetEntity: User
+            inversedBy: teacher
             joinColumn:
                 name: user_id
                 referencedColumnName: id

@@ -10,16 +10,28 @@ School\UserBundle\Entity\User:
         username:
             type: string
             length: 25
+        firstName:
+            type: string
+        lastName:
+            type: string
         password:
             type: string
             length: 64
         email:
             type: string
             length: 60
-        is_active: 
+        is_active:
             type: boolean
-    manyToMany:
-        roles: 
+            nullable: true
+    manyToOne:
+        role:
             targetEntity: Role
             inversedBy: users
+            joinColumn:
+                name: role_id
+                referencedColumnName: id
+    oneToOne:
+        teacher:
+            targetEntity: Teacher
+            mappedBy: user
         

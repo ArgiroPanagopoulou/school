@@ -1,5 +1,6 @@
 School\UserBundle\Entity\Course:
     type: entity
+    repositoryClass: School\UserBundle\Entity\CourseRepository
     table: course
     id:
         id:
@@ -18,4 +19,8 @@ School\UserBundle\Entity\Course:
             joinColumn:
                 name: schoolYear_id
                 referencedColumnName: id
+    oneToMany:
+        courseClasses:
+            targetEntity: CourseClass
+            mappedBy: course
     lifecycleCallbacks: {  }

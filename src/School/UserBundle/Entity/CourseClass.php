@@ -9,18 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CourseClass
 {
-    /**
-     * @var integer
-     */
+
     private $id;
-    
-    private $course_id;
-    
-    private $class_id;
     
     protected $teacher;
 
+    private $course;
+ 
+    private $class;
 
+    
     /**
      * Get id
      *
@@ -32,49 +30,50 @@ class CourseClass
     }
 
     /**
-     * Set course_id
+     * Set course
      *
-     * @param integer $courseId
+     * @param \School\UserBundle\Entity\Course $course
      * @return CourseClass
      */
-    public function setCourseId($courseId)
+    public function setCourse(\School\UserBundle\Entity\Course $course = null)
     {
-        $this->course_id = $courseId;
+        $this->course = $course;
 
         return $this;
     }
 
     /**
-     * Get course_id
+     * Get course
      *
-     * @return integer 
+     * @return \School\UserBundle\Entity\Course 
      */
-    public function getCourseId()
+    public function getCourse()
     {
-        return $this->course_id;
+        return $this->course;
     }
 
+
     /**
-     * Set class_id
+     * Set class
      *
-     * @param integer $classId
+     * @param \School\UserBundle\Entity\SchoolClass $class
      * @return CourseClass
      */
-    public function setClassId($classId)
+    public function setClass(\School\UserBundle\Entity\SchoolClass $class = null)
     {
-        $this->class_id = $classId;
+        $this->class = $class;
 
         return $this;
     }
 
     /**
-     * Get class_id
+     * Get class
      *
-     * @return integer 
+     * @return \School\UserBundle\Entity\SchoolClass 
      */
-    public function getClassId()
+    public function getClass()
     {
-        return $this->class_id;
+        return $this->class;
     }
 
     /**

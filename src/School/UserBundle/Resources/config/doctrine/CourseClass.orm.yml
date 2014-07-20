@@ -1,22 +1,33 @@
 School\UserBundle\Entity\CourseClass:
     type: entity
-    table: null
+    repositoryClass: School\UserBundle\Entity\CourseClassRepository
+    table: course_class
     id:
         id:
             type: integer
             id: true
             generator:
                 strategy: AUTO
-    fields:
-        course_id:
-            type: integer
-        class_id:
-            type: integer
+    uniqueConstraints:
+        search_idx:
+            columns: [course_id, class_id]
     manyToOne:
         teacher:
             targetEntity: Teacher
             inversedBy: courseClasses
             joinColumn:
                 name: teacher_id
+                referencedColumnName: id
+        course:
+            targetEntity: Course
+            inversedBy: courseClasses
+            joinColumn: 
+                name: course_id
+                referencedColumnName: id
+        class:
+            targetEntity: SchoolClass
+            inversedBy: courseClasses
+            joinColumn: 
+                name: class_id
                 referencedColumnName: id
     lifecycleCallbacks: {  }

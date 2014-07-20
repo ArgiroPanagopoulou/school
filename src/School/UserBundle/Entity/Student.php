@@ -16,9 +16,11 @@ class Student
 
     private $registrationDate;
     
-    protected $users;
+    protected $user;
     
     protected $schoolClass;
+    
+    
     /**
      * Get id
      *
@@ -53,14 +55,14 @@ class Student
     }
 
     /**
-     * Set users
+     * Set user
      *
-     * @param \School\UserBundle\Entity\User $users
+     * @param \School\UserBundle\Entity\User $user
      * @return Student
      */
-    public function setUsers(\School\UserBundle\Entity\User $users = null)
+    public function setUser(\School\UserBundle\Entity\User $user = null)
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }
@@ -70,9 +72,9 @@ class Student
      *
      * @return \School\UserBundle\Entity\User 
      */
-    public function getUsers()
+    public function getUser()
     {
-        return $this->users;
+        return $this->user;
     }
 
     /**
@@ -96,5 +98,33 @@ class Student
     public function getSchoolClass()
     {
         return $this->schoolClass;
+    }
+    /**
+     * @var \School\UserBundle\Entity\User
+     */
+    private $user_student;
+
+
+    /**
+     * Set user_student
+     *
+     * @param \School\UserBundle\Entity\User $userStudent
+     * @return Student
+     */
+    public function setUserStudent(\School\UserBundle\Entity\User $userStudent = null)
+    {
+        $this->user_student = $userStudent;
+
+        return $this;
+    }
+
+    /**
+     * Get user_student
+     *
+     * @return \School\UserBundle\Entity\User 
+     */
+    public function getUserStudent()
+    {
+        return $this->user_student;
     }
 }

@@ -1,6 +1,6 @@
 school_user_homepage:
     pattern:  /hello/{name}
-    defaults: { _controller: SchoolUserBundle:Default:index }
+    defaults: { _controller: SchoolUserBundle:Login:index }
     
 admin_users:
     pattern: /admin/users/
@@ -10,14 +10,14 @@ admin_user_edit:
     pattern: /admin/users/edit/{userId}
     defaults: { _controller: SchoolUserBundle:Admin:editUser }
     
-admin_user_add:
-    pattern: /admin/users/add_user/
-    defaults: { _controller: SchoolUserBundle:Admin:addUser }
-    
-add_task:
-    pattern: /task/
-    defaults: { _controller: SchoolUserBundle:Task:addTask }
-    
-add_tags:
-    pattern: /tag/
-    defaults: { _controller: SchoolUserBundle:Task:addTag }
+admin_assign_teachers:
+    pattern: /admin/assign_teachers/
+    defaults: { _controller: SchoolUserBundle:Admin:assignTeachers }
+   
+admin_assign_students:
+    pattern: /admin/assign_students/
+    defaults: { _controller: SchoolUserBundle:Admin:assignStudents }
+
+admin_test_assigned_students:
+    pattern: /admin/assign_students/test/
+    defaults: { _controller: SchoolUserBundle:Admin:testAssignedStudents }

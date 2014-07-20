@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use School\UserBundle\Form\Transformer\RoleToNumberTransformer;
+use Doctrine\ORM\EntityRepository;
 
 class UserType extends AbstractType
 {
@@ -13,12 +14,20 @@ class UserType extends AbstractType
     {
         
         $builder
+            ->add('firstName')
+            ->add('lastName')
             ->add('username')
-            ->add('password', 'password')
             ->add('email', 'email')
-            ->add('isActive', 'checkbox', array('label' => 'Active',))
-            ->add('roles', 'collection', array('type' => new RoleType(),))
-                // 'allow_add'    => true,))
+            ->add('is_active', 'checkbox', array('label' => 'Active',))
+            ->add('role', 'entity', array(
+                'class' => 'School\UserBundle\Entity\Role',
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('r');
+                },
+                'property' => 'name',
+                'expanded' => true,
+                'multiple' => false,
+            ))
             ->add('save', 'submit');
     }
     

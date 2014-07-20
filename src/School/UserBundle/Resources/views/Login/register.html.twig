@@ -1,0 +1,58 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <h2>Register</h2>
+        
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            
+            
+            <div class="form-group">
+                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.firstName) }}
+                <div class="col-sm-4">
+                {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}</div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.lastName) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.email) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.password.password, 'Password', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.password.password) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.password.password,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.password.confirm, 'Confirm Password', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.password.confirm) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.password.confirm,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-4">
+                    {{ form_widget(form.Register, {'attr': {'class': 'btn btn-default'}}) }}
+                </div>
+            </div>
+            
+        {{ form_end(form) }}
+    </div>    
+{% endblock %}

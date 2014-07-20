@@ -20,7 +20,7 @@ School\UserBundle\Entity\SchoolYear:
         schoolClasses:
             targetEntity: SchoolClass
             mappedBy: schoolYear
-    oneToMany:
+    # oneToMany:
         courses:
             targetEntity: Course
             mappedBy: schoolYear

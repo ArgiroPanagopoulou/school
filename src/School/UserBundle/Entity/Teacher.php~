@@ -9,14 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Teacher
 {
-    /**
-     * @var integer
-     */
-    private $id;
 
-    protected $users;
+    private $id;
     
     protected $courseClasses;
+
+    private $user;
     
     /**
      * Get id
@@ -28,26 +26,69 @@ class Teacher
         return $this->id;
     }
 
+   
     /**
-     * Set users
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->courseClasses = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add courseClasses
      *
-     * @param \School\UserBundle\Entity\User $users
+     * @param \School\UserBundle\Entity\CourseClass $courseClasses
      * @return Teacher
      */
-    public function setUsers(\School\UserBundle\Entity\User $users = null)
+    public function addCourseClass(\School\UserBundle\Entity\CourseClass $courseClasses)
     {
-        $this->users = $users;
+        $this->courseClasses[] = $courseClasses;
 
         return $this;
     }
 
     /**
-     * Get users
+     * Remove courseClasses
+     *
+     * @param \School\UserBundle\Entity\CourseClass $courseClasses
+     */
+    public function removeCourseClass(\School\UserBundle\Entity\CourseClass $courseClasses)
+    {
+        $this->courseClasses->removeElement($courseClasses);
+    }
+
+    /**
+     * Get courseClasses
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCourseClasses()
+    {
+        return $this->courseClasses;
+    }
+
+
+    /**
+     * Set user
+     *
+     * @param \School\UserBundle\Entity\User $user
+     * @return Teacher
+     */
+    public function setUser(\School\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
      *
      * @return \School\UserBundle\Entity\User 
      */
-    public function getUsers()
+    public function getUser()
     {
-        return $this->users;
+        return $this->user;
     }
 }

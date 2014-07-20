@@ -1,0 +1,43 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %}Assign Teachers{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/js/teacherAssignation.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <h2> Assign Teachers </h2>
+    
+    {{ form_start(form) }}
+        {{ form_row(form.schoolyear) }}
+        {{ form_row(form.courses) }}
+        {{ form_row(form.schoolClasses) }}
+        {{ form_row(form.teacher) }}
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+    
+    <div>
+        <table style="width:500px">
+            <tr>
+                <td> Year </td>
+                <td> Course </td>
+                <td> Class </td>
+                <td> Teacher </td>
+                
+            </tr>
+            
+            {% for courseClass in courseClasses %}
+            <tr> 
+                <td>{{ courseClass.course.schoolYear.name }}</td>
+                <td>{{ courseClass.course.name }}</td>
+                <td>{{ courseClass.class.name }}</td>
+                <td>{{ courseClass.teacher.user.username }}</td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

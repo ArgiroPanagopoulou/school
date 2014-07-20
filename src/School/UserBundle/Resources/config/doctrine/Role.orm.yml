@@ -7,14 +7,14 @@ School\UserBundle\Entity\Role:
             type: integer
             generator: {strategy: AUTO }
     fields:
-        name: 
+        name:
             type: string
             length: 30
         role:
             type: string
             length: 20
             unique: true
-    manyToMany:
+    oneToMany:
         users:
-            targetEntity: User 
-            mappedBy: roles
+            targetEntity: User
+            mappedBy: role

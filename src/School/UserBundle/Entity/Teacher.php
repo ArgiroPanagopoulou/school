@@ -9,14 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Teacher
 {
-    /**
-     * @var integer
-     */
-    private $id;
 
-    protected $users;
+    private $id;
     
     protected $courseClasses;
+
+    private $user;
     
     /**
      * Get id
@@ -28,28 +26,7 @@ class Teacher
         return $this->id;
     }
 
-    /**
-     * Set users
-     *
-     * @param \School\UserBundle\Entity\User $users
-     * @return Teacher
-     */
-    public function setUsers(\School\UserBundle\Entity\User $users = null)
-    {
-        $this->users = $users;
-
-        return $this;
-    }
-
-    /**
-     * Get users
-     *
-     * @return \School\UserBundle\Entity\User 
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
+   
     /**
      * Constructor
      */
@@ -89,5 +66,29 @@ class Teacher
     public function getCourseClasses()
     {
         return $this->courseClasses;
+    }
+
+
+    /**
+     * Set user
+     *
+     * @param \School\UserBundle\Entity\User $user
+     * @return Teacher
+     */
+    public function setUser(\School\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \School\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

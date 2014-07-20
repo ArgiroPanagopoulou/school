@@ -21,9 +21,9 @@ class SchoolYear
     
     private $dateTo;
 
-    protected $schoolClasses;
+    private $schoolClasses;
     
-    protected $courses;
+    private $courses;
     
 
     /**
@@ -104,13 +104,7 @@ class SchoolYear
     {
         return $this->dateTo;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->schoolClasses = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+   
 
     /**
      * Add schoolClasses
@@ -143,6 +137,19 @@ class SchoolYear
     public function getSchoolClasses()
     {
         return $this->schoolClasses;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->schoolClasses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->courses = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

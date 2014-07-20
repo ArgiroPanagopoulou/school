@@ -1,0 +1,76 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %}Assign Students{% endblock %}
+
+{% block header_javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/schooluser/js/SchoolClassTest.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <h2> Assign Students </h2><br/>
+
+    
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
+                {{ form_label(form.assigned) }}
+                {{ form_errors(form.assigned) }}
+                {{ form_widget(form.assigned) }}          
+        </div>
+        <div class="col-md-4"> </div>        
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_label(form.schoolClass) }}
+            {{ form_errors(form.schoolClass) }}
+            {{ form_widget(form.schoolClass) }}
+            
+            {{ form_widget(form.update)  }}
+            
+            {{ form_end(form) }}
+        
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>  Full Name  </th>
+            <th> Username </th>
+            <th>  Class  </th>
+            <th> Select </th>
+        </tr>
+        </thead>
+        {%  for student in students %}
+            <tbody>
+            <tr>
+                <td> <a href="{{ path('admin_user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
+                <td> {{ student.user.username }} </td>
+                <td> {% if student.schoolClass is not null %}
+                        {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
+                    {% endif %}</td>
+                <td> <form action="{{ path('admin_test_assigned_students') }}"method="post"> <input type="checkbox" name="select[]" value="{{ student.user.id }}"> </td>
+            </tr>
+            </tbody>
+        {% endfor %}
+
+        </table>
+        <input type="submit" name="submit" value="Submit"></form>
+        {# {{ form_start(form) }}
+            {{ form_row(form.schoolYear) }}    
+            {{ form_row(form.name) }} 
+            {{ form_row(form.students) }}
+            {{ form_row(form.save) }}
+
+        {{ form_end(form) }} #}
+    </div>
+</div>
+
+{% endblock %}

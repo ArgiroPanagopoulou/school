@@ -8,6 +8,6 @@ class HomepageController extends Controller
 {
     public function homepageAction()
     {
-        return $this->render('SchoolUserBundle:Default:homepage.html.twig');
+        return $this->render('SchoolUserBundle:Login:homepage.html.twig');
     }
 }

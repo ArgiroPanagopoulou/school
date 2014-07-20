@@ -2,8 +2,7 @@ security:
     encoders:
         School\UserBundle\Entity\User:
             algorithm: bcrypt
-            cost: 12
-    
+            
     role_hierarchy:
         ROLE_TEACHER: ROLE_STUDENT
         ROLE_ADMIN: [ROLE_TEACHER, ROLE_ALLOWED_TO_SWITCH ]

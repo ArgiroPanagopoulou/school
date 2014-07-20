@@ -1,31 +1,104 @@
-{% extends '::base.html.twig' %}
+{% extends 'SchoolUserBundle::base.html.twig' %}
+{# {% form_theme form 'SchoolUserBundle:Form:fields.html.twig' %} #}
 
 {% block title %}Edit User{% endblock %}
 
-{% block body %}
-    <h2>Edit User {{user.username}}</h2>
-    <div>Role for this user: 
-    {% for role in roles %}
-        {{role.name}}</div>
-    {% endfor %}
-    <p>
-        {{ form_start(form) }}
-    
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.password) }}
-    {{ form_row(form.isActive) }}
-    <h3>Roles</h3>
-    <ul class="roles">
-        {# iterate over each existing role and render its only field: name #}
-        {% for role in form.roles %}
-            <li>{{ form_row(role.name) }}</li>
-            <li>{{ form_row(role.role) }}</li>
-            
-        {% endfor %}
-    </ul> 
-{{ form_end(form) }}
-    </p>
 
+{% block stylesheets %}
+{{ parent() }}  
+{% endblock %} 
+
+{% block body %}
+    <div class="container-fluid">
+        <h2>Edit User {{user.username}}</h2>
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
+                
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            {{ form_label(form.firstName) }}
+                            {{ form_errors(form.firstName) }}
+                            {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            {{ form_label(form.lastName) }}
+                            {{ form_errors(form.lastName) }}
+                            {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            {{ form_label(form.username) }}
+                            {{ form_errors(form.username) }}
+                            {{ form_widget(form.username,{'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            {{ form_label(form.email) }}
+                            {{ form_errors(form.email) }}
+                            {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="checkbox">
+                            {{ form_label(form.is_active) }}
+                            {{ form_errors(form.is_active) }}
+                            {{ form_widget(form.is_active) }}
+                        </div>
+                    </div>
+                
+                
+                        
+                    {# <h3>Roles</h3> #}
+                    <div class="col-xs-4"> 
+                        <div> 
+                            {{ form_label(form.role) }} 
+                            {{ form_errors(form.role) }} 
+                            {{ form_widget(form.role) }} 
+                        </div>
+                    </div>
+                </div>
+                {# {% for choice in form.role.vars.choices %}
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="{{ form.role.vars.full_name }}" id="{{ form.role.vars.name ~ choice.value }}" value="{{ choice.value }}" >
+                        {{ choice.label }}
+                    </label>
+                </div>
+                {% endfor %} #}
+                
+                <div class="col-xs-4"> 
+                    <div>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
+    </div>
     
+    {# <a href="{{ path('admin_student_edit') }}"> Edit Student </a> #}
+    
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        console.info('Hello Pudojo (jquery version=' + $.fn.jquery + ')');
+    })
+
+</script> 
 {% endblock %}

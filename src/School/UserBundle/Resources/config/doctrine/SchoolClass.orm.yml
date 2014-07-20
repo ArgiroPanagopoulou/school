@@ -22,4 +22,7 @@ School\UserBundle\Entity\SchoolClass:
         students:
             targetEntity: Student
             mappedBy: schoolClass
+        courseClasses:
+            targetEntity: CourseClass
+            mappedBy: class
     lifecycleCallbacks: {  }

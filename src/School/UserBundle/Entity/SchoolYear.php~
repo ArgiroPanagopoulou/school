@@ -21,9 +21,9 @@ class SchoolYear
     
     private $dateTo;
 
-    protected $schoolClasses;
+    private $schoolClasses;
     
-    protected $courses;
+    private $courses;
     
 
     /**
@@ -104,13 +104,7 @@ class SchoolYear
     {
         return $this->dateTo;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->schoolClasses = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+   
 
     /**
      * Add schoolClasses
@@ -144,37 +138,9 @@ class SchoolYear
     {
         return $this->schoolClasses;
     }
-
-    /**
-     * Add courses
-     *
-     * @param \School\UserBundle\Entity\Course $courses
-     * @return SchoolYear
-     */
-    public function addCourse(\School\UserBundle\Entity\Course $courses)
+    
+    public function __toString()
     {
-        $this->courses[] = $courses;
-
-        return $this;
-    }
-
-    /**
-     * Remove courses
-     *
-     * @param \School\UserBundle\Entity\Course $courses
-     */
-    public function removeCourse(\School\UserBundle\Entity\Course $courses)
-    {
-        $this->courses->removeElement($courses);
-    }
-
-    /**
-     * Get courses
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCourses()
-    {
-        return $this->courses;
+        return $this->name;
     }
 }

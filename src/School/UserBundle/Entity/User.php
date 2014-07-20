@@ -13,23 +13,31 @@ class User implements UserInterface, \Serializable
     
     private $username;
     
+    private $firstName;
+    
+    private $lastName;
+    
     private $password;
     
     private $email;
-    
-    private $isActive;
-    
-    private $roles;
 
+    private $is_active;
+
+    private $role;
+
+    private $teacher;
+   
+    private $student;
     
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+        // noop
     }
     
     public function getRoles()
     {
-        return $this->roles->toArray();
+        // Force this proxy $role object to be hydrated
+        return array($this->role->getRole());
     }
     
     public function getUsername()
@@ -54,8 +62,8 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @see \Serializable::serialize()
-     */
+    * @see \Serializable::serialize()
+    */
     public function serialize()
     {
         return serialize(array(
@@ -68,8 +76,8 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @see \Serializable::unserialize()
-     */
+    * @see \Serializable::unserialize()
+    */
     public function unserialize($serialized)
     {
         list (
@@ -80,28 +88,25 @@ class User implements UserInterface, \Serializable
             // $this->salt
         ) = unserialize($serialized);
     }
-    /**
-     * @var boolean
-     */
-    private $is_active;
+
 
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
+    * Get id
+    *
+    * @return integer
+    */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * Set username
-     *
-     * @param string $username
-     * @return User
-     */
+    * Set username
+    *
+    * @param string $username
+    * @return User
+    */
     public function setUsername($username)
     {
         $this->username = $username;
@@ -110,11 +115,11 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
+    * Set password
+    *
+    * @param string $password
+    * @return User
+    */
     public function setPassword($password)
     {
         $this->password = $password;
@@ -123,11 +128,11 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
+    * Set email
+    *
+    * @param string $email
+    * @return User
+    */
     public function setEmail($email)
     {
         $this->email = $email;
@@ -136,21 +141,21 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get email
-     *
-     * @return string 
-     */
+    * Get email
+    *
+    * @return string
+    */
     public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * Set is_active
-     *
-     * @param boolean $isActive
-     * @return User
-     */
+    * Set is_active
+    *
+    * @param boolean $isActive
+    * @return User
+    */
     public function setIsActive($isActive)
     {
         $this->is_active = $isActive;
@@ -159,59 +164,21 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get is_active
-     *
-     * @return boolean 
-     */
+    * Get is_active
+    *
+    * @return boolean
+    */
     public function getIsActive()
     {
         return $this->is_active;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $category;
-
 
     /**
-     * Add category
-     *
-     * @param \School\UserBundle\Entity\Role $category
-     * @return User
-     */
-    public function addCategory(\School\UserBundle\Entity\Role $category)
-    {
-        $this->category[] = $category;
-
-        return $this;
-    }
-
-    /**
-     * Remove category
-     *
-     * @param \School\UserBundle\Entity\Role $category
-     */
-    public function removeCategory(\School\UserBundle\Entity\Role $category)
-    {
-        $this->category->removeElement($category);
-    }
-
-    /**
-     * Get category
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * Add roles
-     *
-     * @param \School\UserBundle\Entity\Role $roles
-     * @return User
-     */
+    * Add roles
+    *
+    * @param \School\UserBundle\Entity\Role $roles
+    * @return User
+    */
     public function addRole(\School\UserBundle\Entity\Role $roles)
     {
         $this->roles[] = $roles;
@@ -220,12 +187,110 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Remove roles
-     *
-     * @param \School\UserBundle\Entity\Role $roles
-     */
+    * Remove roles
+    *
+    * @param \School\UserBundle\Entity\Role $roles
+    */
     public function removeRole(\School\UserBundle\Entity\Role $roles)
     {
         $this->roles->removeElement($roles);
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string 
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string 
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set role
+     *
+     * @param \School\UserBundle\Entity\Role $role
+     * @return User
+     */
+    public function setRole(\School\UserBundle\Entity\Role $role = null)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return \School\UserBundle\Entity\Role 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+    
+    public static function createUsername($first, $last)
+    {
+        $username = $first[0].$last;
+        return $username;
+    }
+
+    /**
+     * Set teacher
+     *
+     * @param \School\UserBundle\Entity\Teacher $teacher
+     * @return User
+     */
+    public function setTeacher(\School\UserBundle\Entity\Teacher $teacher = null)
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * Get teacher
+     *
+     * @return \School\UserBundle\Entity\Teacher 
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
     }
 }

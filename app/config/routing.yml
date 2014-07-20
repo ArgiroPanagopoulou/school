@@ -8,7 +8,7 @@ homepage:
 
 login: 
     path: /login
-    defaults: { _controller: SchoolUserBundle:Default:login }
+    defaults: { _controller: SchoolUserBundle:Login:login }
     
 login_check:
     path: /login_check
@@ -18,7 +18,11 @@ logout:
     
 login_success:
     path: /login_success
-    defaults: { _controller: SchoolUserBundle:Default:loginSuccess }
+    defaults: { _controller: SchoolUserBundle:Login:loginSuccess }
+    
+register:
+    pattern: /register/
+    defaults: { _controller: SchoolUserBundle:Login:register }
    
 admin_area:
     pattern: /admin/
@@ -26,8 +30,8 @@ admin_area:
     
 teacher_area:
     pattern: /teacher/
-    defaults: { _controller: SchoolUserBundle:Default:teacher }
+    defaults: { _controller: SchoolUserBundle:Login:teacher }
     
 student_area:
     pattern: /student/
-    defaults: { _controller: SchoolUserBundle:Default:student }
+    defaults: { _controller: SchoolUserBundle:Login:student }

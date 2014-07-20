@@ -15,12 +15,14 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         $q = $this
             ->createQueryBuilder('u')
-            ->select('u, r')
-            ->leftJoin('u.roles', 'r')
+            ->select('u')
+            //->leftJoin('u.roles', 'r')
             ->where('u.username = :username OR u.email = :email')
             ->setParameter('username', $username)
             ->setParameter('email', $username)
             ->getQuery();
+            
+            
             
             try {
                 $user = $q->getSingleResult();
@@ -59,7 +61,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     public function loadUsers()
     {
         $q = $this->getEntityManager()
-            ->createQuery('SELECT u, r FROM SchoolUserBundle:User u LEFT JOIN u.roles r');
+            ->createQuery('SELECT u.id, u.username, r.name, r.role FROM SchoolUserBundle:User u LEFT JOIN u.role r');
         $users = $q->getResult();
         
         return $users;           
@@ -69,8 +71,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         $q = $this
             ->createQueryBuilder('u')
-            ->select('u, r')
-            ->leftJoin('u.roles', 'r')
+            ->select('u')
             ->where('u.id = :id')
             ->setParameter('id', $id)
             ->getQuery();

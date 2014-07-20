@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap/css/bootstrap.css') }}" />
+        {% endblock %}
+        
+        {% block header_javascripts %}
+        <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/jquery/jquery-1.9.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+    {% block javascripts %}{% endblock %}
+</html>

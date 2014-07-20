@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SchoolClass
 {
-    /**
-     * @var integer
-     */
+   
     private $id;
     
     private $name;
@@ -19,6 +17,8 @@ class SchoolClass
     protected $schoolYear;
 
     protected $students;
+    
+    private $courseClasses;
     
     /**
      * Get id
@@ -51,29 +51,6 @@ class SchoolClass
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set school_year
-     *
-     * @param \School\UserBundle\Entity\SchoolYear $schoolYear
-     * @return SchoolClass
-     */
-    public function setSchoolYear(\School\UserBundle\Entity\SchoolYear $schoolYear = null)
-    {
-        $this->school_year = $schoolYear;
-
-        return $this;
-    }
-
-    /**
-     * Get school_year
-     *
-     * @return \School\UserBundle\Entity\SchoolYear 
-     */
-    public function getSchoolYear()
-    {
-        return $this->school_year;
     }
 
     
@@ -116,5 +93,67 @@ class SchoolClass
     public function getStudents()
     {
         return $this->students;
+    }
+ 
+
+    /**
+     * Add courseClasses
+     *
+     * @param \School\UserBundle\Entity\CourseClass $courseClasses
+     * @return SchoolClass
+     */
+    public function addCourseClass(\School\UserBundle\Entity\CourseClass $courseClasses)
+    {
+        $this->courseClasses[] = $courseClasses;
+
+        return $this;
+    }
+
+    /**
+     * Remove courseClasses
+     *
+     * @param \School\UserBundle\Entity\CourseClass $courseClasses
+     */
+    public function removeCourseClass(\School\UserBundle\Entity\CourseClass $courseClasses)
+    {
+        $this->courseClasses->removeElement($courseClasses);
+    }
+
+    /**
+     * Get courseClasses
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCourseClasses()
+    {
+        return $this->courseClasses;
+    }
+
+    /**
+     * Set schoolYear
+     *
+     * @param \School\UserBundle\Entity\SchoolYear $schoolYear
+     * @return SchoolClass
+     */
+    public function setSchoolYear(\School\UserBundle\Entity\SchoolYear $schoolYear = null)
+    {
+        $this->schoolYear = $schoolYear;
+
+        return $this;
+    }
+
+    /**
+     * Get schoolYear
+     *
+     * @return \School\UserBundle\Entity\SchoolYear 
+     */
+    public function getSchoolYear()
+    {
+        return $this->schoolYear;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

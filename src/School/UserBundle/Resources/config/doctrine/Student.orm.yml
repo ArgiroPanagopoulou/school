@@ -1,5 +1,6 @@
 School\UserBundle\Entity\Student:
     type: entity
+    repositoryClass: School\UserBundle\Entity\StudentRepository
     table: student
     id:
         id:
@@ -10,8 +11,9 @@ School\UserBundle\Entity\Student:
     fields:
         registrationDate:
             type: date
+            nullable: true
     oneToOne:
-        users:
+        user:
             targetEntity: User
             joinColumn: 
                 name: user_id

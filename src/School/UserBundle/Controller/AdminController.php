@@ -204,7 +204,8 @@ class AdminController extends Controller
             } elseif ($assigned) {
                 $students = $em->getRepository('SchoolUserBundle:Student')
                     ->findAllByClassAssignation($assigned);
-            }             
+            }  
+            
         }
         
         // $class = new SchoolClass();
@@ -222,8 +223,65 @@ class AdminController extends Controller
         //}
     }
     
-    public function testAssignedStudentsAction()
+    public function studentSelectAction(Request $request)
     {
-        return new Response('test assigned students');
+        $selected_students = $this->get('request')->request->get('select');
+        $selected_action = $this->get('request')->request->get('studentAction');
+        switch ($selected_action) {
+            case 'assignment':
+                $response = $this->forward('SchoolUserBundle:Admin:studentAssignmentSelection', array(
+                    'selected_students' => $selected_students,
+                ));
+            break;
+        }      
+        return $response;
+    }
+    
+    // Selected Action: Student Assignment to classes
+    public function studentAssignmentSelectionAction(Request $request, $selected_students)
+    {
+        
+        $class = new SchoolClass();
+        
+        $form = $this->createForm(new StudentAssignationType(), $class);
+        
+        $form->handleRequest($request);
+        $test = $form->getData();
+        //var_dump($test);
+        if ($form->isValid()) {
+            
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        foreach ($selected_students as $id) {
+            $students[] = $em->getRepository('SchoolUserBundle:User')
+                ->loadUserById($id);
+                
+        }
+
+        return $this->render('SchoolUserBundle:Admin:StudentAssignmentSelection.html.twig', array(
+            'students' => $students,
+            'form' => $form->createView(),
+        ));
+    }
+    
+    public function testAction(Request $request)
+    {
+        $class = new SchoolClass();
+        
+        $form = $this->createForm(new StudentAssignationType(), $class);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isValid()) {
+            
+        }
+        
+        return $this->render('SchoolUserBundle:Admin:StudentAssignmentSelection.html.twig', array(
+            //'students' => $students,
+            'form' => $form->createView(),
+        ));
     }
 }
+
+

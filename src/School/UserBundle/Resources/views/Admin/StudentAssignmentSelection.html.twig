@@ -1,0 +1,31 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %}Assign Students To A Class{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/js/SchoolClassTest.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+{# <div class="container-fluid"> #}
+
+    <h2> Assign Students To A Class </h2>
+    
+    <h3> Selected Students </h3>
+    
+    {# {% for student in students %}
+        {{ student.username }}
+    {% endfor %} #}
+    
+    {{ form_start(form) }}
+        
+        
+        {{ form_row(form.schoolYear) }}
+        {{ form_row(form.name) }}
+        
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+
+{# </div> #}
+{% endblock %}

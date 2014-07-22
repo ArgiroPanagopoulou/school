@@ -34,12 +34,12 @@ class StudentAssignationType extends AbstractType
                'choices'     => $year_classes,
             ));
             
-            $form->add('students', 'entity', array(
-                'class' => 'SchoolUserBundle:Student',
-                'property' => 'user.username',
-                'expanded' => true,
-                'multiple' => true,
-            ));
+            // $form->add('students', 'entity', array(
+                // 'class' => 'SchoolUserBundle:Student',
+                // 'property' => 'user.username',
+                // 'expanded' => true,
+                // 'multiple' => true,
+            // ));
         };
         
         $builder->addEventListener(

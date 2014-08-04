@@ -26,3 +26,4 @@ School\UserBundle\Entity\Student:
                 name: schoolClass_id
                 referencedColumnName: id
     lifecycleCallbacks: {  }
+

@@ -27,6 +27,7 @@ use School\UserBundle\Form\Type\StudentAssignationType;
 use School\UserBundle\Form\Type\TeacherAssignationType;
 use School\UserBundle\Form\Model\TeacherAssignation;
 use School\UserBundle\Form\Type\StudentFilterType;
+use School\UserBundle\Form\Type\StudentRemovalFromClassType;
 
     /**
     * @Security("has_role('ROLE_ADMIN')")
@@ -78,8 +79,7 @@ class AdminController extends Controller
         
         $student = new Student();
         $student->setUser($user);
-        
-        //$user->role = $roles; //(count($roles) > 0)? $roles[0] : null;
+
         $form = $this->createForm(new UserType(), $user); 
 
         $teacher_exists = $this->getDoctrine()
@@ -171,13 +171,9 @@ class AdminController extends Controller
         ));
         
     }
-    
-    
+        
     public function assignStudentsAction(Request $request)
     {
-        $schoolYear1 = $this->getDoctrine()
-            ->getRepository('SchoolUserBundle:SchoolYear')
-            ->findOneById(2);
         
         $em = $this->getDoctrine()->getManager();
         $students = $em->getRepository('SchoolUserBundle:Student')
@@ -190,12 +186,10 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         $selected_students = $this->get('request')->request->get('select');
-        //var_dump($selected_students); 
+
         if ($form->isValid()) {
             $schoolClass = $form['schoolClass']->getData();
             $assigned = $form['assigned']->getData();
-            
-            //$student->setSchoolClass($schoolClass);
             
             //Filters the array of students
             if ($schoolClass) {
@@ -207,81 +201,130 @@ class AdminController extends Controller
             }  
             
         }
-        
-        // $class = new SchoolClass();
-        // //$class->setSchoolYear($schoolYear1);
-        
-        // $form = $this->createForm(new StudentAssignationType(), $class);
-
-        // if ($this->get('request')->request->get('submit')) {                
-            // return $this->redirect($this->generateUrl('admin_test_assigned_students', array('user' => 9)));
-        // } else {
-            return $this->render('SchoolUserBundle:Admin:AssignStudents.html.twig', array(
-                'form' => $form->createView(),
-                'students' => $students,
-            ));
-        //}
+        return $this->render('SchoolUserBundle:Admin:AssignStudents.html.twig', array(
+            'form' => $form->createView(),
+            'students' => $students,
+        ));
     }
     
     public function studentSelectAction(Request $request)
     {
         $selected_students = $this->get('request')->request->get('select');
+        $selected_students = is_array($selected_students)?
+            $selected_students : explode(',', $selected_students);
+            
+        //Clear the selected_students array from empty values
+        $selected_students = array_filter($selected_students, function ($val) {
+            return !empty($val);
+        });
+        
+        //If no student is chosen then redirect to the student selection page
+        if(empty($selected_students)) {
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                'You have to select at least one student'
+            );
+            return $this->redirect($this->generateUrl('admin_assign_students'));
+        }
+        
         $selected_action = $this->get('request')->request->get('studentAction');
         switch ($selected_action) {
             case 'assignment':
                 $response = $this->forward('SchoolUserBundle:Admin:studentAssignmentSelection', array(
-                    'selected_students' => $selected_students,
+                    'request' => $request,
+                    'selected_students' => $selected_students,  
+                    'selected_action' => $selected_action,
                 ));
-            break;
+                break;
+            case 'removal':
+                $response = $this->forward('SchoolUserBundle:Admin:studentRemovalFromClass', array(
+                    'request' => $request,
+                    'selected_students' => $selected_students,
+                    'selected_action' => $selected_action,
+                ));
+                break;
+            default:
+                $response = null;
         }      
         return $response;
     }
     
     // Selected Action: Student Assignment to classes
-    public function studentAssignmentSelectionAction(Request $request, $selected_students)
+    public function studentAssignmentSelectionAction(Request $request, $selected_students, $selected_action)
     {
         
         $class = new SchoolClass();
+                
+        $form = $this->createForm(new StudentAssignationType(), $class, array(
+            'selected_students' => $selected_students,
+            'selected_action' => $selected_action,
+        ));
         
-        $form = $this->createForm(new StudentAssignationType(), $class);
+        $students = array();
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($selected_students as $id) {
+            $students[] = $em->getRepository('SchoolUserBundle:Student')
+                ->findByUserId($id);
+        }    
         
         $form->handleRequest($request);
-        $test = $form->getData();
-        //var_dump($test);
+        
+
         if ($form->isValid()) {
+            $school_class = $form['name']->getData();
             
+            foreach($students as $student) {
+                $student->setSchoolClass($school_class);
+                $em->persist($student);
+                $em->flush();
+            }
+            return $this->redirect($this->generateUrl('admin_assign_students'));
+        } else {        
+            return $this->render('SchoolUserBundle:Admin:StudentAssignmentSelection.html.twig', array(
+                'form' => $form->createView(),
+                'students' => $students,
+            )); 
         }
         
-        $em = $this->getDoctrine()->getManager();
-        foreach ($selected_students as $id) {
-            $students[] = $em->getRepository('SchoolUserBundle:User')
-                ->loadUserById($id);
-                
-        }
-
-        return $this->render('SchoolUserBundle:Admin:StudentAssignmentSelection.html.twig', array(
-            'students' => $students,
-            'form' => $form->createView(),
-        ));
     }
     
-    public function testAction(Request $request)
+    //Selected Action: Remove students from a class
+    public function studentRemovalFromClassAction(Request $request, $selected_students, $selected_action)
     {
-        $class = new SchoolClass();
+      
+        $em = $this->getDoctrine()->getManager();
+        $test = new Student();
+        $students = array();
         
-        $form = $this->createForm(new StudentAssignationType(), $class);
+        foreach ($selected_students as $id) {
+            $students[] = $em->getRepository('SchoolUserBundle:Student')
+                ->findByUserId($id);
+        }
+       
+        $form = $this->createForm(new StudentRemovalFromClassType(), $test, array(
+            'selected_students' => $selected_students,
+            'selected_action' => $selected_action,
+        ));
         
         $form->handleRequest($request);
-        
-        if ($form->isValid()) {
             
+        if ($form->isValid()) {
+            foreach ($students as $student) {
+                $student->setSchoolClass(null);
+                $em->persist($student);
+            }           
+            $em->flush();
+            return $this->redirect($this->generateUrl('admin_assign_students'));
+        } else {       
+            return $this->render('SchoolUserBundle:Admin:StudentRemovalSelection.html.twig', array(
+                'students' => $students,
+                'form' => $form->createView(),
+            ));
         }
-        
-        return $this->render('SchoolUserBundle:Admin:StudentAssignmentSelection.html.twig', array(
-            //'students' => $students,
-            'form' => $form->createView(),
-        ));
     }
+
+    
 }
 
 

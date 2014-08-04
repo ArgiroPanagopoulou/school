@@ -8,24 +8,26 @@
 {% endblock %}
 
 {% block body %}
-{# <div class="container-fluid"> #}
+<div class="container-fluid">
 
     <h2> Assign Students To A Class </h2>
     
     <h3> Selected Students </h3>
     
-    {# {% for student in students %}
-        {{ student.username }}
-    {% endfor %} #}
+    <ul>
+    {% for student in students %}
+        <li> {{ student.user.lastName }} </li>
+    {% endfor %}
+    </ul>
     
     {{ form_start(form) }}
         
         
         {{ form_row(form.schoolYear) }}
         {{ form_row(form.name) }}
-        
+
         {{ form_row(form.save) }}
     {{ form_end(form) }}
 
-{# </div> #}
+</div>
 {% endblock %}

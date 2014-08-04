@@ -87,4 +87,5 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             }
         return $user;
     }
+    
 }

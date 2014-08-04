@@ -1,0 +1,47 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %} Remove Students From A Class {% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/js/studentRemovalFromClass.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2> Remove students from class </h2>
+
+    <h3> Selected Students </h3>
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th> Full Name </th>
+            <th> Username </th>
+            <th> Class </th>
+        </tr>
+        </thead>
+        {% for student in students %}
+            <tbody>
+            <tr>
+                <td> <a href="{{ path('admin_user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
+                <td> {{ student.user.username }} </td>
+                <td> {% if student.schoolClass is not null %}
+                        {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
+                    {% endif %}</td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div>
+        {{ form_widget(form.Confirm) }}
+    </div>
+
+    {{ form_end(form) }}
+
+</div>
+{% endblock %}

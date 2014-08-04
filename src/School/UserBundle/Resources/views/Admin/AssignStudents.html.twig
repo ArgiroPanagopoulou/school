@@ -2,15 +2,21 @@
 
 {% block title %}Assign Students{% endblock %}
 
-{# {% block header_javascripts %}
+{% block header_javascripts %}
 {{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/schooluser/js/SchoolClassTest.js') }}"></script>
-{% endblock %} #}
+<script type="text/javascript" src="{{ asset('bundles/schooluser/js/studentSelection.js') }}"></script>
+{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
 
     <h2> Assign Students </h2><br/>
+    
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
 
     {{ form_start(form) }}
     <div class="row">
@@ -42,7 +48,7 @@
             <th>  Full Name  </th>
             <th> Username </th>
             <th>  Class  </th>
-            <th> Select </th>
+            <th> <input type="checkbox"  id="selectall"/> Select All </th>
         </tr>
         </thead>
         
@@ -54,7 +60,7 @@
                 <td> {% if student.schoolClass is not null %}
                         {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
                     {% endif %}</td>
-                <td> <input type="checkbox" name="select[]" value="{{ student.user.id }}"> </td>
+                <td> <input class="checkboxstudents" type="checkbox"  name="select[]" value="{{ student.user.id }}"> </td>
             </tr>
             </tbody>
         {% endfor %}
@@ -63,9 +69,11 @@
         <select required name="studentAction">
         <option value=""> - Select an action </option>
         <option value="assignment">Assign to a class </option>
+        <option value="removal"> Remove from a class </option>
         </select>
         <input type="submit" name="submit" value="Submit">
         </form>
+        
     </div>
 </div>
 

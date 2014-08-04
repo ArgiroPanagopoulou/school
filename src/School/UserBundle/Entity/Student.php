@@ -99,32 +99,4 @@ class Student
     {
         return $this->schoolClass;
     }
-    /**
-     * @var \School\UserBundle\Entity\User
-     */
-    private $user_student;
-
-
-    /**
-     * Set user_student
-     *
-     * @param \School\UserBundle\Entity\User $userStudent
-     * @return Student
-     */
-    public function setUserStudent(\School\UserBundle\Entity\User $userStudent = null)
-    {
-        $this->user_student = $userStudent;
-
-        return $this;
-    }
-
-    /**
-     * Get user_student
-     *
-     * @return \School\UserBundle\Entity\User 
-     */
-    public function getUserStudent()
-    {
-        return $this->user_student;
-    }
 }

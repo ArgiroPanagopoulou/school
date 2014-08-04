@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SchoolClass
 {
-    /**
-     * @var integer
-     */
+   
     private $id;
     
     private $name;
@@ -129,5 +127,33 @@ class SchoolClass
     public function getCourseClasses()
     {
         return $this->courseClasses;
+    }
+
+    /**
+     * Set schoolYear
+     *
+     * @param \School\UserBundle\Entity\SchoolYear $schoolYear
+     * @return SchoolClass
+     */
+    public function setSchoolYear(\School\UserBundle\Entity\SchoolYear $schoolYear = null)
+    {
+        $this->schoolYear = $schoolYear;
+
+        return $this;
+    }
+
+    /**
+     * Get schoolYear
+     *
+     * @return \School\UserBundle\Entity\SchoolYear 
+     */
+    public function getSchoolYear()
+    {
+        return $this->schoolYear;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

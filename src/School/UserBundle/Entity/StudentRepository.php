@@ -59,4 +59,17 @@ class StudentRepository extends EntityRepository
             return $this->findAllOrderedByName();
         }
     }
+    
+    public function findByUserId($id)
+    {
+        $student = $this->getEntityManager()
+            ->createQuery(
+                'SELECT s
+                FROM SchoolUserBundle:Student s
+                LEFT JOIN s.user u
+                WHERE u.id = :id'
+            )->setParameter('id', $id)
+            ->getSingleResult();
+        return $student;
+    }
 }

@@ -14,10 +14,21 @@ class StudentAssignationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder->add('schoolYear', 'entity', array(
             'class' => 'SchoolUserBundle:SchoolYear',
             'empty_value' => '- Choose a year -',
             'property' => 'name',
+        ));
+        
+        $builder->add('select', 'hidden', array(
+            'data' => join(",", $options['selected_students']),
+            'mapped' => false,
+        ));
+        
+        $builder->add('studentAction', 'hidden', array(
+            'data' => $options['selected_action'],
+            'mapped' => false,
         ));
         
         $builder->add('save', 'submit');
@@ -34,12 +45,6 @@ class StudentAssignationType extends AbstractType
                'choices'     => $year_classes,
             ));
             
-            // $form->add('students', 'entity', array(
-                // 'class' => 'SchoolUserBundle:Student',
-                // 'property' => 'user.username',
-                // 'expanded' => true,
-                // 'multiple' => true,
-            // ));
         };
         
         $builder->addEventListener(
@@ -73,6 +78,9 @@ class StudentAssignationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'School\UserBundle\Entity\SchoolClass',
+            'validation_groups' => false,
+            'selected_students' => null,
+            'selected_action' => null,
         ));
     }
 }

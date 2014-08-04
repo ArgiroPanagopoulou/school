@@ -21,7 +21,3 @@ admin_assign_students:
 admin_selected_students:
     pattern: /admin/assign_students/selectedAction/
     defaults: { _controller: SchoolUserBundle:Admin:studentSelect }
-    
-admin_assign_students_test:
-    pattern: /admin/assign_students/test/
-    defaults: { _controller: SchoolUserBundle:Admin:test }

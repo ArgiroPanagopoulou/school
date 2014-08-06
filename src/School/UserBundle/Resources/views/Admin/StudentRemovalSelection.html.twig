@@ -12,33 +12,23 @@
     <h2> Remove students from class </h2>
 
     <h3> Selected Students </h3>
-    
-    <table class="table">
-        <thead>
-        <tr>
-            <th> Full Name </th>
-            <th> Username </th>
-            <th> Class </th>
-        </tr>
-        </thead>
+
+    <ol>        
         {% for student in students %}
-            <tbody>
-            <tr>
-                <td> <a href="{{ path('admin_user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
-                <td> {{ student.user.username }} </td>
-                <td> {% if student.schoolClass is not null %}
-                        {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
-                    {% endif %}</td>
-            </tr>
-            </tbody>
+           
+            <li> <strong>{{ student.user.lastName }} {{ student.user.firstName }} </strong>
+                {% if student.schoolClass is not null %}
+                    currently at class: {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
+                {% endif %}
+            </li>
         {% endfor %}
-    </table>
+    </ol>
     
-    {{ form_start(form) }}
+    {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
     {{ form_errors(form) }}
     
     <div>
-        {{ form_widget(form.Confirm) }}
+        {{ form_widget(form.Confirm, {'attr': {'class': 'btn btn-default'}}) }}
     </div>
 
     {{ form_end(form) }}

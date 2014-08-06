@@ -8,27 +8,71 @@
 {% endblock %}
 
 {% block body %}
+<div class="container-fluid">
     <h2> Assign Teachers </h2>
     
-    {{ form_start(form) }}
-        {{ form_row(form.schoolyear) }}
-        {{ form_row(form.courses) }}
-        {{ form_row(form.schoolClasses) }}
-        {{ form_row(form.teacher) }}
-        {{ form_row(form.save) }}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    
+    {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
+
+        <div class="form-group">
+            {{ form_label(form.schoolyear, 'Year', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_errors(form.schoolyear) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.schoolyear, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            {{ form_label(form.courses, 'Course', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_errors(form.courses) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.courses, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            {{ form_label(form.schoolClasses, 'Class', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_errors(form.schoolClasses) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.schoolClasses, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.teacher, 'Teacher', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_errors(form.teacher) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.teacher, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+            </div>
+        </div>
+
     {{ form_end(form) }}
     
-    <div>
-        <table style="width:500px">
+        <h3> Assigned teachers </h3>
+        <table class="table table-hover">
+            <thead>
             <tr>
-                <td> Year </td>
-                <td> Course </td>
-                <td> Class </td>
-                <td> Teacher </td>
-                
+                <th> Year </th>
+                <th> Course </th>
+                <th> Class </th>
+                <th> Teacher </th>      
             </tr>
+            </thead>
             
             {% for courseClass in courseClasses %}
+            <tbody>
             <tr> 
                 <td>{{ courseClass.course.schoolYear.name }}</td>
                 <td>{{ courseClass.course.name }}</td>
@@ -36,8 +80,8 @@
                 <td>{{ courseClass.teacher.user.username }}</td>
                 
             </tr>
+            </tbody>
             {% endfor %}
         </table>
-    </div>
-
+</div>
 {% endblock %}

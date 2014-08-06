@@ -101,8 +101,7 @@ class AdminController extends Controller
             
             $roles = $form['role']->getData();            
             $role = $roles->getRole();
-          
-          
+                    
             //Update Teacher / Student DB tables accordingly
             if ( $role == 'ROLE_TEACHER' && !$teacher_exists ) {
                 $em->persist($teacher); 
@@ -143,33 +142,43 @@ class AdminController extends Controller
         
         $model = new TeacherAssignation();
         
-        $schoolYear1 = $this->getDoctrine()
-            ->getRepository('SchoolUserBundle:SchoolYear')
-            ->findOneById(1);
-        
-        //$model->setSchoolYear($schoolYear1);
         $form = $this->createForm(new TeacherAssignationType(), $model);
         $form->handleRequest($request);           
         
-        //TODO After the form validation the table should load the new data inserted into the database
         if ($form->isValid()) {
             $schoolclass = $form['schoolClasses']->getData();
             $schoolcourse = $form['courses']->getData();
             $teacher = $form['teacher']->getData();
-            
+
+            $schoolclass_id = $form['schoolClasses']->getData()->getId();
+            $schoolcourse_id = $form['courses']->getData()->getId();
+
             $courseclass->setCourse($schoolcourse);
             $courseclass->setClass($schoolclass);
             $courseclass->setTeacher($teacher);
             
-            $em->persist($courseclass);
-            $em->flush();
+            $courseclass_exists = $em->getRepository('SchoolUserBundle:CourseClass')
+                    ->findCourseClassById($schoolcourse_id, $schoolclass_id);
+            
+            //Update an existing course/class or create a new record
+            if(empty($courseclass_exists)) {
+                $em->persist($courseclass);
+                $em->flush();
+            } else {
+                $courseclass_exists->setTeacher($teacher);
+                $em->flush();
+            } 
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                'Teacher '.$teacher->getUser()->getUsername(). ' has been assigned to class '.$schoolclass->getName()
+            );
+            return $this->redirect($this->generateUrl('admin_assign_teachers'));
+        } else {        
+            return $this->render('SchoolUserBundle:Admin:AssignTeachers.html.twig',
+                array('form' => $form->createView(),
+                      'courseClasses' => $courseClasses,
+            ));
         }
-                   
-        return $this->render('SchoolUserBundle:Admin:AssignTeachers.html.twig',
-            array('form' => $form->createView(),
-                  'courseClasses' => $courseClasses,
-        ));
-        
     }
         
     public function assignStudentsAction(Request $request)

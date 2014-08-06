@@ -14,20 +14,57 @@
     
     <h3> Selected Students </h3>
     
-    <ul>
+    <div class="row">
+    <div class="col-md-8">
+    <ol>
     {% for student in students %}
-        <li> {{ student.user.lastName }} </li>
+        <li> 
+            {{ student.user.lastName }} {{ student.user.firstName }} {% if student.schoolClass is not null %}
+                currently at class: {{ student.schoolClass.name }} 
+            {% endif %}
+        </li>
     {% endfor %}
-    </ul>
+    </ol>
+    </div>
+    </div>
     
-    {{ form_start(form) }}
-        
-        
-        {{ form_row(form.schoolYear) }}
-        {{ form_row(form.name) }}
-
-        {{ form_row(form.save) }}
+    {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
+    
+    <div class="row">   
+    <div class="col-md-8">      
+    <div class="form-group">
+        {{ form_label(form.schoolYear, 'School Year', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.schoolYear) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.schoolYear, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-8"> 
+    <div class="form-group">
+        {{ form_label(form.name, 'School Class', {'label_attr': { 'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.name) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-4"> 
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-4">
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+        </div>
+    </div>
+    </div>
+    </div>
+    
     {{ form_end(form) }}
-
+    </div>
 </div>
 {% endblock %}

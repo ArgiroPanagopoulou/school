@@ -19,7 +19,7 @@ class TeacherAssignationType extends AbstractType
         $builder->add('schoolyear',
             'entity', array(
             'class' => 'SchoolUserBundle:SchoolYear',
-            'empty_value' => 'Choose a year',
+            'empty_value' => '- Choose a year -',
             'property' => 'name',
         ));
         
@@ -32,19 +32,19 @@ class TeacherAssignationType extends AbstractType
             
             $form->add('courses', 'entity', array(
                 'class' => 'SchoolUserBundle:Course',
-                'empty_value' => 'Choose a course',
+                'empty_value' => (empty($courses))? '- Choose a year, first -' : '- Choose a course -',
                 'choices' => $courses,
             ));
             
             $form->add('schoolClasses', 'entity', array(
                 'class' => 'SchoolUserBundle:SchoolClass',
-                'empty_value' => 'Choose a class',
+                'empty_value' => (empty($classes))? '- Choose a course, first -' : '- Choose a class -',
                 'choices' => $classes,
             ));
             //TODO populate teacher select when a user selects a year
             $form->add('teacher', 'entity', array(
                 'class' => 'SchoolUserBundle:Teacher',
-                'empty_value' => 'Choose a teacher',
+                'empty_value' => '- Choose a teacher -',
                 'property' => 'user.username', 
                 
             ));

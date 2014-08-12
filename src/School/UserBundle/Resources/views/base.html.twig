@@ -20,6 +20,35 @@
         
     </head>
     <body>
+        {% block menu %}        
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">Second Chance Schools</a>
+                        </div>
+    
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        {{ knp_menu_render('main') }}
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if app.user is not null %}
+                                <li><a href="#"> Logged in as <strong>{{ app.user.lastName }} {{ app.user.firstName }}</strong> ({{app.user.role.name}})</a></li>
+                                <li><a href="{{ path('logout') }}"> Logout </a></li> 
+                            {% else %}
+                                <li><a href="{{ path('login') }}"> Login </a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+        
         {% block body %}{% endblock %}
     </body>
     {% block javascripts %}{% endblock %}

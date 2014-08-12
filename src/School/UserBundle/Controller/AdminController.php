@@ -170,7 +170,7 @@ class AdminController extends Controller
             } 
             $this->get('session')->getFlashBag()->add(
                 'notice',
-                'Teacher '.$teacher->getUser()->getUsername(). ' has been assigned to class '.$schoolclass->getName()
+                'Teacher '.$teacher->getUser()->getUsername(). ' has been assigned to '.$schoolclass->getName()
             );
             return $this->redirect($this->generateUrl('admin_assign_teachers'));
         } else {        

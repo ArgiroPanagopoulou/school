@@ -91,6 +91,8 @@ class LoginController extends Controller
    
     public function teacherAction()
     {
+        $user = $this->get('security.context')->getToken()->getUser();
+        var_dump($user);
         return new Response('Teacher Area');
     }
     

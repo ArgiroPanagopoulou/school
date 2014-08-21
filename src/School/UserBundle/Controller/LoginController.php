@@ -17,9 +17,6 @@ use School\UserBundle\Form\Type\RegistrationUserType;
 class LoginController extends Controller
 {
 
-    /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
     public function indexAction($name)
     {
         return $this->render('SchoolUserBundle:Login:index.html.twig', array('name' => $name));
@@ -89,6 +86,9 @@ class LoginController extends Controller
         }           
     }
    
+    /**
+    * @Security("has_role('ROLE_TEACHER')")
+    */
     public function teacherAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
@@ -96,6 +96,9 @@ class LoginController extends Controller
         return new Response('Teacher Area');
     }
     
+    /**
+    * @Security("has_role('ROLE_STUDENT')")
+    */
     public function studentAction()
     {
         return new Response('Student Area');
@@ -110,21 +113,5 @@ class LoginController extends Controller
         } else
         return $this->render('SchoolUserBundle:Login:login_success.html.twig');
     }
-    
-    public function testAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('SchoolUserBundle:User');
-        $user = $repo->loadUserByUsername('admin');
-        var_dump($user->getRoles());
-        //$role = $user->getRole();
-        //var_dump($role->getRole());
-        
-        //$repo = $em->getRepository('SchoolUserBundle:Role');
-        //$role = $repo->findById(3);
-        //var_dump($role);
-        
-        
-        return new Response("hello");
-    }
+
 }

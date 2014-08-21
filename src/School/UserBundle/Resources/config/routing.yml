@@ -21,3 +21,11 @@ admin_assign_students:
 admin_selected_students:
     pattern: /admin/assign_students/selectedAction/
     defaults: { _controller: SchoolUserBundle:Admin:studentSelect }
+    
+teacher_homepage:
+    pattern: /teacher/homepage/
+    defaults: { _controller: SchoolUserBundle:Teacher:index }
+    
+teacher_add_lecture:
+    pattern: /teacher/{courseClassId}
+    defaults: { _controller: SchoolUserBundle:Teacher:addLecture }

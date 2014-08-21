@@ -1,0 +1,70 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block file_widget %}
+    {% spaceless %}
+        {{ block('form_widget') }}
+        {% if file_url is not null %}
+            <a href="{{ asset(file_url) }}"> Download this file </a>
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %} 
+
+
+{% block title %}Add/Remove Lectures{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/js/addLectures.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h3> Add/Remove Lectures for {{ course.course }} </h3>
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}       
+              
+        <table class="table lectures" data-prototype="{% filter escape %}{{ include('SchoolUserBundle:Teacher:AddLectureItem.html.twig', { 'lecture': form.lectures.vars.prototype }) }}{% endfilter %}">
+            <thead>
+                <tr>
+                    <th> Lecture Name </th>
+                    <th> Attachment </th>
+                    <th> </th>
+                </tr>
+            </thead>
+            {% for lecture in form.lectures %}  
+                <tboby>
+                    <tr>
+                        <td style="border-top: none">
+                            <div class="form-group"> 
+                                {{ form_label(lecture.name, ' ') }}
+                                {{ form_errors(lecture.name) }}
+                                <div class="col-sm-8">
+                                    {{ form_widget(lecture.name, {'attr': {'class': 'form-control'}}) }} 
+                                </div>
+                            </div>
+                        </td>
+                        <td style="border-top: none">
+                            <div class="form-group" >
+                                {{ form_errors(lecture.file) }}
+                                <div class="col-sm-4">
+                                    {{ form_widget(lecture.file) }} 
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td class="delete-link-wrapper" style="border-top: none">
+                            <div class="col-sm-2"
+                            </div>
+                        </td>   
+                    </tr> 
+                </tboby>
+            {% endfor %}
+        </table>
+        
+        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
+    {{ form_end(form) }} 
+</div>
+{% endblock %}

@@ -16,8 +16,19 @@ class TeacherRepository extends EntityRepository
             ->createQuery('SELECT t, u FROM SchoolUserBundle:Teacher t LEFT JOIN t.user u');
         $teachers = $q->getResult();
         
-        return $teachers;
-            
+        return $teachers;            
+    }
+    
+    public function findCoursesByTeacher($teacher)
+    {
+        $q = $this->getEntityManager()
+            ->createQuery('SELECT c 
+                FROM SchoolUserBundle:CourseClass c 
+                WHERE c.teacher = :teacher'
+            )->setParameter('teacher', $teacher);
+        $courseClasses = $q->getResult();
+        
+        return $courseClasses;
     }
     
 }

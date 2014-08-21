@@ -22,7 +22,6 @@ use School\UserBundle\Form\Type\CourseClassType;
 use School\UserBundle\Form\Type\CourseType;
 use School\UserBundle\Entity\SchoolClass;
 use School\UserBundle\Form\Type\SchoolClassType;
-use School\UserBundle\Form\Type\TeacherType;
 use School\UserBundle\Form\Type\StudentAssignationType;
 use School\UserBundle\Form\Type\TeacherAssignationType;
 use School\UserBundle\Form\Model\TeacherAssignation;
@@ -67,7 +66,9 @@ class AdminController extends Controller
     
     /**
     *   Edit page for individual users
+    * 
     */
+    //TODO rewrite the method 
     public function editUserAction($userId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -180,7 +181,7 @@ class AdminController extends Controller
             ));
         }
     }
-        
+    
     public function assignStudentsAction(Request $request)
     {
         
@@ -216,6 +217,9 @@ class AdminController extends Controller
         ));
     }
     
+    /**
+    * @Security("has_role('ROLE_TEACHER')")
+    */
     public function studentSelectAction(Request $request)
     {
         $selected_students = $this->get('request')->request->get('select');
@@ -258,6 +262,9 @@ class AdminController extends Controller
         return $response;
     }
     
+    /**
+    * @Security("has_role('ROLE_TEACHER')")
+    */
     // Selected Action: Student Assignment to classes
     public function studentAssignmentSelectionAction(Request $request, $selected_students, $selected_action)
     {

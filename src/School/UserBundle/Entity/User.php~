@@ -24,9 +24,9 @@ class User implements UserInterface, \Serializable
     private $is_active;
 
     private $role;
-    
-    //private $teacher;
-    
+
+    private $teacher;
+   
     private $student;
     
     public function __construct()
@@ -271,4 +271,26 @@ class User implements UserInterface, \Serializable
         return $username;
     }
 
+    /**
+     * Set teacher
+     *
+     * @param \School\UserBundle\Entity\Teacher $teacher
+     * @return User
+     */
+    public function setTeacher(\School\UserBundle\Entity\Teacher $teacher = null)
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * Get teacher
+     *
+     * @return \School\UserBundle\Entity\Teacher 
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
+    }
 }

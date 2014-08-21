@@ -19,6 +19,7 @@ class Course
     protected $schoolYear;
 
     private $courseClasses;
+    
     /**
      * Get id
      *
@@ -114,5 +115,10 @@ class Course
     public function getCourseClasses()
     {
         return $this->courseClasses;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

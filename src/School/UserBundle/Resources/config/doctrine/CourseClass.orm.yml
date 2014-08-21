@@ -30,4 +30,9 @@ School\UserBundle\Entity\CourseClass:
             joinColumn: 
                 name: class_id
                 referencedColumnName: id
+    oneToMany:
+        lectures:
+            targetEntity: Lecture
+            cascade: [persist]
+            mappedBy: courseClass
     lifecycleCallbacks: {  }

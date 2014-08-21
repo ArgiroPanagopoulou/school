@@ -3,57 +3,61 @@
 namespace School\UserBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use School\UserBundle\Entity\User;
-use Knp\Menu\ItemInterface;
+use Doctrine\Common\Annotations\AnnotationReader;
+use School\UserBundle\Controller\AdminController as Admin;
 
-
-class MenuBuilder
+class MenuBuilder extends ContainerAware
 {
-    private $factory;
-
-    
-    public function __construct(FactoryInterface $factory)
+  
+    public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $this->factory = $factory;
-    }
-    
-    public function mainMenu(Request $request)
-    {
-        $menu = $this->factory->createItem('root');
-        
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $securityContext = $this->container->get('security.context');
+        $menu = $factory->createItem('root');
         
         $menu->addChild('Home', array('route' => 'homepage'));
         
-        $menu->addChild('Student', array('route' => 'student_area'));
-        $menu->addChild('Teacher', array('route' => 'teacher_area'));
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
         
-        
-        //admin menu
-        $menu->addChild('Admin')
-             ->setAttribute('dropdown', true);
-            
-        $menu['Admin']->addChild('Edit Users', array('route' => 'admin_users'));   
-        $menu['Admin']->addChild('Assign Teachers', array('route' => 'admin_assign_teachers'));
-        $menu['Admin']->addChild('Assign Students', array('route' => 'admin_assign_students'));       
-        
+        if($securityContext->isGranted('ROLE_ADMIN')) {
+            $menu->addChild('Admin')
+             ->setAttribute('dropdown', true);            
+            $menu['Admin']->addChild('Edit Users', array('route' => 'admin_users'));   
+            $menu['Admin']->addChild('Assign Teachers', array('route' => 'admin_assign_teachers'));
+            $menu['Admin']->addChild('Assign Students', array('route' => 'admin_assign_students'));                       
+        } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
+            $menu->addChild('Courses', array('route' => 'teacher_homepage'));
+        } elseif ($securityContext->isGranted('ROLE_STUDENT')) {
+            $menu->addChild('Student', array('route' => 'student_area'));
+        }
+                      
         return $menu;
     }
-    
-    //TODO inject security context as service in order to move user functionality menu to MenuBuilder
-    //Right navbar is currently implemented at base.html.twig
-    public function userMenu(Request $request)
+
+    public function userMenu(FactoryInterface $factory, array $options)
     {
-        $menu = $this->factory->createItem('root');
+        $securityContext = $this->container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
         
+        $menu = $factory->createItem('root');
+
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
+
+        if(is_object($user)) {
+        $user_lastname = $user->getLastName();
+        $user_firstname = $user->getFirstName();
+        $user_role = $user->getRole()->getName();
+        $user_id = $user->getId();
         
-        $menu->addChild('user', array('uri' => '/', 'label' => 'Back to homepage'));
-        
+        $menu->addChild('user', array(
+            'route' => 'admin_user_edit', 'routeParameters' => array('userId' => $user_id),  // Currently the edit page for the users is only accessible from admin.
+            'label' => 'Logged in as '.$user_lastname.' '.$user_firstname.' '.'('.$user_role.')',
+        ));
+        $menu->addChild('Logout', array('route' => 'logout'));
+        } else {
+            $menu->addChild('Login', array('route' => 'login'));
+            $menu->addChild('Register', array('route' => 'register'));
+        }
         return $menu;
     }
 }

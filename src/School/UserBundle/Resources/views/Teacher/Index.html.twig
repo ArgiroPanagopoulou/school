@@ -1,0 +1,20 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %}Teacher Homepage{% endblock %}
+
+
+{% block body %}
+    <h3> Assigned courses for {{ app.user.lastName }} {{ app.user.firstName }} </h3>
+ 
+    <ul>
+    {% for course in courses %}
+        <li> <a href="{{ path('teacher_add_lecture', {'courseClassId': course.id }) }}"> {{ course.course }} </a> ({{ course.class }}) </li>
+            <ul> 
+            {% for lecture in  course.lectures %}
+                <li>   <a href="{{ asset(lecture.getWebPath()) }}"> {{ lecture }} </a></li>
+            {% endfor %}
+            </ul>
+    {% endfor %}
+    </ul>
+    
+{% endblock %}

@@ -29,6 +29,7 @@ class UserType extends AbstractType
                 'multiple' => false,
             ))
             ->add('save', 'submit');
+           
     }
     
     public function getName()

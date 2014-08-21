@@ -1,0 +1,27 @@
+
+<td style="border-top: none">
+    <div class="form-group"> 
+        {{ form_label(lecture.name, ' ') }}
+        {{ form_errors(lecture.name) }}
+        <div class="col-sm-8">
+            {{ form_widget(lecture.name, {'attr': {'class': 'form-control'}}) }} 
+        </div>
+    </div>
+</td>
+
+<td style="border-top: none">
+    <div class="form-group"
+        {{ form_label(lecture.file, ' ') }}
+        {{ form_errors(lecture.file) }}
+        <div class="col-sm-2">
+            {{ form_widget(lecture.file) }} 
+        </div>
+    </div>
+</td>
+
+<td class="delete-link-wrapper" style="border-top: none">
+    <div class="col-sm-2">
+    </div>
+</td>   
+
+    

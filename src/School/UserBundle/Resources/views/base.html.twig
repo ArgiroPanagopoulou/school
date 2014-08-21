@@ -35,15 +35,8 @@
                         </div>
     
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        {{ knp_menu_render('main') }}
-                        <ul class="nav navbar-nav navbar-right">
-                            {% if app.user is not null %}
-                                <li><a href="#"> Logged in as <strong>{{ app.user.lastName }} {{ app.user.firstName }}</strong> ({{app.user.role.name}})</a></li>
-                                <li><a href="{{ path('logout') }}"> Logout </a></li> 
-                            {% else %}
-                                <li><a href="{{ path('login') }}"> Login </a></li>
-                            {% endif %}
-                        </ul>
+                        {{ knp_menu_render('SchoolUserBundle:MenuBuilder:mainMenu') }}
+                        {{ knp_menu_render('SchoolUserBundle:MenuBuilder:userMenu') }}
                     </div>
                 </div>
             </nav>

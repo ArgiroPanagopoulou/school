@@ -4,8 +4,8 @@ security:
             algorithm: bcrypt
             
     role_hierarchy:
-        ROLE_TEACHER: ROLE_STUDENT
-        ROLE_ADMIN: [ROLE_TEACHER, ROLE_ALLOWED_TO_SWITCH ]
+        # ROLE_TEACHER: ROLE_STUDENT
+        # ROLE_ADMIN: [ROLE_TEACHER, ROLE_ALLOWED_TO_SWITCH ]
         
     providers:
         main:
@@ -14,7 +14,7 @@ security:
                 property: username
             
     firewalls:
-        admin_area:
+        secured_area:
             pattern: ^/
             anonymous: ~
             #http_basic: ~
@@ -27,6 +27,6 @@ security:
                 target: /
             
     access_control:
-        - { path: ^/admin/, roles: ROLE_ADMIN }
-        - { path: ^/teacher/, roles: ROLE_TEACHER }
-        - { path: ^/student/, roles: ROLE_STUDENT }
+        # - { path: ^/admin/, roles: ROLE_ADMIN }
+        # - { path: ^/teacher/, roles: ROLE_TEACHER }
+        # - { path: ^/student/, roles: ROLE_STUDENT }

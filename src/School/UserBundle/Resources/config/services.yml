@@ -1,27 +1,11 @@
 parameters:
 #    school_user.example.class: School\UserBundle\Example
-    school_user.menu_builder.class: School\UserBundle\Menu\MenuBuilder
 
 services:
 #    school_user.example:
 #        class: %school_user.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
-    school_user.menu_builder:
-        class: %school_user.menu_builder.class%
-        arguments: ["@knp_menu.factory"]
-    school_user.menu.main:
-        class: Knp\Menu\MenuItem
-        factory_service: school_user.menu_builder
-        factory_method: mainMenu
-        arguments: ["@request"]
-        scope: request 
+    school_user.file_type_extension:
+        class: School\UserBundle\Form\Extension\FileTypeExtension
         tags:
-            - { name: knp_menu.menu, alias: main } 
-    school_user.menu.user:
-        class: Knp\Menu\MenuItem
-        factory_service: school_user.menu_builder
-        factory_method: userMenu
-        arguments: ["@request"]
-        scope: request
-        tags:
-            - { name: knp_menu.menu, alias: user }
+            - { name: form.type_extension, alias: file }

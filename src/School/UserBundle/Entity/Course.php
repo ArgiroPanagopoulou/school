@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Course
 {
-    /**
-     * @var integer
-     */
+
     private $id;
     
     private $name;
@@ -19,6 +17,18 @@ class Course
     protected $schoolYear;
 
     private $courseClasses;
+
+    private $exams;
+
+   
+    /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        $this->courseClasses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->exams = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     /**
      * Get id
@@ -76,13 +86,7 @@ class Course
     {
         return $this->schoolYear;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->courseClasses = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
 
     /**
      * Add courseClasses
@@ -120,5 +124,41 @@ class Course
     public function __toString()
     {
         return $this->name;
+    }
+
+
+    /**
+     * Add exams
+     *
+     * @param \School\UserBundle\Entity\Exam $exams
+     * @return Course
+     */
+    public function addExam(\School\UserBundle\Entity\Exam $exams)
+    {
+        $this->exams[] = $exams;
+        $exams->setCourse($this);
+
+        return $this;
+    }
+
+
+    /**
+     * Remove exams
+     *
+     * @param \School\UserBundle\Entity\Exam $exams
+     */
+    public function removeExam(\School\UserBundle\Entity\Exam $exam)
+    {
+        $this->exams->removeElement($exam);
+    }
+
+    /**
+     * Get exams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getExams()
+    {
+        return $this->exams;
     }
 }

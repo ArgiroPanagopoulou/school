@@ -1,0 +1,27 @@
+School\UserBundle\Entity\Exam:
+    type: entity
+    repositoryClass: School\UserBundle\Entity\ExamRepository
+    table: exam
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name: 
+            type: string
+            length: 255
+    manyToOne:
+        course:
+            targetEntity: Course
+            inversedBy: exams
+            joinColumn:
+                name: course_id
+                referencedColumnName: id
+    oneToMany:
+        examQuestions:
+            targetEntity: ExamQuestion
+            cascade: [persist]
+            mappedBy: exam
+    lifecycleCallbacks: {  }

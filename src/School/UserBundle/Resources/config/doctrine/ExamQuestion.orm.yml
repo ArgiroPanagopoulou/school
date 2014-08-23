@@ -1,0 +1,36 @@
+School\UserBundle\Entity\ExamQuestion:
+    type: entity
+    table: exam_question
+    repositoryClass: School\UserBundle\Entity\ExamQuestionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 300
+        answerOne:
+            type: string
+        answerTwo:
+            type: string
+        answerThree: 
+            type: string
+        answerFour:
+            type: string
+        points:
+            type: integer
+        correct:
+            type: integer
+            nullable: true
+    manyToOne:
+        exam:
+            targetEntity: Exam
+            inversedBy: examQuestions
+            joinColumn:
+                name: exam_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    lifecycleCallbacks: {  }

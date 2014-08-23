@@ -10,26 +10,20 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Lecture
 {
-    /**
-     * @var integer
-     */
+
     private $id;
 
-
-    /**
-     * @var string
-     */
     private $name;
 
-    /**
-     * @var string
-     */
     private $path;
-
     
     private $file;
     
-    private $temp;
+    private $temp;    
+
+    private $courseClass;
+
+    
     
     /**
      * Get id
@@ -135,10 +129,13 @@ class Lecture
     
     public function preUpload()
     {
-        if (null !== $this->getFile()) {
+        $file = $this->getFile();
+        $path = $file->getPathname();
+        
+        if (!is_null($file) and !empty($path)) {
             // do whatever you want to generate a unique name
             $filename = sha1(uniqid(mt_rand(), true));
-            $this->path = $filename.'.'.$this->getFile()->guessExtension();
+            $this->path = $filename . '.' . $file->guessExtension();
         }
     }
 
@@ -180,4 +177,32 @@ class Lecture
         }
     }
 
+    /**
+     * Set courseClass
+     *
+     * @param \School\UserBundle\Entity\CourseClass $courseClass
+     * @return Lecture
+     */
+    public function setCourseClass(\School\UserBundle\Entity\CourseClass $courseClass = null)
+    {
+        $this->courseClass = $courseClass;
+
+        return $this;
+    }
+
+    /**
+     * Get courseClass
+     *
+     * @return \School\UserBundle\Entity\CourseClass 
+     */
+    public function getCourseClass()
+    {
+        return $this->courseClass;
+    }
+
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -26,7 +26,8 @@ class MenuBuilder extends ContainerAware
             $menu['Admin']->addChild('Assign Teachers', array('route' => 'admin_assign_teachers'));
             $menu['Admin']->addChild('Assign Students', array('route' => 'admin_assign_students'));                       
         } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
-            $menu->addChild('Courses', array('route' => 'teacher_homepage'));
+            $menu->addChild('Edit Lectures', array('route' => 'teacher_homepage'));
+            $menu->addChild('Courses', array('route' => 'teacher_list_courses'));
         } elseif ($securityContext->isGranted('ROLE_STUDENT')) {
             $menu->addChild('Student', array('route' => 'student_area'));
         }

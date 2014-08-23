@@ -1,0 +1,29 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %} Remove an exam {% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <h3> Remove exam "{{ exam.name }}" </h3>
+    
+    <p> <strong> Exam Questions: </strong> </p>
+    
+    <ol>
+        {% for question in exam.examQuestions %}
+            <li> {{ question.name }} ({{ question.points }} points)</li>
+            <ol style="list-style-type: upper-alpha">
+                <li> {{ question.answerOne }} </li>
+                <li> {{ question.answerTwo }} </li>
+                <li> {{ question.answerThree }} </li>
+                <li> {{ question.answerFour }} </li>
+            </ol> <br />
+        {% endfor %}
+    </ol> 
+    <p> Are you sure you want to delete the exam? </p>
+    
+    {{ form_start(form) }}
+        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
+    {{ form_end(form) }}
+</div>   
+{% endblock %}

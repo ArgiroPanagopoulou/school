@@ -1,0 +1,24 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %}List Courses{% endblock %}
+
+{% block body %}
+
+    <h3> Courses List </h3>
+    
+    <ul>
+    {% for course in courses %}        
+        <li> {{ course.name }}  {% for school_class in course.courseClasses %}({{ school_class.class.name }})  {% endfor %}
+            <a href="{{ path('teacher_add_exam', { 'course_id': course.id }) }}"> (Add an exam) </a>
+        </li>
+       
+        <ul>
+        {% for exam in course.exams %}
+            <li> {{ exam.name }} (<a href="{{ path('teacher_edit_exam', {'exam_id': exam.id }) }}">Edit </a> | 
+                <a href="{{ path('teacher_remove_exam', {'exam_id': exam.id }) }}"> Remove</a>)
+            </li> 
+        {% endfor %}
+        </ul>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,71 @@
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(question.name, 'Question Description') }}
+            {{ form_errors(question.name) }}
+            {{ form_widget(question.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(question.answerOne) }}
+            {{ form_errors(question.answerOne) }}
+            {{ form_widget(question.answerOne, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(question.answerTwo) }}
+            {{ form_errors(question.answerTwo) }}
+            {{ form_widget(question.answerTwo, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(question.answerThree) }}
+            {{ form_errors(question.answerThree) }}
+            {{ form_widget(question.answerThree, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(question.answerFour) }}
+            {{ form_errors(question.answerFour) }}
+            {{ form_widget(question.answerFour, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            {{ form_label(question.correct) }}
+            {{ form_errors(question.correct) }}
+            {{ form_widget(question.correct, {'attr': {'class': 'form-control'}}) }} 
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group delete-link-wrapper">
+            {{ form_label(question.points) }}
+            {{ form_errors(question.points) }}
+            {{ form_widget(question.points, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+</div>
+

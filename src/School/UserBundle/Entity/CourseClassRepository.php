@@ -9,7 +9,7 @@ class CourseClassRepository extends EntityRepository
     {
         $q = $this->getEntityManager()
             ->createQuery('SELECT c FROM SchoolUserBundle:CourseClass c'
-                        );
+            );
         $courses = $q->getResult();
         
         return $courses;
@@ -27,5 +27,6 @@ class CourseClassRepository extends EntityRepository
             ->getOneOrNullResult();
         return $course_class;
     }
+
     
 }

@@ -1,0 +1,108 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/js/addExams.js') }}"></script>
+{% endblock %}
+
+{% block title %}Add Exam{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h3> Add an exam for course: {{ course.name }}</h3>
+    
+    
+    {{ form_start(form) }}    
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    {{ form_label(form.name, 'Exam Name') }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <p> <strong> Exam Questions </strong></p><br />
+        <ol class="questions" data-prototype="{% filter escape %}{{ include('SchoolUserBundle:Teacher:ExamItem.html.twig', { 'question': form.examQuestions.vars.prototype }) }}{% endfilter %}" >
+            
+            {% for question in form.examQuestions %}
+                <li> 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(question.name, 'Question Description') }}
+                                {{ form_errors(question.name) }}
+                                {{ form_widget(question.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(question.answerOne) }}
+                                {{ form_errors(question.answerOne) }}
+                                {{ form_widget(question.answerOne, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(question.answerTwo) }}
+                                {{ form_errors(question.answerTwo) }}
+                                {{ form_widget(question.answerTwo, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(question.answerThree) }}
+                                {{ form_errors(question.answerThree) }}
+                                {{ form_widget(question.answerThree, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(question.answerFour) }}
+                                {{ form_errors(question.answerFour) }}
+                                {{ form_widget(question.answerFour, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ form_label(question.correct) }}
+                                {{ form_errors(question.correct) }}
+                                {{ form_widget(question.correct, {'attr': {'class': 'form-control'}}) }} 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group delete-link-wrapper">
+                                {{ form_label(question.points) }}
+                                {{ form_errors(question.points) }}
+                                {{ form_widget(question.points, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </li>
+            {% endfor %}
+        </ol>  
+        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
+    {{ form_end(form, {'render_rest': false}) }}
+</div>  
+{% endblock %}

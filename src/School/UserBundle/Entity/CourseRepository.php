@@ -14,4 +14,18 @@ class CourseRepository extends EntityRepository
         
         return $coursesBySchoolYear;
     }
+    
+    public function loadCoursesByTeacher($teacher)
+    {
+        $q = $this->getEntityManager()
+            ->createQuery('SELECT c
+                FROM SchoolUserBundle:Course c 
+                LEFT JOIN c.courseClasses s
+                WHERE s.teacher = :teacher'
+            )->setParameter('teacher', $teacher);
+        $courses = $q->getResult();
+        
+        return $courses;
+            
+    }
 }

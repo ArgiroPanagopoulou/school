@@ -29,3 +29,19 @@ teacher_homepage:
 teacher_add_lecture:
     pattern: /teacher/{courseClassId}
     defaults: { _controller: SchoolUserBundle:Teacher:addLecture }
+
+teacher_list_courses:
+    pattern: /teacher/list_courses/
+    defaults: { _controller: SchoolUserBundle:Teacher:listCourses }
+        
+teacher_add_exam:
+    pattern: /teacher/add_exam/{course_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:addExam }
+    
+teacher_edit_exam:
+    pattern: /teacher/edit_exam/{exam_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:editExam }
+    
+teacher_remove_exam:
+    pattern: /teacher/remove_exam/{exam_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:removeExam }

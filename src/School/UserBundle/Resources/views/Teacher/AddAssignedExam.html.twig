@@ -1,0 +1,82 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/css/bootstrap-datetimepicker.min.css' ) }}"/>
+{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/bootstrap-datetimepicker.min.js') }}"></script>
+{% endblock %}
+
+{% block title %} {{ exam.name }} {% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    
+    <h3> Exam assignment </h3>
+    
+    <ul>
+        <li> Exam: {{ exam.name }} </li>
+        <li> For course: {{ course.name }} </li>
+        <li> For class: {{ class.name }} </li>
+    </ul>
+    
+    {{ form_start(form) }}
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.dateCreated) }}
+                    {{ form_errors(form.dateCreated) }}
+                    {{ form_widget(form.dateCreated, {'attr': {'class': 'form-control' }}) }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.start) }}
+                    {{ form_errors(form.start) }}
+                    <div class='input-group date' id='datetimepicker1'>
+                        {{ form_widget(form.start, {'attr': {'class': 'form-control' }}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.stop) }}
+                    {{ form_errors(form.stop) }}
+                    <div class='input-group date' id='datetimepicker2'>
+                        {{ form_widget(form.stop, {'attr': {'class': 'form-control' }}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
+    {{ form_end(form) }}
+    
+        
+</div>  
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+            $(function() {
+                $('#datetimepicker1').datetimepicker();
+                $('#datetimepicker2').datetimepicker();
+            });
+        </script>
+{% endblock %}

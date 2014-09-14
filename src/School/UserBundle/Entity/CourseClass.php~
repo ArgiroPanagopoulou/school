@@ -20,8 +20,6 @@ class CourseClass
  
     private $class;
 
-    private $lectures;
-    
     
     /**
     * Constructor
@@ -111,39 +109,4 @@ class CourseClass
         return $this->teacher;
     }
 
-
-    /**
-     * Add lectures
-     *
-     * @param \School\UserBundle\Entity\Lecture $lectures
-     * @return CourseClass
-     */
-    public function addLecture(\School\UserBundle\Entity\Lecture $lectures)
-    {
-        $this->lectures[] = $lectures;
-        $lectures->setCourseClass($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove lectures
-     *
-     * @param \School\UserBundle\Entity\Lecture $lectures
-     */
-    public function removeLecture(\School\UserBundle\Entity\Lecture $lecture)
-    {
-        $this->lectures->removeElement($lecture);
-    }
-
-    /**
-     * Get lectures
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLectures()
-    {
-        return $this->lectures;
-    }
-    
 }

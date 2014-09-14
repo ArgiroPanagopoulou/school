@@ -1,0 +1,37 @@
+School\UserBundle\Entity\AssignedExam:
+    type: entity
+    table: assigned_exam
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        dateCreated:
+            type: date 
+        start:
+            type: datetime
+        stop:
+            type: datetime
+    uniqueConstraints:
+        search_idx:
+            columns: [exam_id, schoolClass_id]
+    manyToOne:
+        exam:
+            targetEntity: Exam
+            inversedBy: assignedExams
+            joinColumn:
+                name: exam_id
+                referencedColumnName: id
+        schoolClass:
+            targetEntity: SchoolClass
+            inversedBy: assignedExams
+            joinColumn:
+                name: schoolClass_id
+                referencedColumnName: id
+    oneToMany:
+        takenExams:
+            targetEntity: TakenExam
+            mappedBy: assignedExam
+    lifecycleCallbacks: {  }

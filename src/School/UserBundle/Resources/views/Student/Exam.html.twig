@@ -1,0 +1,14 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+{% form_theme form 'SchoolUserBundle:Form:bootstrap_form.html.twig' %}
+
+{% block title %} {{ exam.name }}{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h3> {{ exam.name }} </h3>
+    
+    <ol>
+        {{ form(form) }}
+    </ol>
+</div>
+{% endblock %}

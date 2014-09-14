@@ -1,0 +1,23 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %} {{ course.name }} {% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h3> {{ course.name }} </h3>
+    
+    Lectures:
+    <ul>
+        {% for lecture in course.lectures %}
+        <li> {{ lecture.name }} - {{ lecture.uploadDate|date("m/d/Y") }} <a href="{{ asset(lecture.getWebPath()) }}"> (Download) </a> </li>
+        {% endfor %}
+    </ul>
+    
+    Exams:
+    <ul>
+        {% for exam in course.exams %}
+            <li> {{ exam.name }} <a href="{{ path('student_exam', {'exam_id' : exam.id}) }}"> Take the exam </a> </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

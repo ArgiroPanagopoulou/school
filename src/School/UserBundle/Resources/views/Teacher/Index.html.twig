@@ -8,7 +8,7 @@
  
     <ul>
     {% for course in courses %}
-        <li> <a href="{{ path('teacher_add_lecture', {'courseClassId': course.id }) }}"> {{ course.course }} </a> ({{ course.class }}) </li>
+        <li> {{ course.name }}  <a href="{{ path('teacher_add_lecture', {'courseId': course.id }) }}"> (Add Lecture) </a>  </li>
             <ul> 
             {% for lecture in  course.lectures %}
                 <li>   <a href="{{ asset(lecture.getWebPath()) }}"> {{ lecture }} </a></li>

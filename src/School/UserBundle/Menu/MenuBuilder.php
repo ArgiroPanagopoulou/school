@@ -13,6 +13,8 @@ class MenuBuilder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $securityContext = $this->container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+        
         $menu = $factory->createItem('root');
         
         $menu->addChild('Home', array('route' => 'homepage'));
@@ -26,10 +28,21 @@ class MenuBuilder extends ContainerAware
             $menu['Admin']->addChild('Assign Teachers', array('route' => 'admin_assign_teachers'));
             $menu['Admin']->addChild('Assign Students', array('route' => 'admin_assign_students'));                       
         } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
-            $menu->addChild('Edit Lectures', array('route' => 'teacher_homepage'));
+            $menu->addChild('Lectures', array('route' => 'teacher_homepage'));
             $menu->addChild('Courses', array('route' => 'teacher_list_courses'));
+            $menu->addChild('Students', array('route' => 'teacher_load_students'));
+
         } elseif ($securityContext->isGranted('ROLE_STUDENT')) {
-            $menu->addChild('Student', array('route' => 'student_area'));
+            $courses = $user->getStudent()->getSchoolClass()->getSchoolYear()->getCourses();
+            $menu->addChild('My Profile', array('route' => 'student_profile'));
+            $menu->addChild('My Courses')
+                ->setAttribute('dropdown', true);
+            foreach($courses as $course) {
+                $menu['My Courses']->addChild($course->getName(), array(
+                    'route' => 'student_list_courses',
+                    'routeParameters' => array('course_id' => $course->getId()),
+                ));
+            }
         }
                       
         return $menu;
@@ -51,7 +64,7 @@ class MenuBuilder extends ContainerAware
         $user_id = $user->getId();
         
         $menu->addChild('user', array(
-            'route' => 'admin_user_edit', 'routeParameters' => array('userId' => $user_id),  // Currently the edit page for the users is only accessible from admin.
+            'route' => 'user_edit', 'routeParameters' => array('userId' => $user_id),  // Currently the edit page for the users is only accessible from admin.
             'label' => 'Logged in as '.$user_lastname.' '.$user_firstname.' '.'('.$user_role.')',
         ));
         $menu->addChild('Logout', array('route' => 'logout'));

@@ -34,4 +34,7 @@ School\UserBundle\Entity\User:
         teacher:
             targetEntity: Teacher
             mappedBy: user
+        student:
+            targetEntity: Student
+            mappedBy: user
         

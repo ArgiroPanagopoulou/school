@@ -6,20 +6,31 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use School\UserBundle\Form\Transformer\RoleToNumberTransformer;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class UserType extends AbstractType
 {
+    private $securityContext;
+    
+    public function __construct(SecurityContext $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Current logged user
+        $user = $this->securityContext->getToken()->getUser();
         
         $builder
             ->add('firstName')
             ->add('lastName')
             ->add('username')
-            ->add('email', 'email')
-            ->add('is_active', 'checkbox', array('label' => 'Active',))
-            ->add('role', 'entity', array(
+            ->add('email', 'email')            
+            ->add('save', 'submit');
+
+        if($this->securityContext->isGranted('ROLE_ADMIN')) {
+            $builder->add('role', 'entity', array(
                 'class' => 'School\UserBundle\Entity\Role',
                 'query_builder' => function(EntityRepository $er) {
                     return $er->createQueryBuilder('r');
@@ -27,9 +38,10 @@ class UserType extends AbstractType
                 'property' => 'name',
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add('save', 'submit');
-           
+            ));
+            $builder->add('is_active', 'checkbox', array('label' => 'Active',));
+        }
+        
     }
     
     public function getName()

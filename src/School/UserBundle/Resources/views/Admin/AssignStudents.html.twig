@@ -72,7 +72,7 @@
                 {%  for student in students %}
                 <tbody>
                     <tr>
-                        <td> <a href="{{ path('admin_user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
+                        <td> <a href="{{ path('user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
                         <td> {{ student.user.username }} </td>
                         <td> {% if student.schoolClass is not null %}
                                 {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}

@@ -1,0 +1,26 @@
+School\UserBundle\Entity\TakenQuestion:
+    type: entity
+    table: taken_question
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        answer:
+            type: integer
+    manyToOne:
+        takenExam:
+            targetEntity: TakenExam
+            inversedBy: takenQuestions
+            joinColumn:
+                name: takenExam_id
+                referencedColumnName: id
+        examQuestion:
+            targetEntity: ExamQuestion
+            inversedBy: takenQuestions
+            joinColumn:
+                name: examQuestions_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

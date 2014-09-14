@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use School\UserBundle\Entity\Lecture;
 use School\UserBundle\Form\Type\LectureType;
 use School\UserBundle\Entity\CourseClass;
-use School\UserBundle\Form\Type\LecturesForCourseClassType;
+use School\UserBundle\Form\Type\LecturesForCourseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use School\UserBundle\Entity\Exam;
 use School\UserBundle\Entity\Course;
@@ -18,6 +18,10 @@ use School\UserBundle\Form\Type\CourseType;
 use School\UserBundle\Form\Type\ExamQuestionsType;
 use School\UserBundle\Form\Type\QuestionsType;
 use School\UserBundle\Entity\ExamQuestion;
+use School\UserBundle\Form\Type\AssignedExamType;
+use School\UserBundle\Entity\AssignedExam;
+use School\UserBundle\Form\Type\ExamType;
+
 
 /**
 * @Security("has_role('ROLE_TEACHER')")
@@ -42,41 +46,41 @@ class TeacherController extends Controller
     /*
     * Add / remove Lectures for a course
     */
-    public function addLectureAction($courseClassId, Request $request)
+    public function addLectureAction($courseId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         
-        $courseClass = $em->getRepository('SchoolUserBundle:CourseClass')->find($courseClassId);
-        
-        if (!$courseClass) {
-            throw $this->createNotFoundException('No course found for id '.$courseClassId);
+        $course = $em->getRepository('SchoolUserBundle:Course')->find($courseId);
+
+        if (!$course) {
+            throw $this->createNotFoundException('No course found for id '.$courseId);
         }
         
         $original_lectures = new ArrayCollection();
         
-        foreach ($courseClass->getLectures() as $lecture) {
+        foreach ($course->getLectures() as $lecture) {
             $original_lectures->add($lecture);
         }
 
 
-        $form = $this->createForm(new LecturesForCourseClassType(), $courseClass);
+        $form = $this->createForm(new LecturesForCourseType(), $course);
         $form->handleRequest($request);
         
         if($form->isValid()) {
             foreach($original_lectures as $lecture) {
-                if(false === $courseClass->getLectures()->contains($lecture)) {
-                    $lecture->setCourseClass(null);
+                if(false === $course->getLectures()->contains($lecture)) {
+                    $lecture->setCourse(null);
                     $em->remove($lecture);
                 }
             }
-            $em->persist($courseClass);
+            $em->persist($course);
             $em->flush();
             
             return $this->redirect($this->generateUrl('teacher_homepage'));
         } else {       
             return $this->render('SchoolUserBundle:Teacher:AddLecture.html.twig', array(
                 'form' => $form->createView(),
-                'course' => $courseClass,
+                'course' => $course,
             ));
         }
     }
@@ -87,12 +91,115 @@ class TeacherController extends Controller
         
         $teacher = $this->get('security.context')->getToken()->getUser()->getTeacher();
         
-        $courses = $em->getRepository('SchoolUserBundle:Course')->loadCoursesByTeacher($teacher);
+        $course_classes = $em->getRepository('SchoolUserBundle:CourseClass')->findCoursesByTeacher($teacher);
         
+        $grouped = array();
+        
+        foreach($course_classes as $course_class) {
+            $year_name = $course_class->getCourse()->getSchoolYear()->getName();
+            if (!isset($grouped[$year_name])) {
+               $grouped[$year_name] = array();
+            }
+            $grouped[$year_name][] = $course_class;
+        }
         return $this->render('SchoolUserBundle:Teacher:ListCourses.html.twig', array(
-            'courses' => $courses,
+            'course_classes' => $course_classes,
+            'grouped' => $grouped,
         ));
         
+    }
+    
+    /**
+    * List all exams for a specific course
+    */
+    public function listExamsAction(Request $request, $course_id, $class_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $exam = new Exam();
+        
+        $course = $em->getRepository('SchoolUserBundle:Course')->find($course_id);
+        $class = $em->getRepository('SchoolUserBundle:SchoolClass')->find($class_id);
+        
+        $exams = $em->getRepository('SchoolUserBundle:Exam')->findByCourse($course);
+        
+        $assigned_exams = $em->getRepository('SchoolUserBundle:Exam')->findAssignedExamsByCourseClass($course, $class);
+        
+        // find the exams that are not assigned to a specific course / class
+        $non_assigned_exams = array_udiff($exams, $assigned_exams,
+          function ($exam, $assigned_exam) {
+            return $exam->getId() - $assigned_exam->getId();
+          }
+        );
+        
+        $form = $this->createForm(new ExamType(), $exam, array('non_assigned_exams' => $non_assigned_exams));
+        
+        $form->handleRequest($request);
+        
+        if($form->isValid()) {
+            $exam_id = $form->get('name')->getData()->getId();
+            return $this->redirect($this->generateUrl('teacher_add_assigned_exam', array('course_id' => $course_id, 'class_id' => $class_id, 'exam_id' => $exam_id)));
+        } else {        
+            return $this->render('SchoolUserBundle:Teacher:ListExams.html.twig', array(
+                'course' => $course,
+                'class' => $class,
+                'exams' => $exams,
+                'form' => $form->createView(),
+            ));
+        }
+    }
+    
+    /**
+    * Assign an exam for a specific course and school class
+    */
+    public function addAssignedExamAction(Request $request, $course_id, $class_id, $exam_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $assigned_exam = new AssignedExam();
+        
+        $exam = $em->getRepository('SchoolUserBundle:Exam')->find($exam_id);
+        $course = $em->getRepository('SchoolUserBundle:Course')->find($course_id);
+        $class = $em->getRepository('SchoolUserBundle:SchoolClass')->find($class_id);
+        
+        $form = $this->createForm(new AssignedExamType(), $assigned_exam);
+        
+        $form->handleRequest($request);
+        
+        if($form->isValid()) {
+            $assigned_exam->setExam($exam);
+            $assigned_exam->setSchoolClass($class);
+            $em->persist($assigned_exam);
+            $em->flush();
+            return $this->redirect($this->generateUrl('teacher_list_exams', array('course_id' => $course_id, 'class_id' => $class_id)));
+        } else {
+            return $this->render('SchoolUserBundle:Teacher:AddAssignedExam.html.twig', array(
+                'exam' => $exam,
+                'course' => $course,
+                'class' => $class,
+                'form' => $form->createView(),
+            ));
+        }
+    }
+    
+    public function editAssignedExamAction(Request $request, $assignedExam_id, $course_id, $class_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $assigned_exam = $em->getRepository('SchoolUserBundle:AssignedExam')->find($assignedExam_id);
+        
+        $form = $this->createForm(new AssignedExamType(), $assigned_exam);
+        
+        $form->handleRequest($request);
+        
+        if($form->isValid()) {
+            $em->persist($assigned_exam);
+            $em->flush();
+            return $this->redirect($this->generateUrl('teacher_list_exams', array('course_id' => $course_id, 'class_id' => $class_id)));
+        }
+        return $this->render('SchoolUserBundle:Teacher:editAssignedExam.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
     
     /**
@@ -131,7 +238,7 @@ class TeacherController extends Controller
     /**
     * Edit an existing Exam
     */
-    public function editExamAction(Request $request, $exam_id)
+    public function editExamAction(Request $request, $exam_id, $class_id)
     {
         $em = $this->getDoctrine()->getManager();
         
@@ -160,10 +267,12 @@ class TeacherController extends Controller
             }
             $em->persist($exam);
             $em->flush();
+            return $this->redirect($this->generateUrl('teacher_list_exams', array('course_id' => $exam->getCourse()->getId(), 'class_id' => $class_id)));
+        } else {
+            return $this->render('SchoolUserBundle:Teacher:EditExam.html.twig', array(
+                'form' => $form->createView()
+            ));
         }
-        return $this->render('SchoolUserBundle:Teacher:EditExam.html.twig', array(
-            'form' => $form->createView()
-        ));
     }
     
     /**
@@ -189,6 +298,34 @@ class TeacherController extends Controller
         return $this->render('SchoolUserBundle:Teacher:RemoveExam.html.twig', array(
             'exam' => $exam,
             'form' => $form->createView(),
+        ));
+    }
+    
+    /**
+    * Lists Students / School Class
+    */
+    public function loadStudentsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $teacher = $this->get('security.context')->getToken()->getUser()->getTeacher();
+        
+        $classes = $em->getRepository('SchoolUserBundle:Teacher')->findClassByTeacher($teacher);
+        
+        
+        return $this->render('SchoolUserBundle:Teacher:LoadStudents.html.twig', array(
+            'classes' => $classes
+        ));
+    }
+    
+    public function studentProfileAction($student_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $student = $em->getRepository('SchoolUserBundle:Student')->find($student_id);
+        
+        return $this->render('SchoolUserBundle:Teacher:StudentProfile.html.twig', array(
+            'student' => $student,
         ));
     }
 }

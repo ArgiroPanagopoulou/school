@@ -33,4 +33,8 @@ School\UserBundle\Entity\ExamQuestion:
                 name: exam_id
                 referencedColumnName: id
                 onDelete: CASCADE
+    oneToMany:
+        takenQuestions:
+            targetEntity: TakenQuestion
+            mappedBy: examQuestion
     lifecycleCallbacks: {  }

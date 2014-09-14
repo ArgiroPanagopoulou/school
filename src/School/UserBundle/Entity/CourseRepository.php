@@ -21,7 +21,8 @@ class CourseRepository extends EntityRepository
             ->createQuery('SELECT c
                 FROM SchoolUserBundle:Course c 
                 LEFT JOIN c.courseClasses s
-                WHERE s.teacher = :teacher'
+                WHERE s.teacher = :teacher
+                ORDER BY c.schoolYear'
             )->setParameter('teacher', $teacher);
         $courses = $q->getResult();
         

@@ -1,0 +1,9 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %} Student Profile {% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h3> Profile for {{ student.user.lastName }} {{ student.user.firstName }} </h3>
+    </div>
+{% endblock %}

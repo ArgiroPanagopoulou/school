@@ -9,3 +9,9 @@ services:
         class: School\UserBundle\Form\Extension\FileTypeExtension
         tags:
             - { name: form.type_extension, alias: file }
+            
+    form.type.user:
+        class: School\UserBundle\Form\Type\UserType
+        arguments: ["@security.context"]
+        tags:
+            - { name: form.type, alias: user_type }

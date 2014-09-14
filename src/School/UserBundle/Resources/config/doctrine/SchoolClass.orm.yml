@@ -26,4 +26,7 @@ School\UserBundle\Entity\SchoolClass:
         courseClasses:
             targetEntity: CourseClass
             mappedBy: class
+        assignedExams:
+            targetEntity: AssignedExam
+            mappedBy: schoolClass
     lifecycleCallbacks: {  }

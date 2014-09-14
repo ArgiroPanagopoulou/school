@@ -19,6 +19,16 @@ class SchoolClass
     protected $students;
     
     private $courseClasses;
+
+    private $assignedExams;
+        
+    /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        $this->students = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     /**
      * Get id
@@ -53,14 +63,6 @@ class SchoolClass
         return $this->name;
     }
 
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->students = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add students
@@ -141,7 +143,7 @@ class SchoolClass
 
         return $this;
     }
-
+    
     /**
      * Get schoolYear
      *
@@ -155,5 +157,39 @@ class SchoolClass
     public function __toString()
     {
         return $this->name;
+    }
+
+
+    /**
+     * Add assignedExams
+     *
+     * @param \School\UserBundle\Entity\AssignedExam $assignedExams
+     * @return SchoolClass
+     */
+    public function addAssignedExam(\School\UserBundle\Entity\AssignedExam $assignedExams)
+    {
+        $this->assignedExams[] = $assignedExams;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignedExams
+     *
+     * @param \School\UserBundle\Entity\AssignedExam $assignedExams
+     */
+    public function removeAssignedExam(\School\UserBundle\Entity\AssignedExam $assignedExams)
+    {
+        $this->assignedExams->removeElement($assignedExams);
+    }
+
+    /**
+     * Get assignedExams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAssignedExams()
+    {
+        return $this->assignedExams;
     }
 }

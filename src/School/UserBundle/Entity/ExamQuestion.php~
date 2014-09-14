@@ -29,7 +29,17 @@ class ExamQuestion
 
     private $exam;
 
+    private $takenQuestions;
 
+    
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->takenQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     /**
      * Get id
      *
@@ -224,5 +234,38 @@ class ExamQuestion
     public function getCorrect()
     {
         return $this->correct;
+    }
+
+    /**
+     * Add takenQuestions
+     *
+     * @param \School\UserBundle\Entity\TakenQuestion $takenQuestions
+     * @return ExamQuestion
+     */
+    public function addTakenQuestion(\School\UserBundle\Entity\TakenQuestion $takenQuestions)
+    {
+        $this->takenQuestions[] = $takenQuestions;
+
+        return $this;
+    }
+
+    /**
+     * Remove takenQuestions
+     *
+     * @param \School\UserBundle\Entity\TakenQuestion $takenQuestions
+     */
+    public function removeTakenQuestion(\School\UserBundle\Entity\TakenQuestion $takenQuestions)
+    {
+        $this->takenQuestions->removeElement($takenQuestions);
+    }
+
+    /**
+     * Get takenQuestions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTakenQuestions()
+    {
+        return $this->takenQuestions;
     }
 }

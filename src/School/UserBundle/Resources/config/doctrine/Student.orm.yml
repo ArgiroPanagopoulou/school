@@ -15,6 +15,7 @@ School\UserBundle\Entity\Student:
     oneToOne:
         user:
             targetEntity: User
+            inversedBy: student
             joinColumn: 
                 name: user_id
                 referencedColumnName: id  
@@ -25,5 +26,9 @@ School\UserBundle\Entity\Student:
             joinColumn:
                 name: schoolClass_id
                 referencedColumnName: id
+    oneToMany:
+        takenExams:
+            targetEntity: TakenExam
+            mappedBy: student
     lifecycleCallbacks: {  }
 

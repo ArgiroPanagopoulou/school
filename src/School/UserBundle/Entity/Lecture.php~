@@ -21,9 +21,15 @@ class Lecture
     
     private $temp;    
 
-    private $courseClass;
+    private $course;
 
+    private $uploadDate;
     
+    
+    public function __construct()
+    {
+        $this->uploadDate = new \DateTime();
+    }
     
     /**
      * Get id
@@ -177,32 +183,57 @@ class Lecture
         }
     }
 
+
     /**
-     * Set courseClass
+     * Set course
      *
-     * @param \School\UserBundle\Entity\CourseClass $courseClass
+     * @param \School\UserBundle\Entity\Course $course
      * @return Lecture
      */
-    public function setCourseClass(\School\UserBundle\Entity\CourseClass $courseClass = null)
+    public function setCourse(\School\UserBundle\Entity\Course $course = null)
     {
-        $this->courseClass = $courseClass;
+        $this->course = $course;
 
         return $this;
     }
 
     /**
-     * Get courseClass
+     * Get course
      *
-     * @return \School\UserBundle\Entity\CourseClass 
+     * @return \School\UserBundle\Entity\Course 
      */
-    public function getCourseClass()
+    public function getCourse()
     {
-        return $this->courseClass;
+        return $this->course;
     }
-
     
     public function __toString()
     {
         return $this->name;
+    }
+
+
+    /**
+     * Set uploadDate
+     *
+     * @param \DateTime $uploadDate
+     * @return Lecture
+     */
+    public function setUploadDate($uploadDate)
+    {
+        
+        $this->uploadDate = $uploadDate;
+
+        return $this;
+    }
+
+    /**
+     * Get uploadDate
+     *
+     * @return \DateTime 
+     */
+    public function getUploadDate()
+    {
+        return $this->uploadDate;
     }
 }

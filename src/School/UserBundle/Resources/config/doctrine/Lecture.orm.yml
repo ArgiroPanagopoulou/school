@@ -22,10 +22,14 @@ School\UserBundle\Entity\Lecture:
             type: string
             length: 255
             nullable: true
+        uploadDate: 
+            type: date
+            nullable: true
     manyToOne:
-        courseClass:
-            targetEntity: CourseClass
+        course:
+            targetEntity: Course 
             inversedBy: lectures
             joinColumn:
-                name: courseClass_id
+                name: course_id
                 referencedColumnName: id
+

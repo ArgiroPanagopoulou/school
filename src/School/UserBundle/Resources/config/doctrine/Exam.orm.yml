@@ -24,4 +24,10 @@ School\UserBundle\Entity\Exam:
             targetEntity: ExamQuestion
             cascade: [persist]
             mappedBy: exam
+        takenExams:
+            targetEntity: TakenExam
+            mappedBy: exam
+        assignedExams:
+            targetEntity: AssignedExam
+            mappedBy: exam
     lifecycleCallbacks: {  }

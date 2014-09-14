@@ -23,12 +23,27 @@ class TeacherRepository extends EntityRepository
     {
         $q = $this->getEntityManager()
             ->createQuery('SELECT c 
-                FROM SchoolUserBundle:CourseClass c 
+                FROM SchoolUserBundle:Course c 
+                LEFT JOIN c.courseClasses s 
+                WHERE s.teacher = :teacher'
+            )->setParameter('teacher', $teacher);
+        $courses = $q->getResult();
+        
+        return $courses;
+    }
+    
+    public function findClassByTeacher($teacher)
+    {
+        $q = $this->getEntityManager()
+            ->createQuery('SELECT s
+                FROM SchoolUserBundle:SchoolClass s 
+                LEFT JOIN s.courseClasses c
                 WHERE c.teacher = :teacher'
             )->setParameter('teacher', $teacher);
-        $courseClasses = $q->getResult();
+            
+        $classes = $q->getResult();
         
-        return $courseClasses;
+        return $classes;
     }
     
 }

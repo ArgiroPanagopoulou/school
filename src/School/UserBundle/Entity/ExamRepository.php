@@ -12,5 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ExamRepository extends EntityRepository
 {
-    
+    public function findAssignedExamsByCourseClass($course, $class)
+    {
+        $exams = $this->getEntityManager()
+            ->createQuery('SELECT e 
+                FROM SchoolUserBundle:Exam e 
+                LEFT JOIN e.assignedExams a 
+                WHERE a.schoolClass = :class AND e.course = :course'
+            )->setParameter('course', $course)
+            ->setParameter('class', $class)
+            ->getResult();
+        return $exams;
+    }
 }

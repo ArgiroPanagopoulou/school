@@ -27,4 +27,8 @@ School\UserBundle\Entity\Course:
             targetEntity: Exam
             cascade: [persist]
             mappedBy: course
+        lectures:
+            targetEntity: Lecture
+            cascade: [persist]
+            mappedBy: course
     lifecycleCallbacks: {  }

@@ -28,5 +28,18 @@ class CourseClassRepository extends EntityRepository
         return $course_class;
     }
 
-    
+    public function findCoursesByTeacher($teacher)
+    {
+        $course_classes = $this->getEntityManager()
+            ->createQuery('SELECT c 
+                FROM SchoolUserBundle:CourseClass c 
+                    LEFT JOIN c.course course 
+                    LEFT JOIN course.schoolYear schoolYear
+                WHERE c.teacher = :teacher
+                ORDER BY schoolYear.id, c.course'
+            )->setParameter('teacher', $teacher)
+            ->getResult();
+        
+        return $course_classes;
+    }
 }

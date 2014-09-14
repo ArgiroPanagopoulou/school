@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Student
 {
-    /**
-     * @var integer
-     */
+
     private $id;
 
     private $registrationDate;
@@ -19,7 +17,17 @@ class Student
     protected $user;
     
     protected $schoolClass;
+
+    private $takenExams;
     
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->takenExams = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     /**
      * Get id
@@ -76,7 +84,7 @@ class Student
     {
         return $this->user;
     }
-
+                     
     /**
      * Set schoolClass
      *
@@ -98,5 +106,44 @@ class Student
     public function getSchoolClass()
     {
         return $this->schoolClass;
+    }
+    
+
+    /**
+     * Add takenExams
+     *
+     * @param \School\UserBundle\Entity\TakenExam $takenExams
+     * @return Student
+     */
+    public function addTakenExam(\School\UserBundle\Entity\TakenExam $takenExams)
+    {
+        $this->takenExams[] = $takenExams;
+
+        return $this;
+    }
+
+    /**
+     * Remove takenExams
+     *
+     * @param \School\UserBundle\Entity\TakenExam $takenExams
+     */
+    public function removeTakenExam(\School\UserBundle\Entity\TakenExam $takenExams)
+    {
+        $this->takenExams->removeElement($takenExams);
+    }
+
+    /**
+     * Get takenExams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTakenExams()
+    {
+        return $this->takenExams;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

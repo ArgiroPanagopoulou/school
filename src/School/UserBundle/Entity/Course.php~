@@ -20,6 +20,8 @@ class Course
 
     private $exams;
 
+    private $lectures;
+   
    
     /**
     * Constructor
@@ -120,12 +122,6 @@ class Course
     {
         return $this->courseClasses;
     }
-    
-    public function __toString()
-    {
-        return $this->name;
-    }
-
 
     /**
      * Add exams
@@ -140,7 +136,6 @@ class Course
 
         return $this;
     }
-
 
     /**
      * Remove exams
@@ -160,5 +155,45 @@ class Course
     public function getExams()
     {
         return $this->exams;
+    }
+    
+
+    /**
+     * Add lectures
+     *
+     * @param \School\UserBundle\Entity\Lecture $lectures
+     * @return Course
+     */
+    public function addLecture(\School\UserBundle\Entity\Lecture $lectures)
+    {
+        $this->lectures[] = $lectures;
+        $lectures->setCourse($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove lectures
+     *
+     * @param \School\UserBundle\Entity\Lecture $lectures
+     */
+    public function removeLecture(\School\UserBundle\Entity\Lecture $lecture)
+    {
+        $this->lectures->removeElement($lecture);
+    }
+
+    /**
+     * Get lectures
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

@@ -17,7 +17,19 @@ class Exam
     private $course;
 
     private $examQuestions;
+
+    private $takenExams;
+
+    private $assignedExams;
+
     
+    /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        $this->examQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     /**
      * Get id
@@ -77,13 +89,6 @@ class Exam
     }
 
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->examQuestions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add examQuestions
@@ -116,5 +121,73 @@ class Exam
     public function getExamQuestions()
     {
         return $this->examQuestions;
+    }
+
+
+    /**
+     * Add takenExams
+     *
+     * @param \School\UserBundle\Entity\TakenExam $takenExams
+     * @return Exam
+     */
+    public function addTakenExam(\School\UserBundle\Entity\TakenExam $takenExams)
+    {
+        $this->takenExams[] = $takenExams;
+
+        return $this;
+    }
+
+    /**
+     * Remove takenExams
+     *
+     * @param \School\UserBundle\Entity\TakenExam $takenExams
+     */
+    public function removeTakenExam(\School\UserBundle\Entity\TakenExam $takenExams)
+    {
+        $this->takenExams->removeElement($takenExams);
+    }
+
+    /**
+     * Get takenExams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTakenExams()
+    {
+        return $this->takenExams;
+    }
+
+
+    /**
+     * Add assignedExams
+     *
+     * @param \School\UserBundle\Entity\AssignedExam $assignedExams
+     * @return Exam
+     */
+    public function addAssignedExam(\School\UserBundle\Entity\AssignedExam $assignedExams)
+    {
+        $this->assignedExams[] = $assignedExams;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignedExams
+     *
+     * @param \School\UserBundle\Entity\AssignedExam $assignedExams
+     */
+    public function removeAssignedExam(\School\UserBundle\Entity\AssignedExam $assignedExams)
+    {
+        $this->assignedExams->removeElement($assignedExams);
+    }
+
+    /**
+     * Get assignedExams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAssignedExams()
+    {
+        return $this->assignedExams;
     }
 }

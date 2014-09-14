@@ -12,12 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class SchoolYearRepository extends EntityRepository
 {
-  public function loadCoursesBySchoolYear()
+    public function loadCoursesBySchoolYear()
     {
         $q = $this->getEntityManager()
             ->createQuery('SELECT  s.name as year, c.name FROM SchoolUserBundle:SchoolYear s JOIN s.courses c');
         $coursesBySchoolYear = $q->getResult();
         
         return $coursesBySchoolYear;
+    }
+    
+    public function loadCoursesByTeacher($teacher)
+    {
+        $q = $this->getEntityManager()
+            ->createQuery('SELECT s
+                FROM SchoolUserBundle:SchoolYear s
+                LEFT JOIN s.courses c 
+                LEFT JOIN c.courseClasses cc
+                WHERE cc.teacher = :teacher'
+            )->setParameter('teacher', $teacher);
+        $courses = $q->getResult();
+        
+        return $courses;
     }
 }

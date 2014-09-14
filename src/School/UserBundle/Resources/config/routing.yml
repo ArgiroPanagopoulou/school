@@ -6,9 +6,9 @@ admin_users:
     pattern: /admin/users/
     defaults: { _controller: SchoolUserBundle:Admin:listUsers }
     
-admin_user_edit:
-    pattern: /admin/users/edit/{userId}
-    defaults: { _controller: SchoolUserBundle:Admin:editUser }
+user_edit:
+    pattern: /users/edit/{userId}
+    defaults: { _controller: SchoolUserBundle:Homepage:editUser }
     
 admin_assign_teachers:
     pattern: /admin/assign_teachers/
@@ -27,21 +27,53 @@ teacher_homepage:
     defaults: { _controller: SchoolUserBundle:Teacher:index }
     
 teacher_add_lecture:
-    pattern: /teacher/{courseClassId}
+    pattern: /teacher/{courseId}
     defaults: { _controller: SchoolUserBundle:Teacher:addLecture }
 
 teacher_list_courses:
     pattern: /teacher/list_courses/
     defaults: { _controller: SchoolUserBundle:Teacher:listCourses }
-        
+
+teacher_list_exams:
+    pattern: /teacher/list_exams/{course_id}/{class_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:listExams }
+
+teacher_add_assigned_exam:
+    pattern: /teacher/assigned_exam/{course_id}/{class_id}/{exam_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:AddAssignedExam }
+    
+teacher_edit_assigned_exam:
+    pattern: /teacher/edit_assigned_exam/{assignedExam_id}/{course_id}/{class_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:editAssignedExam }
+    
 teacher_add_exam:
     pattern: /teacher/add_exam/{course_id}
     defaults: { _controller: SchoolUserBundle:Teacher:addExam }
     
 teacher_edit_exam:
-    pattern: /teacher/edit_exam/{exam_id}
+    pattern: /teacher/edit_exam/{exam_id}/{class_id}
     defaults: { _controller: SchoolUserBundle:Teacher:editExam }
     
 teacher_remove_exam:
     pattern: /teacher/remove_exam/{exam_id}
     defaults: { _controller: SchoolUserBundle:Teacher:removeExam }
+    
+teacher_load_students:
+    pattern: /teacher/students/
+    defaults: { _controller: SchoolUserBundle:Teacher:loadStudents }
+    
+teacher_student_profile:
+    pattern: /teacher/student/{student_id}
+    defaults: { _controller: SchoolUserBundle:Teacher:studentProfile }
+    
+student_profile:
+    pattern: /student/my_profile/
+    defaults: { _controller: SchoolUserBundle:Student:studentProfile }
+
+student_list_courses:
+    pattern: /student/courses/{course_id}
+    defaults: { _controller: SchoolUserBundle:Student:listCourses }
+    
+student_exam:
+    pattern: /student/exam/{exam_id}
+    defaults: { _controller: SchoolUserBundle:Student:exam }

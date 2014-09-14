@@ -7,19 +7,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 
 
-class LecturesForCourseClassType extends AbstractType
+class LecturesForCourseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // $builder->add('course', 'entity', array(
-            // 'class' => 'School\UserBundle\Entity\CourseClass',
-            // 'query_builder' => function(EntityRepository $er) use ($options) {
-                // return $er->createQueryBuilder('c')
-                    // ->where('c.id = :id')
-                    // ->setParameter('id', $options['id']);
-            // },
-            // 'property' => 'course.name',
-        // ));
 
         $builder->add('lectures', 'collection', array(
             'type' => new LectureType(),
@@ -34,13 +25,13 @@ class LecturesForCourseClassType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'School\UserBundle\Entity\CourseClass',
+            'data_class' => 'School\UserBundle\Entity\Course',
             'cascade_validation' => true,
         ));
     }
     
     public function getName()
     {
-        return 'lecturesForCourseClass';
+        return 'lecturesForCourse';
     }
 }

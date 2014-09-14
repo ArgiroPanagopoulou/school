@@ -28,6 +28,7 @@ use School\UserBundle\Form\Model\TeacherAssignation;
 use School\UserBundle\Form\Type\StudentFilterType;
 use School\UserBundle\Form\Type\StudentRemovalFromClassType;
 
+
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
@@ -45,88 +46,12 @@ class AdminController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('SchoolUserBundle:User')
-            ->loadUsers();
+        
+        $users = $em->getRepository('SchoolUserBundle:User')->findAll();
             
-        //populate the users_view array with the data to be displayed
-        foreach($users as $u) {
-            $users_view[] = array(
-                'id' => $u['id'], 
-                'username' => $u['username'], 
-                'role' => $u['role'],
-                'name' => $u['name'],
-            );
-        }
-
         return $this->render('SchoolUserBundle:Admin:ListUsers.html.twig', array(
-            'users' => $users, 
-            'users_view' => $users_view)
-        );
-    }
-    
-    /**
-    *   Edit page for individual users
-    * 
-    */
-    //TODO rewrite the method 
-    public function editUserAction($userId, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('SchoolUserBundle:User')
-            ->loadUserById($userId);
-        
-        $teacher = new Teacher();
-        $teacher->setUser($user);
-        
-        $student = new Student();
-        $student->setUser($user);
-
-        $form = $this->createForm(new UserType(), $user); 
-
-        $teacher_exists = $this->getDoctrine()
-                ->getRepository('SchoolUserBundle:Teacher')
-                ->findOneBy(
-                    array('user' => $user)
-                );
-                
-        $student_exists = $this->getDoctrine()
-                ->getRepository('SchoolUserBundle:Student')
-                ->findOneBy(
-                    array('user' => $user)
-                );
-        
-        $form->handleRequest($request);
-        
-        if ($form->isValid()) {
-            $em->persist($user); 
-            
-            $roles = $form['role']->getData();            
-            $role = $roles->getRole();
-                    
-            //Update Teacher / Student DB tables accordingly
-            if ( $role == 'ROLE_TEACHER' && !$teacher_exists ) {
-                $em->persist($teacher); 
-                if ( $student_exists ) {
-                    $em->remove($student_exists);
-                }         
-            } else if ($role == 'ROLE_STUDENT' && !$student_exists) {
-                $em->persist($student);
-                if ( $teacher_exists ) {
-                    $em->remove($teacher_exists);
-                }
-            } else if ( $role == 'ROLE_ADMIN' && $student_exists ) {
-                $em->remove($student_exists);
-            } else if ( $role == 'ROLE_ADMIN' && $teacher_exists ) {
-                $em->remove($teacher_exists);
-            }
-            
-            $em->flush();
-            return $this->redirect($this->generateUrl('admin_users'));
-        } else
-        return $this->render('SchoolUserBundle:Admin:EditUser.html.twig', array(
-            'user' => $user,  
-            'form' => $form->createView(),)
-        );
+            'users' => $users,
+            ));
     }
     
     
@@ -216,10 +141,7 @@ class AdminController extends Controller
             'students' => $students,
         ));
     }
-    
-    /**
-    * @Security("has_role('ROLE_TEACHER')")
-    */
+
     public function studentSelectAction(Request $request)
     {
         $selected_students = $this->get('request')->request->get('select');
@@ -261,10 +183,7 @@ class AdminController extends Controller
         }      
         return $response;
     }
-    
-    /**
-    * @Security("has_role('ROLE_TEACHER')")
-    */
+
     // Selected Action: Student Assignment to classes
     public function studentAssignmentSelectionAction(Request $request, $selected_students, $selected_action)
     {

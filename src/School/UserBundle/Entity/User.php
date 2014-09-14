@@ -29,6 +29,7 @@ class User implements UserInterface, \Serializable
    
     private $student;
     
+    
     public function __construct()
     {
         // noop
@@ -265,6 +266,9 @@ class User implements UserInterface, \Serializable
         return $this->role;
     }
     
+    /**
+    * Create Username for users on registration
+    */
     public static function createUsername($first, $last)
     {
         $username = $first[0].$last;
@@ -292,5 +296,28 @@ class User implements UserInterface, \Serializable
     public function getTeacher()
     {
         return $this->teacher;
+    }
+
+    /**
+     * Set student
+     *
+     * @param \School\UserBundle\Entity\Student $student
+     * @return User
+     */
+    public function setStudent(\School\UserBundle\Entity\Student $student = null)
+    {
+        $this->student = $student;
+
+        return $this;
+    }
+    
+    /**
+     * Get student
+     *
+     * @return \School\UserBundle\Entity\Student 
+     */
+    public function getStudent()
+    {
+        return $this->student;
     }
 }

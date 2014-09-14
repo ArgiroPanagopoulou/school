@@ -10,7 +10,13 @@
 
 {% block body %}
     <div class="container-fluid">
-        <h2>Edit User {{user.username}}</h2>
+        <h2>Edit User {{user.lastName}} {{ user.firstName }}</h2>
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+                </div>
+            {% endfor %}
+            
             {{ form_start(form) }}
                 {{ form_errors(form) }}
                 
@@ -48,7 +54,8 @@
                         </div>
                     </div>
                 </div>
-                
+            
+                {% if app.user.role == 'ROLE_ADMIN' %}
                 <div class="row">
                     <div class="col-xs-4">
                         <div class="checkbox">
@@ -57,16 +64,18 @@
                             {{ form_widget(form.is_active) }}
                         </div>
                     </div>
-
+                    
+                    
                     <div class="col-xs-4"> 
-                        <div> 
+                        <div class="form-group"> 
                             {{ form_label(form.role) }} 
                             {{ form_errors(form.role) }} 
                             {{ form_widget(form.role) }} 
                         </div>
-                    </div>
-
+                    </div> 
                 </div>
+                {% endif %} 
+                
                 {# {% for choice in form.role.vars.choices %}
                 <div class="radio">
                     <label>
@@ -84,8 +93,6 @@
 
             {{ form_end(form) }}
     </div>
-    
-    {# <a href="{{ path('admin_student_edit') }}"> Edit Student </a> #}
     
 {% endblock %}
 

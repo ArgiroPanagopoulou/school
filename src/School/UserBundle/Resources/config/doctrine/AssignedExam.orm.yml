@@ -1,5 +1,6 @@
 School\UserBundle\Entity\AssignedExam:
     type: entity
+    repositoryClass: School\UserBundle\Entity\AssignedExamRepository
     table: assigned_exam
     id:
         id:

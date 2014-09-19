@@ -9,6 +9,7 @@ use School\UserBundle\Entity\TakenExam;
 use School\UserBundle\Entity\TakenQuestion;
 use Doctrine\Common\Collections\ArrayCollection;
 
+
 class StudentController extends Controller
 {
     public function studentProfileAction()
@@ -25,50 +26,77 @@ class StudentController extends Controller
         $student = $this->get('security.context')->getToken()->getUser()->getStudent();
         
         $em = $this->getDoctrine()->getManager();
+
+        $school_class = $student->getSchoolClass();
+        
         $course = $em->getRepository('SchoolUserBundle:Course')->find($course_id);
         
+        $assigned_exams = $em->getRepository('SchoolUserBundle:AssignedExam')->findAssignedExamsByCourseClass($course, $school_class);
+        
+        $taken_exams = $em->getRepository('SchoolUserBundle:AssignedExam')->findTakenExamsForStudent($student, $school_class, $course );
+        
+        $not_taken_exams = array_udiff($assigned_exams, $taken_exams, 
+            function ( $assigned_exam, $taken_exam) {
+                return $assigned_exam->getId() - $taken_exam->getId();
+            }
+        );
         return $this->render('SchoolUserBundle:Student:ListCourses.html.twig', array(
             'course' => $course,
+            'taken_exams' =>$taken_exams,
+            'not_taken_exams' => $not_taken_exams,
         ));
     }
     
-    public function examAction(Request $request, $exam_id)
+    public function examAction(Request $request, $assignedExam_id)
     {
-        $student = $this->get('security.context')->getToken()->getUser()->getStudent();
-        
         $em = $this->getDoctrine()->getManager();
         
-        $exam = $em->getRepository('SchoolUserBundle:Exam')->find($exam_id);
+        $assigned_exam = $em->getRepository('SchoolUserBundle:AssignedExam')->find($assignedExam_id);
+        
+        $questions = $assigned_exam->getExam()->getExamQuestions();
         
         $taken_exam = new TakenExam();
         
-        $questions = $exam->getExamQuestions();
+        $student = $this->get('security.context')->getToken()->getUser()->getStudent();
         
-        $form = $this->createForm(new StudentExamType(), $exam, array('questions' => $questions));
+        $exam = $assigned_exam->getExam();
+        
+        $form = $this->createForm(new StudentExamType(), $assigned_exam, array('questions' => $questions));
         
         $form->handleRequest($request);
-
         
         if($form->isValid()) {
-            $taken_exam->setExam($exam);
             $taken_exam->setStudent($student);
-                       
+            $taken_exam->setExam($exam);
+            $taken_exam->setAssignedExam($assigned_exam);
+            
             foreach($questions as $question) {
                 $taken_question = new TakenQuestion();
                 $taken_question->setTakenExam($taken_exam);
                 $answer = $form->get('answers_'.$question->getId())->getData();
+             
                 $taken_question->setAnswer($answer);
                 $taken_question->setExamQuestion($question);
-                $em->persist($taken_question);
-                $em->persist($taken_exam);
-                $em->flush();
-            }           
+                                
+                $score = $taken_exam->calculateScore($answer, $question);
+                $taken_exam->setScore($score);
+                      
+                $em->persist($taken_question);                               
+            } 
+            
+            $em->persist($taken_exam);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                'Your score is: '.$taken_exam->getScore()
+            ); 
             return $this->redirect($this->generateUrl('student_list_courses', array('course_id' => $exam->getCourse()->getId())));
-        } else {
+        } else {       
             return $this->render('SchoolUserBundle:Student:Exam.html.twig', array(
-                'exam' => $exam,
+                'assigned_exam' => $assigned_exam,
                 'form' => $form->createView(),
             ));
         }
     }
+
 }

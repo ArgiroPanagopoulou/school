@@ -205,7 +205,7 @@ class TeacherController extends Controller
     /**
     * Add an exam for a course
     */
-    public function addExamAction(Request $request, $course_id)
+    public function addExamAction(Request $request, $course_id, $class_id)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -225,7 +225,7 @@ class TeacherController extends Controller
             
             //when the form is sent the user is redirected to edit existing exam 
             $exam_id = $exam->getId();
-            return $this->redirect($this->generateUrl('teacher_edit_exam', array('exam_id' => $exam_id)));
+            return $this->redirect($this->generateUrl('teacher_list_exams', array('course_id' => $course_id, 'class_id' => $class_id)));
         } else {
             return $this->render('SchoolUserBundle:Teacher:AddExam.html.twig', array(
                 'form' => $form->createView(),

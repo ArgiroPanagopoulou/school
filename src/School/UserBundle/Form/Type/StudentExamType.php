@@ -33,13 +33,13 @@ class StudentExamType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'School\UserBundle\Entity\Exam',
+            'data_class' => 'School\UserBundle\Entity\AssignedExam',
             'questions' => null,    
         ));
     }
     
     public function getName()
     {
-        return 'exam';
+        return 'assigned_exam';
     }
 }

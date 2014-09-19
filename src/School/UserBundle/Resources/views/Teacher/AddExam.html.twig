@@ -27,6 +27,7 @@
         <ol class="questions" data-prototype="{% filter escape %}{{ include('SchoolUserBundle:Teacher:ExamItem.html.twig', { 'question': form.examQuestions.vars.prototype }) }}{% endfilter %}" >
             
             {% for question in form.examQuestions %}
+            
                 <li> 
                     <div class="row">
                         <div class="col-md-6">

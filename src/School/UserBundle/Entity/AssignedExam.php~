@@ -183,7 +183,17 @@ class AssignedExam
 
         return $this;
     }
-
+    
+    public function isStartDateValid()
+    {
+        return $this->start >= $this->dateCreated;
+    }
+    
+    public function isStopDateValid()
+    {
+        return $this->stop > $this->start;
+    }
+    
     /**
      * Get stop
      *

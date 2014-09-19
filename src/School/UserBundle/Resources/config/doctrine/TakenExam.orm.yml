@@ -7,6 +7,10 @@ School\UserBundle\Entity\TakenExam:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        score:
+            type: integer
+            nullable: true
     manyToOne:
         student:
             targetEntity: Student

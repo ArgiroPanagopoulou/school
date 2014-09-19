@@ -19,7 +19,8 @@ class SchoolClass
     protected $students;
     
     private $courseClasses;
-    
+
+    private $assignedExams;
         
     /**
     * Constructor
@@ -157,10 +158,6 @@ class SchoolClass
     {
         return $this->name;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $assignedExams;
 
 
     /**

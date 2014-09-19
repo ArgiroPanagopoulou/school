@@ -6,6 +6,12 @@
 <div class="container-fluid">
     <h3> {{ course.name }} </h3>
     
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    
     Lectures:
     <ul>
         {% for lecture in course.lectures %}
@@ -13,11 +19,24 @@
         {% endfor %}
     </ul>
     
-    Exams:
+    Assigned Exams:    
     <ul>
-        {% for exam in course.exams %}
-            <li> {{ exam.name }} <a href="{{ path('student_exam', {'exam_id' : exam.id}) }}"> Take the exam </a> </li>
+        {% for not_taken_exam in not_taken_exams %}
+            <li> {{ not_taken_exam.exam.name }} <a href="{{ path('student_exam', {'assignedExam_id': not_taken_exam.id}) }}"> Take the exam </a> </li>
         {% endfor %}
     </ul>
+    
+    Past Exams:
+    <ul>
+        {% for taken_exam in taken_exams %}
+            <li> 
+                {{taken_exam.exam.name}} - 
+                    {% for t in taken_exam.takenExams %} 
+                        Score: {{ t.score }}  
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+  
 </div>
 {% endblock %}

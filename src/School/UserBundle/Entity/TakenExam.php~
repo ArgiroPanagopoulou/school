@@ -17,8 +17,11 @@ class TakenExam
     private $exam;
 
     private $takenQuestions;
- 
 
+    private $assignedExam;
+
+    private $score;
+    
     
     /**
     * Constructor
@@ -118,10 +121,6 @@ class TakenExam
     {
         return $this->takenQuestions;
     }
-    /**
-     * @var \School\UserBundle\Entity\AssignedExam
-     */
-    private $assignedExam;
 
 
     /**
@@ -145,5 +144,39 @@ class TakenExam
     public function getAssignedExam()
     {
         return $this->assignedExam;
+    }
+
+    public function calculateScore()
+    {
+        $takenQuestions = $this->getTakenQuestions();
+        $points = null;
+        foreach($takenQuestions as $takenQuestion) {
+            if($takenQuestion->getAnswer() == $takenQuestion->getExamQuestion()->getCorrect()) {
+                $points = $points + ($takenQuestion->getExamQuestion()->getPoints());
+            }
+        }       
+        return $points;
+    }
+
+    /**
+     * Set score
+     *
+     * @return TakenExam
+     */
+    public function setScore()
+    {
+        $this->score = $this->calculateScore();
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer 
+     */
+    public function getScore()
+    {
+        return $this->score;
     }
 }

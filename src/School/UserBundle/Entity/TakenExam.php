@@ -17,8 +17,12 @@ class TakenExam
     private $exam;
 
     private $takenQuestions;
- 
 
+    private $assignedExam;
+
+    private $score;
+    
+    public static $points = 0;
     
     /**
     * Constructor
@@ -118,10 +122,6 @@ class TakenExam
     {
         return $this->takenQuestions;
     }
-    /**
-     * @var \School\UserBundle\Entity\AssignedExam
-     */
-    private $assignedExam;
 
 
     /**
@@ -145,5 +145,36 @@ class TakenExam
     public function getAssignedExam()
     {
         return $this->assignedExam;
+    }
+
+    public static function calculateScore($answer, $question)
+    {
+        
+        if($answer == $question->getCorrect()) {
+            self::$points = self::$points + $question->getPoints();
+        }
+        return self::$points;
+    }
+
+    /**
+     * Set score
+     *
+     * @return TakenExam
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer 
+     */
+    public function getScore()
+    {
+        return $this->score;
     }
 }

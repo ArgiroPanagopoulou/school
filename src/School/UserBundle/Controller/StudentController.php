@@ -55,6 +55,8 @@ class StudentController extends Controller
         
         $questions = $assigned_exam->getExam()->getExamQuestions();
         
+        $questions_array = $questions->toArray();
+
         $taken_exam = new TakenExam();
         
         $student = $this->get('security.context')->getToken()->getUser()->getStudent();
@@ -74,15 +76,15 @@ class StudentController extends Controller
                 $taken_question = new TakenQuestion();
                 $taken_question->setTakenExam($taken_exam);
                 $answer = $form->get('answers_'.$question->getId())->getData();
-             
+                $answers[] = $form->get('answers_'.$question->getId())->getData();
                 $taken_question->setAnswer($answer);
                 $taken_question->setExamQuestion($question);
-                                
-                $score = $taken_exam->calculateScore($answer, $question);
-                $taken_exam->setScore($score);
-                      
+      
                 $em->persist($taken_question);                               
             } 
+            
+            $score = $taken_exam->calculateScore($answers, $questions_array);
+            $taken_exam->setScore($score);
             
             $em->persist($taken_exam);
             $em->flush();

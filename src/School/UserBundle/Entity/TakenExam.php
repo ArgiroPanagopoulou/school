@@ -22,8 +22,6 @@ class TakenExam
 
     private $score;
     
-    public static $points = 0;
-    
     /**
     * Constructor
     */
@@ -147,13 +145,19 @@ class TakenExam
         return $this->assignedExam;
     }
 
-    public static function calculateScore($answer, $question)
+    /**
+    * Calculate the exam score according to the answers given by the student
+    */
+    public function calculateScore($answers, $questions)
     {
-        
-        if($answer == $question->getCorrect()) {
-            self::$points = self::$points + $question->getPoints();
-        }
-        return self::$points;
+        $points = 0;
+        foreach($questions as $key => $question) {
+            $answer = $answers[$key];
+            if($answer == $question->getCorrect()) {
+                $points = $points + ($question->getPoints());
+            }
+        } 
+        return $points;
     }
 
     /**

@@ -23,8 +23,10 @@ class AssignedExam
     private $start;
 
     private $stop;
- 
- 
+
+    private $duration;
+    
+    
     /**
      * Constructor
      */
@@ -202,5 +204,37 @@ class AssignedExam
     public function getStop()
     {
         return $this->stop;
+    }
+
+
+    /**
+     * Set duration
+     *
+     * @param string $duration
+     * @return AssignedExam
+     */
+    public function setDuration($duration)
+    {
+        // converts the duration into seconds
+        $str_time = $duration;
+        
+        sscanf($str_time, "%d:%d", $hours, $minutes);
+
+        $duration = $hours * 3600 + $minutes * 60;
+        
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration
+     *
+     * @return string 
+     */
+    public function getDuration()
+    {
+        $duration = gmdate("H:i", $this->duration);
+        return $duration;
     }
 }

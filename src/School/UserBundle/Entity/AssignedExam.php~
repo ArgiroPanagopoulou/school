@@ -23,8 +23,9 @@ class AssignedExam
     private $start;
 
     private $stop;
- 
- 
+
+    
+    
     /**
      * Constructor
      */

@@ -33,15 +33,17 @@ class MenuBuilder extends ContainerAware
             $menu->addChild('Students', array('route' => 'teacher_load_students'));
 
         } elseif ($securityContext->isGranted('ROLE_STUDENT')) {
-            $courses = $user->getStudent()->getSchoolClass()->getSchoolYear()->getCourses();
             $menu->addChild('My Profile', array('route' => 'student_profile'));
-            $menu->addChild('My Courses')
-                ->setAttribute('dropdown', true);
-            foreach($courses as $course) {
-                $menu['My Courses']->addChild($course->getName(), array(
-                    'route' => 'student_list_courses',
-                    'routeParameters' => array('course_id' => $course->getId()),
-                ));
+            if($user->getStudent()->getSchoolClass()) {   
+                $courses = $user->getStudent()->getSchoolClass()->getSchoolYear()->getCourses();
+                $menu->addChild('My Courses')
+                    ->setAttribute('dropdown', true);
+                foreach($courses as $course) {
+                    $menu['My Courses']->addChild($course->getName(), array(
+                        'route' => 'student_list_courses',
+                        'routeParameters' => array('course_id' => $course->getId()),
+                    ));
+                }
             }
         }
                       

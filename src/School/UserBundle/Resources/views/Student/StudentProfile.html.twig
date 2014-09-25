@@ -9,14 +9,21 @@
         <ul>
             <li> <strong> Full Name: </strong> {{ student.user.lastName }} {{ student.user.firstName }} </li>
             <li> <strong> Username: </strong> {{ student.user.username }} </li>
-            <li> <strong> School Year: </strong> {{ student.schoolClass.schoolYear.name }} ({{ student.schoolClass.schoolYear.dateFrom|date("m/d/Y") }} - {{ student.schoolClass.schoolYear.dateTo|date("m/d/Y") }})</li>
-            <ul>
-                <li> <strong> Courses: </strong> </li>
-                {% for course in student.schoolClass.schoolYear.courses %}
-                    <li> {{ course.name }} </li>   
-                {% endfor %}
-            </ul>
-            <li> <strong> School Class: </strong>  {{ student.schoolClass.name }}  </li>
+            {% if student.schoolClass is not null %}
+                <li> 
+                    <strong> School Year: </strong> 
+                    {{ student.schoolClass.schoolYear.name }} 
+                    ({{ student.schoolClass.schoolYear.dateFrom|date("m/d/Y") }} - {{ student.schoolClass.schoolYear.dateTo|date("m/d/Y") }})
+                    
+                </li>
+                <ul>
+                    <li> <strong> Courses: </strong> </li>
+                    {% for course in student.schoolClass.schoolYear.courses %}
+                        <li> {{ course.name }} </li>   
+                    {% endfor %}
+                </ul>
+                <li> <strong> School Class: </strong>  {{ student.schoolClass.name }}  </li>
+            {% endif %}
         </ul>
         
        

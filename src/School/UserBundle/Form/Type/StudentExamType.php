@@ -24,11 +24,12 @@ class StudentExamType extends AbstractType
             'mapped' => false,
             'expanded' => true,
             'multiple' => false,
-        ));
+            ));
         }
         
         $builder->add('save', 'submit');
     }
+
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

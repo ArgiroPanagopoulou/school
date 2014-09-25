@@ -138,7 +138,11 @@ class TeacherController extends Controller
         
         if($form->isValid()) {
             $exam_id = $form->get('name')->getData()->getId();
-            return $this->redirect($this->generateUrl('teacher_add_assigned_exam', array('course_id' => $course_id, 'class_id' => $class_id, 'exam_id' => $exam_id)));
+            return $this->redirect($this->generateUrl('teacher_add_assigned_exam', array(
+                'course_id' => $course_id, 
+                'class_id' => $class_id, 
+                'exam_id' => $exam_id
+            )));
         } else {        
             return $this->render('SchoolUserBundle:Teacher:ListExams.html.twig', array(
                 'course' => $course,

@@ -8,6 +8,7 @@ use School\UserBundle\Form\Type\StudentExamType;
 use School\UserBundle\Entity\TakenExam;
 use School\UserBundle\Entity\TakenQuestion;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class StudentController extends Controller
@@ -47,19 +48,21 @@ class StudentController extends Controller
         ));
     }
     
+    /**
+    *   Exam taken by a specific student 
+    */
     public function examAction(Request $request, $assignedExam_id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $assigned_exam = $em->getRepository('SchoolUserBundle:AssignedExam')->find($assignedExam_id);
         
         $questions = $assigned_exam->getExam()->getExamQuestions();
         
-        $questions_array = $questions->toArray();
-
-        $taken_exam = new TakenExam();
-        
         $student = $this->get('security.context')->getToken()->getUser()->getStudent();
+        
+        $duration = $assigned_exam->getDuration();
+        $duration_format = sscanf($duration, "%d:%d", $hours, $minutes);
         
         $exam = $assigned_exam->getExam();
         
@@ -67,14 +70,27 @@ class StudentController extends Controller
         
         $form->handleRequest($request);
         
-        if($form->isValid()) {
-            $taken_exam->setStudent($student);
-            $taken_exam->setExam($exam);
-            $taken_exam->setAssignedExam($assigned_exam);
-            
+        $taken_exam = new TakenExam();
+        $existed_taken_exam = $em->getRepository('SchoolUserBundle:TakenExam')->findTakenByStudentExam($student, $assigned_exam);
+        
+        $start_time = new \DateTime();
+        $end_time = $start_time->add(new \DateInterval('PT' . $hours . 'H'. $minutes. 'M')); // Calculate the datetime of an exam termination according to it's duration
+        
+        if(!$form->isSubmitted()) {
+            if(!$existed_taken_exam) {    
+                $taken_exam->setStudent($student);
+                $taken_exam->setExam($exam);
+                $taken_exam->setAssignedExam($assigned_exam);
+                $taken_exam->setStartTime(new \DateTime());
+                $taken_exam->setEndTime($end_time);
+                $taken_exam->setStatus($taken_exam::STATUS_IN_PROGRESS);
+                $em->persist($taken_exam);
+                $em->flush();
+            }
+        } elseif ($form->isValid()) {    
             foreach($questions as $question) {
                 $taken_question = new TakenQuestion();
-                $taken_question->setTakenExam($taken_exam);
+                $taken_question->setTakenExam($existed_taken_exam);
                 $answer = $form->get('answers_'.$question->getId())->getData();
                 $answers[] = $form->get('answers_'.$question->getId())->getData();
                 $taken_question->setAnswer($answer);
@@ -83,22 +99,27 @@ class StudentController extends Controller
                 $em->persist($taken_question);                               
             } 
             
-            $score = $taken_exam->calculateScore($answers, $questions_array);
-            $taken_exam->setScore($score);
+            $score = $existed_taken_exam->calculateScore($answers, $questions);
+            $existed_taken_exam->setScore($score);
+            $existed_taken_exam->setStatus($taken_exam::STATUS_COMPLETED);
             
-            $em->persist($taken_exam);
+            $em->persist($existed_taken_exam);
             $em->flush();
+            
             $this->get('session')->getFlashBag()->add(
                 'notice',
-                'Your score is: '.$taken_exam->getScore()
-            ); 
+                'Your score is: '.$existed_taken_exam->getScore()
+            );
+            
             return $this->redirect($this->generateUrl('student_list_courses', array('course_id' => $exam->getCourse()->getId())));
-        } else {       
-            return $this->render('SchoolUserBundle:Student:Exam.html.twig', array(
-                'assigned_exam' => $assigned_exam,
-                'form' => $form->createView(),
-            ));
-        }
+        } 
+
+        return $this->render('SchoolUserBundle:Student:Exam.html.twig', array(
+            'assigned_exam' => $assigned_exam,
+            'form' => $form->createView(),
+            'endTime' => $end_time,
+            'taken_exam' => $existed_taken_exam,
+        ));
     }
 
 }

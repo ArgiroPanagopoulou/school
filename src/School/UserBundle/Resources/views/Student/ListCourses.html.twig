@@ -19,24 +19,63 @@
         {% endfor %}
     </ul>
     
-    Assigned Exams:    
-    <ul>
-        {% for not_taken_exam in not_taken_exams %}
-            <li> {{ not_taken_exam.exam.name }} <a href="{{ path('student_exam', {'assignedExam_id': not_taken_exam.id}) }}"> Take the exam </a> </li>
-        {% endfor %}
-    </ul>
+    {% if not_taken_exams is not empty %}
+        <strong> Assigned Exams:  </strong> 
+        
+        <table class="table table-bordered">
+            <thead>
+                <th> Exam </th>
+                <th> Start Date </th>
+                <th> End Date </th>
+                <th> Duration </th>
+                <th> </th>
+            </thead>
+            <tbody>
+            {% for not_taken_exam in not_taken_exams %}
+                <tr>
+                    <td> {{ not_taken_exam.exam.name }}  
+                        {% for t in not_taken_exam.takenExams %} 
+                            <strong> ( {{ t.status }} ) </strong>
+                        {% endfor %} 
+                    </td>
+                    <td> {{ not_taken_exam.start|date("d/m/y \\a\\t g:ia") }} </td>
+                    <td> {{ not_taken_exam.stop|date("d/m/y \\a\\t g:ia") }} </td>
+                    <td> {{ not_taken_exam.duration }} hours</td>
+                    <td> <a href="{{ path('student_exam', {'assignedExam_id': not_taken_exam.id}) }}"> Take the exam </a> </td>
+                </tr>
+            {% endfor %}
+            <tbody>
+        </table>
+    {% endif %}
     
-    Past Exams:
-    <ul>
-        {% for taken_exam in taken_exams %}
-            <li> 
-                {{taken_exam.exam.name}} - 
-                    {% for t in taken_exam.takenExams %} 
-                        Score: {{ t.score }}  
-                {% endfor %}
-            </li>
-        {% endfor %}
-    </ul>
-  
+    {% if taken_exams is not empty %}
+        <strong> Past Exams </strong>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                
+                    <thead>    
+                        <th> Exam </th>
+                        <th> Date taken </th>
+                        <th> Score </th>
+                    </thead>
+                    
+                    <tbody> 
+                        {% for taken_exam in taken_exams %}
+                        <tr> 
+                            <td>{{taken_exam.exam.name}} </td>
+                            {% for t in taken_exam.takenExams %} 
+                                <td> {{ t.assignedExam.start|date("d/m/Y") }}  </td> 
+                                {% set points = 0 %}
+                                <td> {{ t.score }} /   {% for question in taken_exam.exam.examQuestions %} {% set points = points + question.points %} {% endfor %} {{ points }} </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

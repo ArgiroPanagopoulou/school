@@ -1,5 +1,6 @@
 School\UserBundle\Entity\TakenExam:
     type: entity
+    repositoryClass: School\UserBundle\Entity\TakenExamRepository
     table: taken_exam
     id:
         id:
@@ -11,6 +12,18 @@ School\UserBundle\Entity\TakenExam:
         score:
             type: integer
             nullable: true
+        startTime:
+            type: datetime
+            nullable: true
+        endTime:
+            type: datetime
+            nullable: true
+        status:
+            type: string
+            nullable: true
+    uniqueConstraints:
+        search_idx:
+            columns: [student_id, assignedExam_id ]
     manyToOne:
         student:
             targetEntity: Student

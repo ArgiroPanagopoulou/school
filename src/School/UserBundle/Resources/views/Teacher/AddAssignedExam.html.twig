@@ -30,20 +30,10 @@
         <div class="row">
             <div class='col-md-2'>
                 <div class="form-group">
-                    {{ form_label(form.dateCreated) }}
-                    {{ form_errors(form.dateCreated) }}
-                    {{ form_widget(form.dateCreated, {'attr': {'class': 'form-control' }}) }}
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class='col-md-2'>
-                <div class="form-group">
                     {{ form_label(form.start) }}
                     {{ form_errors(form.start) }}
                     <div class='input-group date' id='datetimepicker1'>
-                        {{ form_widget(form.start, {'attr': {'class': 'form-control' }}) }}
+                        {{ form_widget(form.start, {'attr': {'class': 'form-control' ,'data-date-format': 'DD/MM/YYYY hh:mm A/PM'}}) }}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
@@ -57,8 +47,22 @@
                     {{ form_label(form.stop) }}
                     {{ form_errors(form.stop) }}
                     <div class='input-group date' id='datetimepicker2'>
-                        {{ form_widget(form.stop, {'attr': {'class': 'form-control' }}) }}
+                        {{ form_widget(form.stop, {'attr': {'class': 'form-control' ,'data-date-format': 'DD/MM/YYYY hh:mm A/PM'}}) }}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.duration) }}
+                    {{ form_errors(form.duration) }}
+                    <div class='input-group date' id='datetimepicker3'>
+                        {{ form_widget(form.duration, {'attr': {'class': 'form-control', 'data-date-format': 'HH:mm'}}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
                         </span>
                     </div>
                 </div>
@@ -78,6 +82,9 @@
         $(function() {
         $('#datetimepicker1').datetimepicker();
         $('#datetimepicker2').datetimepicker();
+        $('#datetimepicker3').datetimepicker({
+            pickDate: false
+        });
     });
     </script>
 {% endblock %}

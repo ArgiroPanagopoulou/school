@@ -21,6 +21,19 @@ class TakenExam
     private $assignedExam;
 
     private $score;
+
+    private $startTime;
+
+    private $endTime;
+
+    private $status;
+    
+    const STATUS_COMPLETED = 'completed';
+    
+    const STATUS_IN_PROGRESS = 'in progress';
+    
+    const STATUS_CANCELLED = 'cancelled';
+    
     
     /**
     * Constructor
@@ -180,5 +193,76 @@ class TakenExam
     public function getScore()
     {
         return $this->score;
+    }
+
+
+    /**
+     * Set startTime
+     *
+     * @param \DateTime $startTime
+     * @return TakenExam
+     */
+    public function setStartTime($startTime)
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    /**
+     * Get startTime
+     *
+     * @return \DateTime 
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
+
+    /**
+     * Set endTime
+     *
+     * @param \DateTime $endTime
+     * @return TakenExam
+     */
+    public function setEndTime($endTime)
+    {
+        $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    /**
+     * Get endTime
+     *
+     * @return \DateTime 
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return TakenExam
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

@@ -10,20 +10,18 @@ class AssignedExamType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dateCreated', 'date', array(
-            'widget' => 'single_text',
-            // this is actually the default format for single_text
-            'format' => 'yyyy-MM-dd',
-            'read_only' => true,
-            'label' => 'Assignment Date'
-        ));
             
         $builder->add('start', 'datetime', array(
             'widget' => 'single_text',
+            'format' =>'dd/MM/yyyy HH:mm',
         ));
         $builder->add('stop', 'datetime', array(
             'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy HH:mm',
         ));
+        
+        $builder->add('duration', 'text');
+        
         $builder->add('save', 'submit');
     }
     

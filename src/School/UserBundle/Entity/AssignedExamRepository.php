@@ -9,10 +9,10 @@ class AssignedExamRepository extends EntityRepository
     public function findAssignedExamsByCourseClass($course, $class)
     {
         $assigned_exams = $this->getEntityManager()
-            ->createQuery('SELECT a 
+            ->createQuery("SELECT a 
                 FROM SchoolUserBundle:AssignedExam a 
                 LEFT JOIN a.exam e 
-                WHERE a.schoolClass = :class AND e.course = :course' 
+                WHERE a.schoolClass = :class AND e.course = :course AND CURRENT_TIMESTAMP() >= a.start AND CURRENT_TIMESTAMP() <= a.stop" 
             )->setParameter('class', $class)
             ->setParameter('course', $course)
         ->getResult();
@@ -23,11 +23,11 @@ class AssignedExamRepository extends EntityRepository
     public function findTakenExamsForStudent($student, $class, $course)
     {
         $taken_exams = $this->getEntityManager()
-            ->createQuery('SELECT a  
+            ->createQuery("SELECT a  
                 FROM SchoolUserBundle:AssignedExam a  
                 LEFT JOIN a.takenExams t  
                 LEFT JOIN a.exam e 
-                WHERE t.student = :student AND a.schoolClass = :class AND e.course = :course'
+                WHERE t.student = :student AND a.schoolClass = :class AND e.course = :course AND t.status = 'completed'"
             )->setParameter('student', $student)
             ->setParameter('class', $class)
             ->setParameter('course', $course)

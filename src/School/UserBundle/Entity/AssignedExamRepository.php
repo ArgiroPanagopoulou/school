@@ -27,7 +27,7 @@ class AssignedExamRepository extends EntityRepository
                 FROM SchoolUserBundle:AssignedExam a  
                 LEFT JOIN a.takenExams t  
                 LEFT JOIN a.exam e 
-                WHERE t.student = :student AND a.schoolClass = :class AND e.course = :course AND t.status = 'completed'"
+                WHERE t.student = :student AND a.schoolClass = :class AND e.course = :course AND t.endTime <= CURRENT_TIMESTAMP()"
             )->setParameter('student', $student)
             ->setParameter('class', $class)
             ->setParameter('course', $course)

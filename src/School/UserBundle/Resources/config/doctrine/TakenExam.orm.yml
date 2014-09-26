@@ -18,9 +18,6 @@ School\UserBundle\Entity\TakenExam:
         endTime:
             type: datetime
             nullable: true
-        status:
-            type: string
-            nullable: true
     uniqueConstraints:
         search_idx:
             columns: [student_id, assignedExam_id ]

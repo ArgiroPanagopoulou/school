@@ -83,10 +83,9 @@ class StudentController extends Controller
                 $taken_exam->setAssignedExam($assigned_exam);
                 $taken_exam->setStartTime(new \DateTime());
                 $taken_exam->setEndTime($end_time);
-                $taken_exam->setStatus($taken_exam::STATUS_IN_PROGRESS);
                 $em->persist($taken_exam);
                 $em->flush();
-            }
+            } 
         } elseif ($form->isValid()) {    
             foreach($questions as $question) {
                 $taken_question = new TakenQuestion();
@@ -101,7 +100,6 @@ class StudentController extends Controller
             
             $score = $existed_taken_exam->calculateScore($answers, $questions);
             $existed_taken_exam->setScore($score);
-            $existed_taken_exam->setStatus($taken_exam::STATUS_COMPLETED);
             
             $em->persist($existed_taken_exam);
             $em->flush();

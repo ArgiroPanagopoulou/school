@@ -1,6 +1,11 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 {% form_theme form 'SchoolUserBundle:Form:bootstrap_form.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+     <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/countdown/css/countdown.css') }}" /> 
+{% endblock %}
+
 {% block header_javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/countdown/countdown.min.js') }}" > </script>
@@ -33,16 +38,24 @@
 
 {% block javascripts %}
     {{ parent() }}
-     <script type="text/javascript">  
-     
+    <script type="text/javascript"> 
         var end_time = document.getElementById("end_time").value;
-        var clock = document.getElementById("countdown")
-            , targetDate = new Date(end_time.replace(/-/g,"/")); 
-
-        clock.innerHTML = countdown(targetDate).toString();
-        setInterval(function(){
-            clock.innerHTML = countdown(targetDate).toString();
-        }, 1000);
-               
+        var countdown = new Countdown({
+        
+            selector: '#countdown',
+            
+            msgAfter: "Exam is over",
+            msgPattern: "{hours} hours {minutes} minutes {seconds} seconds",
+            dateStart: new Date(),
+            dateEnd: new Date(end_time.replace(/-/g,"/")),
+            onStart: function() {                
+                console.log('Exam started');
+            },
+            onEnd: function() {
+                window.alert("Post your answers");
+                console.log('Exam has ended');
+            }
+        });
     </script>
+     
 {% endblock %} 

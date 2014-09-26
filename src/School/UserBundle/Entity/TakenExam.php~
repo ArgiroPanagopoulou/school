@@ -28,6 +28,12 @@ class TakenExam
 
     private $status;
     
+    const STATUS_COMPLETED = 'completed';
+    
+    const STATUS_IN_PROGRESS = 'in progress';
+    
+    const STATUS_FAILED = 'failed';
+    
     
     /**
     * Constructor

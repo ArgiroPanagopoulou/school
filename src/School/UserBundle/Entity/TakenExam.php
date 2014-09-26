@@ -28,12 +28,6 @@ class TakenExam
 
     private $status;
     
-    const STATUS_COMPLETED = 'completed';
-    
-    const STATUS_IN_PROGRESS = 'in progress';
-    
-    const STATUS_CANCELLED = 'cancelled';
-    
     
     /**
     * Constructor
@@ -242,27 +236,14 @@ class TakenExam
     {
         return $this->endTime;
     }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return TakenExam
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string 
-     */
+    
     public function getStatus()
     {
-        return $this->status;
+        if($this->endTime >= (new \DateTime()))
+        {
+            return 'In Progress';
+        }else {
+            return 'Completed';
+        }
     }
 }

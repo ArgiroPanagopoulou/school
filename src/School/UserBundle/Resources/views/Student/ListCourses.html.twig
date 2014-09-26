@@ -35,7 +35,7 @@
                 <tr>
                     <td> {{ not_taken_exam.exam.name }}  
                         {% for t in not_taken_exam.takenExams %} 
-                            <strong> ( {{ t.status }} ) </strong>
+                            <strong> ({{ t.status }}) </strong>
                         {% endfor %} 
                     </td>
                     <td> {{ not_taken_exam.start|date("d/m/y \\a\\t g:ia") }} </td>

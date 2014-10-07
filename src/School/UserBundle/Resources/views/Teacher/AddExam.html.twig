@@ -24,7 +24,10 @@
             </div>
         </div>
         <p> <strong> Exam Questions </strong></p><br />
-        <ol class="questions" data-prototype="{% filter escape %}{{ include('SchoolUserBundle:Teacher:ExamItem.html.twig', { 'question': form.examQuestions.vars.prototype }) }}{% endfilter %}" >
+        <ol class="questions" 
+            data-prototype="{% filter escape %}
+                    {{ include('SchoolUserBundle:Teacher:ExamItem.html.twig', { 'question': form.examQuestions.vars.prototype }) }}
+                {% endfilter %}" >
             
             {% for question in form.examQuestions %}
             

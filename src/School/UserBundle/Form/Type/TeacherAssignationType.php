@@ -41,11 +41,11 @@ class TeacherAssignationType extends AbstractType
                 'empty_value' => (empty($classes))? '- Choose a course, first -' : '- Choose a class -',
                 'choices' => $classes,
             ));
-            //TODO populate teacher select when a user selects a year
+
             $form->add('teacher', 'entity', array(
                 'class' => 'SchoolUserBundle:Teacher',
                 'empty_value' => '- Choose a teacher -',
-                'property' => 'user.username', 
+                'property' => 'user.fullName', 
                 
             ));
         };

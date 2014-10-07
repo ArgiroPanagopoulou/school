@@ -8,7 +8,9 @@ class CourseClassRepository extends EntityRepository
     public function loadCourseClasses()
     {
         $q = $this->getEntityManager()
-            ->createQuery('SELECT c FROM SchoolUserBundle:CourseClass c'
+            ->createQuery('SELECT c FROM SchoolUserBundle:CourseClass c
+                LEFT JOIN c.course s
+                ORDER BY s.schoolYear ASC'
             );
         $courses = $q->getResult();
         
@@ -42,4 +44,5 @@ class CourseClassRepository extends EntityRepository
         
         return $course_classes;
     }
+    
 }

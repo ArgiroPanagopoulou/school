@@ -24,6 +24,9 @@ class StudentExamType extends AbstractType
             'mapped' => false,
             'expanded' => true,
             'multiple' => false,
+            'required' => false,
+            'empty_data'  => null,
+            'empty_value' => 'n/a',
             ));
         }
         

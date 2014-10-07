@@ -12,7 +12,10 @@ class AssignedExamRepository extends EntityRepository
             ->createQuery("SELECT a 
                 FROM SchoolUserBundle:AssignedExam a 
                 LEFT JOIN a.exam e 
-                WHERE a.schoolClass = :class AND e.course = :course AND CURRENT_TIMESTAMP() >= a.start AND CURRENT_TIMESTAMP() <= a.stop" 
+                WHERE a.schoolClass = :class 
+                    AND e.course = :course 
+                    AND CURRENT_TIMESTAMP() >= a.start 
+                    AND CURRENT_TIMESTAMP() <= a.stop" 
             )->setParameter('class', $class)
             ->setParameter('course', $course)
         ->getResult();
@@ -27,7 +30,10 @@ class AssignedExamRepository extends EntityRepository
                 FROM SchoolUserBundle:AssignedExam a  
                 LEFT JOIN a.takenExams t  
                 LEFT JOIN a.exam e 
-                WHERE t.student = :student AND a.schoolClass = :class AND e.course = :course AND t.endTime <= CURRENT_TIMESTAMP()"
+                WHERE t.student = :student 
+                    AND a.schoolClass = :class 
+                    AND e.course = :course 
+                    AND (t.score IS NOT NULL OR t.endTime <= CURRENT_TIMESTAMP())"
             )->setParameter('student', $student)
             ->setParameter('class', $class)
             ->setParameter('course', $course)

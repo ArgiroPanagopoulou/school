@@ -188,7 +188,8 @@ class AssignedExam
     
     public function isStartDateValid()
     {
-        return $this->start >= $this->dateCreated;
+        return true;
+        //return $this->start >= new \DateTime();
     }
     
     public function isStopDateValid()

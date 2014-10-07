@@ -1,6 +1,6 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 
-{% block title %}Assign Students{% endblock %}
+{% block title %}Student Assignment{% endblock %}
 
 {% block header_javascripts %}
 {{ parent() }}
@@ -10,7 +10,7 @@
 {% block body %}
 <div class="container-fluid">
 
-    <h2> Assign Students </h2><br/>
+    <h2> Student Assignment </h2><br/>
     
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="alert alert-danger">
@@ -57,44 +57,44 @@
         
     {{ form_end(form) }}
     
-    <div class="row">
-        <form action="{{ path('admin_selected_students') }}" method="post" role="form">        
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>  Full Name  </th>
-                        <th> Username </th>
-                        <th>  Class  </th>
-                        <th> <input type="checkbox"  id="selectall"/> Select All </th>
-                    </tr>
-                </thead>
-            
-                {%  for student in students %}
-                <tbody>
-                    <tr>
-                        <td> <a href="{{ path('user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
-                        <td> {{ student.user.username }} </td>
-                        <td> {% if student.schoolClass is not null %}
-                                {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
-                            {% endif %}</td>
-                        <td> <input class="checkboxstudents" type="checkbox"  name="select[]" value="{{ student.user.id }}"> </td>
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
-            
-            <div class="form-group">
-            <div class="col-sm-3">
-                <select required name="studentAction" class="form-control">
-                    <option value=""> - Select an action - </option>
-                    <option value="assignment">Assign to a class </option>
-                    <option value="removal"> Remove from a class </option>
-                </select>
-            </div>
-            </div>
-            <input type="submit" name="submit" value="Submit" class="btn btn-default">
-        </form>        
-    </div>
+
+    <form action="{{ path('admin_selected_students') }}" method="post" role="form">        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th> Full Name  </th>
+                    <th> Username </th>
+                    <th>  Class  </th>
+                    <th> <input type="checkbox"  id="selectall"/> Select All </th>
+                </tr>
+            </thead>
+        
+            {%  for student in students %}
+            <tbody>
+                <tr>
+                    <td> <a href="{{ path('user_edit', {'userId': student.user.id }) }}"> {{ student.user.lastName }} {{ student.user.firstName }} </a></td>
+                    <td> {{ student.user.username }} </td>
+                    <td> {% if student.schoolClass is not null %}
+                            {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
+                        {% endif %}</td>
+                    <td> <input class="checkboxstudents" type="checkbox"  name="select[]" value="{{ student.user.id }}"> </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        
+        <div class="form-group">
+        <div class="col-sm-3">
+            <select required name="studentAction" class="form-control">
+                <option value=""> - Select an action - </option>
+                <option value="assignment">Assign to a class </option>
+                <option value="removal"> Remove from a class </option>
+            </select>
+        </div>
+        </div>
+        <input type="submit" name="submit" value="Submit" class="btn btn-default">
+    </form>        
+
     
 </div>
 

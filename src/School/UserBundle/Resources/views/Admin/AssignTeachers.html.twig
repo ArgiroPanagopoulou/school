@@ -1,6 +1,6 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 
-{% block title %}Assign Teachers{% endblock %}
+{% block title %}Teacher Assignment{% endblock %}
 
 {% block header_javascripts %}
     {{ parent() }}
@@ -9,7 +9,7 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h2> Assign Teachers </h2>
+    <h2> Teacher assignment </h2>
     
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="alert alert-success">
@@ -59,29 +59,34 @@
         </div>
 
     {{ form_end(form) }}
-    
-        <h3> Assigned teachers </h3>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th> Year </th>
-                <th> Course </th>
-                <th> Class </th>
-                <th> Teacher </th>      
-            </tr>
-            </thead>
+        
+    <h3> Assigned teachers </h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th> Year </th>
+            <th> Course </th>
+            <th> Class </th>
+            <th> Teacher </th>      
+        </tr>
+        </thead>
+        
+        {% for courseClass in pagination %}
+        
+        <tbody>
+        <tr {% if loop.index is odd %}class="color"{% endif %}> 
+            <td>{{ courseClass.course.schoolYear.name }}</td>
+            <td>{{ courseClass.course.name }}</td>
+            <td>{{ courseClass.class.name }}</td>
+            <td>{{ courseClass.teacher.user.lastName }} {{ courseClass.teacher.user.firstName }} </td>
             
-            {% for courseClass in courseClasses %}
-            <tbody>
-            <tr> 
-                <td>{{ courseClass.course.schoolYear.name }}</td>
-                <td>{{ courseClass.course.name }}</td>
-                <td>{{ courseClass.class.name }}</td>
-                <td>{{ courseClass.teacher.user.username }}</td>
-                
-            </tr>
-            </tbody>
-            {% endfor %}
-        </table>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 </div>
 {% endblock %}

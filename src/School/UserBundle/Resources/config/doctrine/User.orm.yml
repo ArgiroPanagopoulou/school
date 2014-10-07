@@ -20,6 +20,12 @@ School\UserBundle\Entity\User:
         email:
             type: string
             length: 60
+        birthDate:
+            type: date
+        occupation:
+            type: string
+            length: 60
+            nullable: true
         is_active:
             type: boolean
             nullable: true

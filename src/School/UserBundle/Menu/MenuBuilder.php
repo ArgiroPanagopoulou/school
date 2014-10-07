@@ -21,15 +21,13 @@ class MenuBuilder extends ContainerAware
         
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
         
-        if($securityContext->isGranted('ROLE_ADMIN')) {
-            $menu->addChild('Admin')
-             ->setAttribute('dropdown', true);            
-            $menu['Admin']->addChild('Edit Users', array('route' => 'admin_users'));   
-            $menu['Admin']->addChild('Assign Teachers', array('route' => 'admin_assign_teachers'));
-            $menu['Admin']->addChild('Assign Students', array('route' => 'admin_assign_students'));                       
+        if($securityContext->isGranted('ROLE_ADMIN')) {          
+            $menu->addChild('Users', array('route' => 'admin_users'));   
+            $menu->addChild('Teacher Assignment', array('route' => 'admin_assign_teachers'));
+            $menu->addChild('Student Assignment', array('route' => 'admin_assign_students'));                       
         } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
             $menu->addChild('Lectures', array('route' => 'teacher_homepage'));
-            $menu->addChild('Courses', array('route' => 'teacher_list_courses'));
+            $menu->addChild('Exams', array('route' => 'teacher_list_courses'));
             $menu->addChild('Students', array('route' => 'teacher_load_students'));
 
         } elseif ($securityContext->isGranted('ROLE_STUDENT')) {

@@ -25,8 +25,6 @@ class TakenExam
     private $startTime;
 
     private $endTime;
-
-    private $status;
     
     
     /**

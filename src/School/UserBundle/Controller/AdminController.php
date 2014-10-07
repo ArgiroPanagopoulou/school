@@ -29,9 +29,9 @@ use School\UserBundle\Form\Type\StudentFilterType;
 use School\UserBundle\Form\Type\StudentRemovalFromClassType;
 
 
-    /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+/**
+* @Security("has_role('ROLE_ADMIN')")
+*/
 class AdminController extends Controller
 {
     public function adminAction()
@@ -47,10 +47,19 @@ class AdminController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
-        $users = $em->getRepository('SchoolUserBundle:User')->findAll();
+        //$users = $em->getRepository('SchoolUserBundle:User')->findAll();
+        $users = $em->getRepository('SchoolUserBundle:User')->loadAllUsers();
+        //var_dump($users);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $users,
+            $this->get('request')->query->get('page', 1),
+            10
+        );
             
         return $this->render('SchoolUserBundle:Admin:ListUsers.html.twig', array(
             'users' => $users,
+            'pagination' => $pagination,
             ));
     }
     
@@ -65,6 +74,14 @@ class AdminController extends Controller
         
         $courseClasses = $em->getRepository('SchoolUserBundle:CourseClass')
             ->loadCourseClasses();
+        
+        // Pagination
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $courseClasses,
+            $this->get('request')->query->get('page', 1), /*page number*/
+            3 // limit per page
+        );
         
         $model = new TeacherAssignation();
         
@@ -102,7 +119,7 @@ class AdminController extends Controller
         } else {        
             return $this->render('SchoolUserBundle:Admin:AssignTeachers.html.twig',
                 array('form' => $form->createView(),
-                      'courseClasses' => $courseClasses,
+                      'pagination' => $pagination,
             ));
         }
     }

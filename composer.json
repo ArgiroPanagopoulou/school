@@ -22,7 +22,9 @@
         "ircmaxell/password-compat": "1.0.3",
         "twitter/bootstrap": "3.1.1",
         "leafo/lessphp": "0.4.0",
-        "knplabs/knp-menu-bundle": "2.0"
+        "knplabs/knp-menu-bundle": "2.0",
+        "knplabs/knp-components": "~1.2",
+        "knplabs/knp-paginator-bundle": "~2.4"
     },
     "scripts": {
         "post-install-cmd": [

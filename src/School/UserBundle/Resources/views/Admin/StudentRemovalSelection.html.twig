@@ -9,20 +9,31 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h2> Remove students from class </h2>
-
-    <h3> Selected Students </h3>
-
-    <ol>        
-        {% for student in students %}
-           
-            <li> <strong>{{ student.user.lastName }} {{ student.user.firstName }} </strong>
-                {% if student.schoolClass is not null %}
-                    currently at class: {{ student.schoolClass.name }} - {{ student.schoolClass.schoolYear }}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ol>
+    <h2> Remove students from class </h2> <br/>
+    
+    <h4> Selected Students to be removed </h4>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th> Name </th>
+                <th> Class </th>
+                <th> Year </th>
+            </tr>
+        </thead>
+        
+        {% for student in students %} 
+        <tbody>   
+            <tr>
+                <td> {{ student.user.lastName }} {{ student.user.firstName }} </td>
+                <td> {% if student.schoolClass is not null %} {{ student.schoolClass.name }} </td>
+                <td> {{ student.schoolClass.schoolYear }} </td>
+                {% endif %} 
+            </tr>
+        </tbody>
+        {% endfor %} 
+    </table>
+    
     
     {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
     {{ form_errors(form) }}

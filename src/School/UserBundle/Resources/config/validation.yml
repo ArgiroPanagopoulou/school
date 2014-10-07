@@ -1,9 +1,10 @@
 School\UserBundle\Entity\User:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: username
+            message: "This username is taken"
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
-            
-    properties:
+    properties:       
         password:
             - Length:
                 min: 3 

@@ -1,97 +1,114 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
-{# {% form_theme form 'SchoolUserBundle:Form:fields.html.twig' %} #}
+{% form_theme form 'SchoolUserBundle:Form:bootstrap_form_radio_widget.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/css/bootstrap-datetimepicker.min.css' ) }}"/>
+{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/bootstrap-datetimepicker.min.js') }}"></script>
+{% endblock %}
 
 {% block title %}Edit User{% endblock %}
 
 
-{% block stylesheets %}
-{{ parent() }}  
-{% endblock %} 
-
 {% block body %}
     <div class="container-fluid">
-        <h2>Edit User {{user.lastName}} {{ user.firstName }}</h2>
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="alert alert-success" role="alert">
+        <h3>Edit User {{user.lastName}} {{ user.firstName }}</h3>
+        
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="alert alert-success" role="alert">
                 {{ flashMessage }}
-                </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
             
-            {{ form_start(form) }}
-                {{ form_errors(form) }}
-                
-                <div class="row">
-                    <div class="col-xs-4">
-                        <div class="form-group">
-                            {{ form_label(form.firstName) }}
-                            {{ form_errors(form.firstName) }}
-                            {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    </div>
-                
-                    <div class="col-xs-4">
-                        <div class="form-group">
-                            {{ form_label(form.lastName) }}
-                            {{ form_errors(form.lastName) }}
-                            {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    </div>
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+
+            <div class="form-group">
+                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.firstName) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}
                 </div>
-                
-                <div class="row">
-                    <div class="col-xs-4">
-                        <div class="form-group">
-                            {{ form_label(form.username) }}
-                            {{ form_errors(form.username) }}
-                            {{ form_widget(form.username,{'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="form-group">
-                            {{ form_label(form.email) }}
-                            {{ form_errors(form.email) }}
-                            {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.lastName) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
                 </div>
+            </div>
             
-                {% if app.user.role == 'ROLE_ADMIN' %}
-                <div class="row">
-                    <div class="col-xs-4">
+            <div class="form-group">
+                {{ form_label(form.birthDate, 'Birth Date', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.birthDate) }}
+                <div class="col-sm-4">
+                    <div class='input-group date' id='datetimepicker'>
+                        {{ form_widget(form.birthDate,{'attr': {'class': 'form-control', 'data-date-format': 'DD/MM/YYYY'}}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.occupation, 'Occupation', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.occupation) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.occupation,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.username, 'Username', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.username) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.username,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_errors(form.email) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+        
+            {% if app.user.role == 'ROLE_ADMIN' %}
+                <div class="form-group"> 
+                    {{ form_label(form.role, 'Role', {'label_attr': {'class': 'col-sm-1 control-label'}}) }} 
+                    {{ form_errors(form.role) }} 
+                    <div class="col-sm-4">
+                        {{ form_widget(form.role) }} 
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-4">
                         <div class="checkbox">
-                            {{ form_label(form.is_active) }}
+                            {{ form_label(form.is_active, 'Active') }}
                             {{ form_errors(form.is_active) }}
                             {{ form_widget(form.is_active) }}
                         </div>
                     </div>
-                    
-                    
-                    <div class="col-xs-4"> 
-                        <div class="form-group"> 
-                            {{ form_label(form.role) }} 
-                            {{ form_errors(form.role) }} 
-                            {{ form_widget(form.role) }} 
-                        </div>
-                    </div> 
-                </div>
-                {% endif %} 
-                
-                {# {% for choice in form.role.vars.choices %}
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="{{ form.role.vars.full_name }}" id="{{ form.role.vars.name ~ choice.value }}" value="{{ choice.value }}" >
-                        {{ choice.label }}
-                    </label>
-                </div>
-                {% endfor %} #}
-                
-                <div class="col-xs-4"> 
-                    <div>
-                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
-                    </div>
                 </div>
 
-            {{ form_end(form) }}
+            {% endif %} 
+            
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-4">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+                </div>
+            </div>
+
+        {{ form_end(form) }}
     </div>
     
 {% endblock %}
@@ -104,6 +121,12 @@
     $(document).ready(function() {
         console.info('Hello Pudojo (jquery version=' + $.fn.jquery + ')');
     })
+    
+    $(function() {
+        $('#datetimepicker').datetimepicker({
+            pickTime: false
+        });
+    });
 
 </script> 
 {% endblock %}

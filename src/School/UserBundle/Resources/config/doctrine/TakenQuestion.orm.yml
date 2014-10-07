@@ -10,6 +10,7 @@ School\UserBundle\Entity\TakenQuestion:
     fields:
         answer:
             type: integer
+            nullable: true
     manyToOne:
         takenExam:
             targetEntity: TakenExam

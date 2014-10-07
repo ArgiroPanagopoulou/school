@@ -1,6 +1,18 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
+{% form_theme form 'SchoolUserBundle:Form:form_errors.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/css/bootstrap-datetimepicker.min.css' ) }}"/>
+{% endblock %}
 
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/bootstrap-datetimepicker.min.js') }}"></script>
+{% endblock %}
+
+{% block title %} Register {% endblock %}
 {% block body %}
     <div class="container-fluid">
         <h2>Register</h2>
@@ -9,14 +21,14 @@
             
             
             <div class="form-group">
-                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.firstName, 'First Name *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.firstName) }}
                 <div class="col-sm-4">
                 {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}</div>
             </div>
             
             <div class="form-group">
-                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.lastName, 'Last Name *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.lastName) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
@@ -24,7 +36,26 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.birthDate, 'Birth Date *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                {{ form_errors(form.birthDate) }}
+                <div class="col-sm-4">
+                    <div class='input-group date' id='datetimepicker'>
+                        {{ form_widget(form.birthDate,{'attr': {'class': 'form-control', 'data-date-format': 'DD/MM/YYYY'}}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.occupation, 'Occupation *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                {{ form_errors(form.occupation) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.occupation,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.email) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
@@ -32,7 +63,15 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.password.password, 'Password', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.username, 'Username *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                {{ form_errors(form.username) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.username,{'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.password.password, 'Password *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.password.password) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.password.password,{'attr': {'class': 'form-control'}}) }}
@@ -40,7 +79,7 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.password.confirm, 'Confirm Password', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.password.confirm, 'Confirm Password *', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.password.confirm) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.password.confirm,{'attr': {'class': 'form-control'}}) }}
@@ -48,11 +87,26 @@
             </div>
             
             <div class="form-group">
-                <div class="col-sm-offset-1 col-sm-4">
+                <div class="col-sm-offset-2 col-sm-4">
                     {{ form_widget(form.Register, {'attr': {'class': 'btn btn-default'}}) }}
                 </div>
             </div>
-            
+
         {{ form_end(form) }}
+        
     </div>    
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    
+    $(function() {
+        $('#datetimepicker').datetimepicker({
+            pickTime: false
+        });
+    });
+
+</script> 
 {% endblock %}

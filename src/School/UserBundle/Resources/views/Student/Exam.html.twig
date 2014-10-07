@@ -15,30 +15,56 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h3 > {{ assigned_exam.exam.name }} </h3> 
-
-    
     <p id="countdown" class="text-right"> </p>
+     
+    <h3 > {{ assigned_exam.exam.name }} </h3> 
+    
     <ol>
-        {{ form(form) }}    
+        {{ form_start(form) }}   
+    
+        {% set endTime = endTime|date("m/d/Y H:i:s") %}
+
+        <input hidden type="text" id="end_time" value="{{ endTime }}" />
+        
+        <div class="modal fade" id="time_over">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times; </span><span class="sr-only">Close </span></button>
+                        <p> Time is up! Submit your answers! </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> Dismiss </button>
+                        <button type="submit" class="btn btn-primary"> Save your answers </button> 
+                        
+                    </div>
+                </div> <!-- /.modal-content -->
+            </div> <!-- /.modal-dialog -->
+        </div> <!-- /.modal -->
+        
+        {{ form_end(form) }}
     </ol>
     
-    {% if taken_exam is null %}
-        {% set endTime = endTime|date("m/d/Y H:i:s") %}
-    {% else %}
-        {% set endTime = taken_exam.endTime|date("m/d/Y H:i:s") %}
-    {% endif %}
-
-    <input hidden type="text" id="end_time" value="{{ endTime }}" />
-    
-</div>
-
 {% endblock %}
 
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript"> 
+        
+        // Hide the null option for the exam answers
+        // This allows the user to submit the form without answering explicitely to a question
+        var $form = $('form[name="assigned_exam"]');
+        var $labels = $form.find('.row .radio label');
+
+        $labels.each(function (i, el) {
+          var $el = $(el);
+          if ($el.text().trim() == 'n/a') {
+            var $radio_col = $el.closest('.radio').parent();
+            $radio_col.css('display', 'none');
+          }
+        });
+        
         var end_time = document.getElementById("end_time").value;
         var countdown = new Countdown({
         
@@ -52,7 +78,7 @@
                 console.log('Exam started');
             },
             onEnd: function() {
-                window.alert("Post your answers");
+                $('#time_over').modal('show');
                 console.log('Exam has ended');
             }
         });

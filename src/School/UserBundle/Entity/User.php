@@ -3,11 +3,12 @@
 namespace School\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 
 
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable
 {
     private $id;
     
@@ -21,6 +22,10 @@ class User implements UserInterface, \Serializable
     
     private $email;
 
+    private $birthDate;
+
+    private $occupation;
+    
     private $is_active;
 
     private $role;
@@ -242,7 +247,14 @@ class User implements UserInterface, \Serializable
     {
         return $this->lastName;
     }
-
+    
+    
+    public function getFullName()
+    {
+        $fullName = $this->lastName. ' '. $this->firstName;
+        return $fullName;
+    }
+    
     /**
      * Set role
      *
@@ -264,15 +276,6 @@ class User implements UserInterface, \Serializable
     public function getRole()
     {
         return $this->role;
-    }
-    
-    /**
-    * Create Username for users on registration
-    */
-    public static function createUsername($first, $last)
-    {
-        $username = $first[0].$last;
-        return $username;
     }
 
     /**
@@ -319,5 +322,76 @@ class User implements UserInterface, \Serializable
     public function getStudent()
     {
         return $this->student;
+    }
+    
+
+    /**
+     * Set birthDate
+     *
+     * @param \DateTime $birthDate
+     * @return User
+     */
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthDate
+     *
+     * @return \DateTime 
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * Set occupation
+     *
+     * @param string $occupation
+     * @return User
+     */
+    public function setOccupation($occupation)
+    {
+        $this->occupation = $occupation;
+
+        return $this;
+    }
+
+    /**
+     * Get occupation
+     *
+     * @return string 
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+    
+    
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+    
+    // The user account is enabled by the administrator 
+    public function isEnabled()
+    {
+        if($this->role != NULL) {
+            return $this->role;
+         }
     }
 }

@@ -46,6 +46,17 @@ class HomepageController extends Controller
                 ->findOneBy(
                     array('user' => $user)
                 );
+        // email to be sent to the user when administrator activates the account       
+        $email = \Swift_Message::newInstance()
+            ->setSubject('Activation Completed')
+            ->setFrom('send@example.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'SchoolUserBundle:Login:email.txt.twig',
+                    array('user' => $user)
+                )
+            );
         
         $form->handleRequest($request);
         
@@ -55,12 +66,14 @@ class HomepageController extends Controller
                 
                 //Update Teacher / Student DB tables accordingly
                 if ( $role == 'ROLE_TEACHER' && !$teacher_exists ) {
-                    $em->persist($teacher); 
+                    $em->persist($teacher);
+                    $this->get('mailer')->send($email);
                     if ( $student_exists ) {
                         $em->remove($student_exists);
                     }         
                 } else if ($role == 'ROLE_STUDENT' && !$student_exists) {
                     $em->persist($student);
+                    $this->get('mailer')->send($email);
                     if ( $teacher_exists ) {
                         $em->remove($teacher_exists);
                     }
@@ -69,14 +82,20 @@ class HomepageController extends Controller
                 } else if ( $role == 'ROLE_ADMIN' && $teacher_exists ) {
                     $em->remove($teacher_exists);
                 }
+                
             }
             $em->persist($user); 
             $em->flush();
-                 $this->get('session')->getFlashBag()->add(
+            
+            $this->get('session')->getFlashBag()->add(
                 'notice',
                 'Your changes were saved!'
             );
-            return $this->redirect($this->generateUrl('user_edit', array('userId' => $userId)));
+            if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+                return $this->redirect($this->generateUrl('user_edit', array('userId' => $userId)));        
+            } else {
+                return $this->redirect($this->generateUrl('admin_users'));
+            }
         } else
         return $this->render('SchoolUserBundle:Admin:EditUser.html.twig', array(
             'user' => $user,  

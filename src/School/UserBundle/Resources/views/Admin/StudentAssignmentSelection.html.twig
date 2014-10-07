@@ -10,23 +10,21 @@
 {% block body %}
 <div class="container-fluid">
 
-    <h2> Assign Students To A Class </h2>
+    <h2> Assign students to a class </h2>
     
-    <h3> Selected Students </h3>
-    
-    <div class="row">
-    <div class="col-md-8">
-    <ol>
-    {% for student in students %}
-        <li> 
-            {{ student.user.lastName }} {{ student.user.firstName }} {% if student.schoolClass is not null %}
-                currently at class: {{ student.schoolClass.name }} 
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ol>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Selected Students </h3>
+        </div>
+        <div class="panel-body">
+            {% for student in students %}    
+                {{ student.user.lastName }} {{ student.user.firstName }} {% if student.schoolClass is not null %}
+                    currently at: {{ student.schoolClass.name }}
+                {% endif %} ,               
+            {% endfor %}
+        </div>
     </div>
-    </div>
+
     
     {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
     

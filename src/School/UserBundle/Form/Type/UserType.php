@@ -19,12 +19,17 @@ class UserType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Current logged user
+        // Current logged in user
         $user = $this->securityContext->getToken()->getUser();
         
         $builder
             ->add('firstName')
             ->add('lastName')
+            ->add('birthDate', 'date', array(
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
+            ))
+            ->add('occupation')
             ->add('username')
             ->add('email', 'email')            
             ->add('save', 'submit');

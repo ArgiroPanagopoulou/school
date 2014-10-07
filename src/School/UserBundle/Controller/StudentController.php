@@ -9,8 +9,12 @@ use School\UserBundle\Entity\TakenExam;
 use School\UserBundle\Entity\TakenQuestion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
+/**
+* @Security("has_role('ROLE_STUDENT')")
+*/
 class StudentController extends Controller
 {
     public function studentProfileAction()
@@ -27,14 +31,16 @@ class StudentController extends Controller
         $student = $this->get('security.context')->getToken()->getUser()->getStudent();
         
         $em = $this->getDoctrine()->getManager();
-
+        
+        $assigned_exam_repository = $em->getRepository('SchoolUserBundle:AssignedExam');
+        
         $school_class = $student->getSchoolClass();
         
         $course = $em->getRepository('SchoolUserBundle:Course')->find($course_id);
         
-        $assigned_exams = $em->getRepository('SchoolUserBundle:AssignedExam')->findAssignedExamsByCourseClass($course, $school_class);
+        $assigned_exams = $assigned_exam_repository->findAssignedExamsByCourseClass($course, $school_class);
         
-        $taken_exams = $em->getRepository('SchoolUserBundle:AssignedExam')->findTakenExamsForStudent($student, $school_class, $course );
+        $taken_exams = $assigned_exam_repository->findTakenExamsForStudent($student, $school_class, $course );
         
         $not_taken_exams = array_udiff($assigned_exams, $taken_exams, 
             function ( $assigned_exam, $taken_exam) {
@@ -73,11 +79,13 @@ class StudentController extends Controller
         $taken_exam = new TakenExam();
         $existed_taken_exam = $em->getRepository('SchoolUserBundle:TakenExam')->findTakenByStudentExam($student, $assigned_exam);
         
-        $start_time = new \DateTime();
-        $end_time = $start_time->add(new \DateInterval('PT' . $hours . 'H'. $minutes. 'M')); // Calculate the datetime of an exam termination according to it's duration
-        
+        $start_time = null;
+        $end_time = null;
+
         if(!$form->isSubmitted()) {
-            if(!$existed_taken_exam) {    
+            if(!$existed_taken_exam) { 
+                $start_time = new \DateTime();
+                $end_time = $start_time->add(new \DateInterval('PT' . $hours . 'H'. $minutes. 'M')); // Calculate the datetime of an exam termination according to it's duration
                 $taken_exam->setStudent($student);
                 $taken_exam->setExam($exam);
                 $taken_exam->setAssignedExam($assigned_exam);
@@ -85,7 +93,9 @@ class StudentController extends Controller
                 $taken_exam->setEndTime($end_time);
                 $em->persist($taken_exam);
                 $em->flush();
-            } 
+            } elseif($existed_taken_exam) {
+                $end_time = $existed_taken_exam->getEndTime();
+            }
         } elseif ($form->isValid()) {    
             foreach($questions as $question) {
                 $taken_question = new TakenQuestion();

@@ -46,38 +46,37 @@ class LoginController extends Controller
             )
         );
     }
-   
+    
+    /**
+    * User Registration
+    */
     public function registerAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
         $user = new User();
-        $form = $this->createForm(new RegistrationUserType(), $user, array(
-            
-        ));
+        $form = $this->createForm(new RegistrationUserType(), $user);
         
         $form->handleRequest($request);
-        
-        
+    
         if ($form->isValid()) { 
             //Get the submitted data
             $pass = $form['password']->getData();
-            $firstName = $form['firstName']->getData();
-            $lastName = $form['lastName']->getData();
-            
-            //Set username 
-            $username = $user->createUsername($firstName, $lastName);
-            $user->setUsername($username);
+            $registration = $form->getData();
             
             // Encode the password before inserting it into the database
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($user);
             $password = $encoder->encodePassword($pass, $user->getSalt());
             $user->setPassword($password);
-            
-           
+
             $em->persist($user);  
             $em->flush();
+            
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                'You completed the registration process successfully! You will receive an email for your account activation.'
+            );
             return $this->redirect($this->generateUrl('homepage'));
         } else {
             return $this->render(

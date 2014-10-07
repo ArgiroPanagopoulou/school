@@ -87,4 +87,15 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $user;
     }
     
+    // Returns the actual query used for pagination of the users list
+    public function loadAllUsers()
+    {
+        $users = $this->getEntityManager()->createQuery(
+            'SELECT u FROM SchoolUserBundle:User u 
+            LEFT JOIN u.role r 
+            ORDER BY u.lastName ASC'
+        );
+        
+        return $users;
+    }
 }

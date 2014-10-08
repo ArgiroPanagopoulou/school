@@ -18,6 +18,7 @@ class MenuBuilder extends ContainerAware
         $menu = $factory->createItem('root');
         
         $menu->addChild('Home', array('route' => 'homepage'));
+        // $menu->addChild('News', array('route' => 'news'));
         
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
         

@@ -5,6 +5,10 @@ school_user:
 homepage:
     path: /
     defaults: { _controller:SchoolUserBundle:Homepage:homepage }
+    
+news:
+    path: /news/
+    defaults: { _controller:SchoolUserBundle:Guest:news }
 
 login: 
     path: /login

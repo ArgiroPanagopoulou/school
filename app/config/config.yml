@@ -75,7 +75,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-    delivery_address: "%mailer_delivery_address%" # used for development reasons
     
 knp_menu:
     twig:

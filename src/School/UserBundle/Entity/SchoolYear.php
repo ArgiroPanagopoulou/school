@@ -114,8 +114,9 @@ class SchoolYear
      */
     public function addSchoolClass(\School\UserBundle\Entity\SchoolClass $schoolClasses)
     {
+        //$this->schoolClasses[] = $schoolClasses;
         $this->schoolClasses[] = $schoolClasses;
-
+        $schoolClasses->setSchoolYear($this);
         return $this;
     }
 
@@ -124,9 +125,9 @@ class SchoolYear
      *
      * @param \School\UserBundle\Entity\SchoolClass $schoolClasses
      */
-    public function removeSchoolClass(\School\UserBundle\Entity\SchoolClass $schoolClasses)
+    public function removeSchoolClass(\School\UserBundle\Entity\SchoolClass $schoolClass)
     {
-        $this->schoolClasses->removeElement($schoolClasses);
+        $this->schoolClasses->removeElement($schoolClass);
     }
 
     /**

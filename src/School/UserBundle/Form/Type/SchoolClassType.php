@@ -19,8 +19,6 @@ class SchoolClassType extends AbstractType
                         ->setParameter('year', $options['year']);
                 },
                 'property' => 'name',
-                // 'expanded' => true,
-                // 'multiple' => true,
             ))
             ->add('save', 'submit');
     }

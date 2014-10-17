@@ -201,7 +201,7 @@ class TeacherController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('teacher_list_exams', array('course_id' => $course_id, 'class_id' => $class_id)));
         }
-        return $this->render('SchoolUserBundle:Teacher:editAssignedExam.html.twig', array(
+        return $this->render('SchoolUserBundle:Teacher:EditAssignedExam.html.twig', array(
             'form' => $form->createView(),
         ));
     }

@@ -5,31 +5,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SchoolYearType extends AbstractType
+class NewSchoolClassType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'entity', array(
-                'class' => 'SchoolUserBundle:SchoolYear',
-                'property' => 'name',
-                'expanded' => false,
-                'multiple' => false,
-            ))
-            //->add('dateFrom')
-            //->add('dateTo')
-            ->add('save', 'submit');
+            ->add('name');
     }
     
     public function getName()
     {
-        return 'schoolYear';
+        return 'school_class';
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'School\UserBundle\Entity\SchoolYear',
+            'data_class' => 'School\UserBundle\Entity\SchoolClass',
         ));
     }
 }

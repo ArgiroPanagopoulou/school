@@ -19,8 +19,8 @@ School\UserBundle\Entity\SchoolYear:
     oneToMany:
         schoolClasses:
             targetEntity: SchoolClass
+            cascade: [persist]
             mappedBy: schoolYear
-    # oneToMany:
         courses:
             targetEntity: Course
             mappedBy: schoolYear

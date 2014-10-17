@@ -1,0 +1,93 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/css/bootstrap-datetimepicker.min.css' ) }}"/>
+{% endblock %}
+
+{% block header_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap_datetime_widget/js/bootstrap-datetimepicker.min.js') }}"></script>
+{% endblock %}
+
+{% block title %} Add School Year {% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+{#     {{ form_start(form) }}
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.name) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control' }}) }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.dateFrom) }}
+                    {{ form_errors(form.dateFrom) }}
+                    <div class='input-group date' id='datetimepicker1'>
+                        {{ form_widget(form.dateFrom, {'attr': {'class': 'form-control' ,'data-date-format': 'DD/MM/YYYY'}}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class='col-md-2'>
+                <div class="form-group">
+                    {{ form_label(form.dateTo) }}
+                    {{ form_errors(form.dateTo) }}
+                    <div class='input-group date' id='datetimepicker2'>
+                        {{ form_widget(form.dateTo, {'attr': {'class': 'form-control' ,'data-date-format': 'DD/MM/YYYY'}}) }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <ul class="school_classes">
+        {% for school_class in form.schoolClasses %}
+            <li> {{ form_row(school_class.name) }} </li>
+        {% endfor %}
+        </ul>
+       {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
+    {{ form_end(form) }} #}
+    
+    <ul>
+        {% for school_year in school_years %}
+            <li> {{ school_year.name }} {{ school_year.dateFrom|date("d/m/Y") }} - {{ school_year.dateTo|date("d/m/Y") }} 
+                <a href="{{ path('admin_edit_schoolyear', {'school_year_id': school_year.id }) }}"> Add a class </a> 
+            </li>
+                <ul>
+                    {% for school_class in school_year.schoolClasses %}
+                        <li> {{ school_class.name }} </li>
+                    {% endfor %}
+                </ul>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+        $('#datetimepicker1').datetimepicker({
+            pickTime: false
+        })
+        $('#datetimepicker2').datetimepicker({
+            pickTime: false
+        });
+    });
+    </script>
+{% endblock %}

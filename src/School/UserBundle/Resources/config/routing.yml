@@ -22,13 +22,9 @@ admin_selected_students:
     pattern: /admin/assign_students/selectedAction/
     defaults: { _controller: SchoolUserBundle:Admin:studentSelect }
     
-admin_add_schoolyear:
-    pattern: /admin/add_school_year/
-    defaults: { _controller: SchoolUserBundle:Admin:addSchoolYear }
-    
-admin_edit_schoolyear:
-    pattern: /admin/edit_school_year/{school_year_id}
-    defaults: { _controller: SchoolUserBundle:Admin:editSchoolYear }
+admin_alerts:
+    pattern: /admin/alerts/
+    defaults: { _controller: SchoolUserBundle:Admin:alerts }
     
 teacher_homepage:
     pattern: /teacher/homepage/

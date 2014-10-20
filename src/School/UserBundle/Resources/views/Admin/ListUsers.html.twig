@@ -2,6 +2,7 @@
 
 {% block title %}List of Users{% endblock %}
 {% block body %}
+{{ parent() }}
 <div class="container-fluid">
     
     {% for flashMessage in app.session.flashbag.get('notice') %}

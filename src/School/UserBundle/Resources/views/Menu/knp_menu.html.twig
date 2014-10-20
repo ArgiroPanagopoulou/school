@@ -74,17 +74,18 @@
  
 {% block linkElement %}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
-        {% if item.attribute('icon') is not empty  %}
-            <i class="{{ item.attribute('icon') }}"></i>
-        {% endif %}
         {{ block('label') }}
+        {% if item.attribute('icon') is not empty  %}
+            <span class="{{ item.attribute('icon') }}"></span>
+        {% endif %}
+        
     </a>
 {% endblock %}
  
 {% block spanElement %}
     <span>{{ macros.attributes(item.labelAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
-            <i class="{{ item.attribute('icon') }}"></i>
+            <span class="{{ item.attribute('icon') }}"></span>
         {% endif %}
         {{ block('label') }}
     </span>
@@ -105,4 +106,4 @@
     </a>
 {% endblock %}
  
-{% block label %}{{ item.label|trans }}{% endblock %}
+{% block label %}{{ item.label|raw }} {% endblock %} 

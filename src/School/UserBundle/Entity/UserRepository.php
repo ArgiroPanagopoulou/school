@@ -20,9 +20,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->setParameter('username', $username)
             ->setParameter('email', $username)
             ->getQuery();
-            
-            
-            
+ 
             try {
                 $user = $q->getSingleResult();
             } catch (NoResultException $e) {
@@ -97,5 +95,32 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         );
         
         return $users;
+    }
+    
+    /**
+    * Load users who have no role assignment
+    */
+    public function loadUsersNoRole()
+    {
+        $q = $this->getEntityManager()
+            ->createQuery('SELECT u
+                FROM SchoolUserBundle:User u 
+                LEFT JOIN u.role r 
+                WHERE u.role IS NULL'
+            );
+        $users = $q->getResult();
+        
+        return $users;
+    }
+    
+    public function loadUsersNoRolePagination()
+    {
+        $users = $this->getEntityManager()
+            ->createQuery('SELECT u
+                FROM SchoolUserBundle:User u 
+                LEFT JOIN u.role r 
+                WHERE u.role IS NULL'
+            )->getResult();
+        return $users; 
     }
 }

@@ -8,6 +8,7 @@ use School\UserBundle\Entity\Teacher;
 use School\UserBundle\Entity\Student;
 use School\UserBundle\Form\Type\UserType;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use School\UserBundle\Entity\Message;
 
 
 class HomepageController extends Controller
@@ -57,7 +58,7 @@ class HomepageController extends Controller
                     array('user' => $user)
                 )
             );
-        
+
         $form->handleRequest($request);
         
         if ($form->isValid()) { 
@@ -81,9 +82,9 @@ class HomepageController extends Controller
                     $em->remove($student_exists);
                 } else if ( $role == 'ROLE_ADMIN' && $teacher_exists ) {
                     $em->remove($teacher_exists);
-                }
-                
+                }                
             }
+            
             $em->persist($user); 
             $em->flush();
             

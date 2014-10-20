@@ -25,9 +25,6 @@ use School\UserBundle\Form\Type\TeacherAssignationType;
 use School\UserBundle\Form\Model\TeacherAssignation;
 use School\UserBundle\Form\Type\StudentFilterType;
 use School\UserBundle\Form\Type\StudentRemovalFromClassType;
-use School\UserBundle\Form\Type\NewSchoolYearType;
-use Doctrine\Common\Collections\ArrayCollection;
-
 
 
 /**
@@ -55,7 +52,7 @@ class AdminController extends Controller
             $this->get('request')->query->get('page', 1),
             10
         );
-            
+
         return $this->render('SchoolUserBundle:Admin:ListUsers.html.twig', array(
             'users' => $users,
             'pagination' => $pagination,
@@ -67,7 +64,7 @@ class AdminController extends Controller
     *   Assign teachers for courses and classes 
     **/
     public function assignTeachersAction(Request $request)
-    {       
+    {      
         $courseclass = new CourseClass();               
         $em = $this->getDoctrine()->getManager();
         
@@ -125,7 +122,6 @@ class AdminController extends Controller
     
     public function assignStudentsAction(Request $request)
     {
-        
         $em = $this->getDoctrine()->getManager();
         $students = $em->getRepository('SchoolUserBundle:Student')
             ->findAllOrderedByName();
@@ -203,7 +199,6 @@ class AdminController extends Controller
     // Selected Action: Student Assignment to classes
     public function studentAssignmentSelectionAction(Request $request, $selected_students, $selected_action)
     {
-        
         $class = new SchoolClass();
                 
         $form = $this->createForm(new StudentAssignationType(), $class, array(
@@ -274,61 +269,25 @@ class AdminController extends Controller
         }
     }
     
-    public function editSchoolYearAction(Request $request, $school_year_id)
+    public function alertsAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $school_class = new SchoolClass();
+        $users = $em->getRepository('SchoolUserBundle:User')->loadUsersNoRole();
         
-        $school_year = $em->getRepository('SchoolUserBundle:SchoolYear')->find($school_year_id);
-        
-        if(!$school_year) {
-            throw $this->createNotFoundException('No school year found');
-        }
-        
-        $original_school_classes = new ArrayCollection();
-        
-        foreach($school_year->getSchoolClasses() as $school_class) {
-            $original_school_classes->add($school_class);
-        }
-        $form = $this->createForm(new NewSchoolYearType(), $school_year);
-        
-        $form->handleRequest($request);
-        
-        if($form->isValid()) {
-            foreach($original_school_classes as $school_class) {
-                if(false === $school_year->getSchoolClasses()->contains($school_class)) {
-                    $school_class->setSchoolYear(null);
-                    $em->persist($school_class);
-                    $em->remove($school_class);
-                }
-            }
-            $em->persist($school_year);
-            $em->flush();
-        }
-        return $this->render('SchoolUserBundle:Admin:EditSchoolYear.html.twig', array(
-            'form' => $form->createView(),
+        //pagination
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $users,
+            $this->get('request')->query->get('page', 1),
+            5
+        );
+
+        return $this->render('SchoolUserBundle:Admin:Alerts.html.twig', array(
+            'users' => $users,
+            'pagination' => $pagination,
         ));
     }
     
-    public function addSchoolYearAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $school_year = new SchoolYear();
-        
-        $existing_school_years = $em->getRepository('SchoolUserBundle:SchoolYear')->findAll();
-        $form = $this->createForm(new NewSchoolYearType(), $school_year);
-        
-        $form->handleRequest($request);
-        
-        if($form->isValid()) {
-            $em->persist($school_year);
-            $em->flush();
-        }
-        return $this->render('SchoolUserBundle:Admin:AddSchoolYear.html.twig', array(
-            'form' => $form->createView(),
-            'school_years' => $existing_school_years,
-        ));
-    }   
 }
 
 

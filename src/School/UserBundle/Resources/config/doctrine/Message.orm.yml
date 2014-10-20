@@ -1,0 +1,21 @@
+School\UserBundle\Entity\Message:
+    type: entity
+    table: message
+    repositoryClass: School\UserBundle\Entity\MessageRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        message: 
+            type: string
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: messages
+            joinColumn:
+                name: target_user_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

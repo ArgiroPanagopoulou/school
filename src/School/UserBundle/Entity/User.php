@@ -33,6 +33,8 @@ class User implements AdvancedUserInterface, \Serializable
     private $teacher;
    
     private $student;
+
+    private $messages;
     
     
     public function __construct()
@@ -393,5 +395,39 @@ class User implements AdvancedUserInterface, \Serializable
         if($this->role != NULL) {
             return $this->role;
          }
+    }
+
+
+    /**
+     * Add messages
+     *
+     * @param \School\UserBundle\Entity\Message $messages
+     * @return User
+     */
+    public function addMessage(\School\UserBundle\Entity\Message $messages)
+    {
+        $this->messages[] = $messages;
+
+        return $this;
+    }
+
+    /**
+     * Remove messages
+     *
+     * @param \School\UserBundle\Entity\Message $messages
+     */
+    public function removeMessage(\School\UserBundle\Entity\Message $messages)
+    {
+        $this->messages->removeElement($messages);
+    }
+
+    /**
+     * Get messages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }

@@ -15,3 +15,7 @@ services:
         arguments: ["@security.context"]
         tags:
             - { name: form.type, alias: user_type }
+
+    alerts:
+        class: School\UserBundle\Service\Alerts
+        arguments: ['@doctrine.orm.entity_manager']

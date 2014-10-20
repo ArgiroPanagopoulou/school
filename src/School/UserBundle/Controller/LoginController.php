@@ -64,19 +64,16 @@ class LoginController extends Controller
             $pass = $form['password']->getData();
             $registration = $form->getData();
             
+            $full_name = $form['firstName']->getData() . ' '. $form['lastName']->getData();
             // Encode the password before inserting it into the database
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($user);
             $password = $encoder->encodePassword($pass, $user->getSalt());
             $user->setPassword($password);
-
+            
             $em->persist($user);  
             $em->flush();
             
-            $this->get('session')->getFlashBag()->add(
-                'notice',
-                'You completed the registration process successfully! You will receive an email for your account activation.'
-            );
             return $this->redirect($this->generateUrl('homepage'));
         } else {
             return $this->render(

@@ -16,6 +16,7 @@
 
 
 {% block body %}
+{{ parent() }}
     <div class="container-fluid">
         <h3>Edit User {{user.lastName}} {{ user.firstName }}</h3>
         

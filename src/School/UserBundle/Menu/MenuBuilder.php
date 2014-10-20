@@ -13,6 +13,8 @@ class MenuBuilder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $securityContext = $this->container->get('security.context');
+        $alerts = $this->container->get('alerts')->checkRegistrationAlerts();
+        
         $user = $securityContext->getToken()->getUser();
         
         $menu = $factory->createItem('root');
@@ -25,8 +27,11 @@ class MenuBuilder extends ContainerAware
         if($securityContext->isGranted('ROLE_ADMIN')) {          
             $menu->addChild('Users', array('route' => 'admin_users'));   
             $menu->addChild('Teacher Assignment', array('route' => 'admin_assign_teachers'));
-            $menu->addChild('Student Assignment', array('route' => 'admin_assign_students'));  
-            $menu->addChild('School Classes', array('route' => 'admin_add_schoolyear'));
+            $menu->addChild('Student Assignment', array('route' => 'admin_assign_students'));
+            $menu->addChild('alerts', array(
+                    'route' => 'admin_alerts',
+                    'label' => 'Alerts <span class="badge">'.$alerts.'</span>'
+                ));
         } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
             $menu->addChild('Lectures', array('route' => 'teacher_homepage'));
             $menu->addChild('Exams', array('route' => 'teacher_list_courses'));
@@ -60,16 +65,19 @@ class MenuBuilder extends ContainerAware
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
 
         if(is_object($user)) {
-        $user_lastname = $user->getLastName();
-        $user_firstname = $user->getFirstName();
-        $user_role = $user->getRole()->getName();
-        $user_id = $user->getId();
-        
-        $menu->addChild('user', array(
-            'route' => 'user_edit', 'routeParameters' => array('userId' => $user_id),  // Currently the edit page for the users is only accessible from admin.
-            'label' => 'Logged in as '.$user_lastname.' '.$user_firstname.' '.'('.$user_role.')',
-        ));
-        $menu->addChild('Logout', array('route' => 'logout'));
+            $user_lastname = $user->getLastName();
+            $user_firstname = $user->getFirstName();
+            $user_role = $user->getRole()->getName();
+            $user_id = $user->getId();
+            
+            $menu->addChild('user', array(
+                'route' => 'user_edit', 'routeParameters' => array('userId' => $user_id), 
+                'label' => $user_lastname.' '.$user_firstname.' '.'('.$user_role.')',
+            ));
+            
+            $menu->addChild('Logout', array(
+                'route' => 'logout'
+            ));
         } else {
             $menu->addChild('Login', array('route' => 'login'));
             $menu->addChild('Register', array('route' => 'register'));

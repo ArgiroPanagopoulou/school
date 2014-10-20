@@ -78,7 +78,7 @@ swiftmailer:
     
 knp_menu:
     twig:
-        template: SchoolUserBundle:Menu:knp_menu.html.twig
+       template: SchoolUserBundle:Menu:knp_menu.html.twig
  
 #Paginator configuration 
 knp_paginator:

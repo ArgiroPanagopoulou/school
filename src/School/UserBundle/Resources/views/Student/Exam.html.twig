@@ -15,10 +15,12 @@
 
 {% block body %}
 <div class="container-fluid">
-    <p id="countdown" class="text-right"> </p>
-     
-    <h3 > {{ assigned_exam.exam.name }} </h3> 
     
+    <div class="page-header">
+        <h2> {{ assigned_exam.exam.name }} </h2> 
+    </div>
+    
+    <p id="countdown" class="text-right"> </p>
     <ol>
         {{ form_start(form) }}   
     

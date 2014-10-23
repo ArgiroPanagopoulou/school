@@ -112,15 +112,5 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         
         return $users;
     }
-    
-    public function loadUsersNoRolePagination()
-    {
-        $users = $this->getEntityManager()
-            ->createQuery('SELECT u
-                FROM SchoolUserBundle:User u 
-                LEFT JOIN u.role r 
-                WHERE u.role IS NULL'
-            )->getResult();
-        return $users; 
-    }
+
 }

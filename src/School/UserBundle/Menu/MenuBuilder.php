@@ -13,7 +13,15 @@ class MenuBuilder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $securityContext = $this->container->get('security.context');
-        $alerts = $this->container->get('alerts')->checkRegistrationAlerts();
+        $registration_users = $this->container->get('alerts')->checkRegistrationAlerts();
+        $alerts = count($registration_users);
+        
+        // for collapsible badge 
+        if($alerts > 0) {
+            $alerts;
+        } else {
+            $alerts = null;
+        }
         
         $user = $securityContext->getToken()->getUser();
         
@@ -24,6 +32,12 @@ class MenuBuilder extends ContainerAware
         
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
         
+        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $menu->addChild('My Profile', array(
+                'route' => 'user_profile'
+            ));
+        }
+        
         if($securityContext->isGranted('ROLE_ADMIN')) {          
             $menu->addChild('Users', array('route' => 'admin_users'));   
             $menu->addChild('Teacher Assignment', array('route' => 'admin_assign_teachers'));
@@ -31,14 +45,14 @@ class MenuBuilder extends ContainerAware
             $menu->addChild('alerts', array(
                     'route' => 'admin_alerts',
                     'label' => 'Alerts <span class="badge">'.$alerts.'</span>'
-                ));
+                )
+            );
         } elseif ($securityContext->isGranted('ROLE_TEACHER')) {
             $menu->addChild('Lectures', array('route' => 'teacher_homepage'));
             $menu->addChild('Exams', array('route' => 'teacher_list_courses'));
-            $menu->addChild('Students', array('route' => 'teacher_load_students'));
+            $menu->addChild('My Students', array('route' => 'teacher_load_students'));
 
         } elseif ($securityContext->isGranted('ROLE_STUDENT')) {
-            $menu->addChild('My Profile', array('route' => 'student_profile'));
             if($user->getStudent()->getSchoolClass()) {   
                 $courses = $user->getStudent()->getSchoolClass()->getSchoolYear()->getCourses();
                 $menu->addChild('My Courses')
@@ -69,12 +83,12 @@ class MenuBuilder extends ContainerAware
             $user_firstname = $user->getFirstName();
             $user_role = $user->getRole()->getName();
             $user_id = $user->getId();
-            
-            $menu->addChild('user', array(
-                'route' => 'user_edit', 'routeParameters' => array('userId' => $user_id), 
+
+            $menu->addChild('user', array( 
+                'uri' => '#',
                 'label' => $user_lastname.' '.$user_firstname.' '.'('.$user_role.')',
             ));
-            
+
             $menu->addChild('Logout', array(
                 'route' => 'logout'
             ));

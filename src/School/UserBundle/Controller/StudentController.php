@@ -38,19 +38,26 @@ class StudentController extends Controller
         
         $course = $em->getRepository('SchoolUserBundle:Course')->find($course_id);
         
+        // Find the assigned teacher for this course/class
+        $teacher = $em->getRepository('SchoolUserBundle:Teacher')->findTeacherByCourseClass($course, $school_class); 
+        $lectures = $em->getRepository('SchoolUserBundle:Lecture')->loadLecturesPerCourse($course);
+        
         $assigned_exams = $assigned_exam_repository->findAssignedExamsByCourseClass($course, $school_class);
-        
-        $taken_exams = $assigned_exam_repository->findTakenExamsForStudent($student, $school_class, $course );
-        
-        $not_taken_exams = array_udiff($assigned_exams, $taken_exams, 
-            function ( $assigned_exam, $taken_exam) {
-                return $assigned_exam->getId() - $taken_exam->getId();
+        $taken_exams = $em->getRepository('SchoolUserBundle:TakenExam')->findTakenExamsByStudentCourse($student, $course);
+
+        $assigned_taken_exams = $assigned_exam_repository->findTakenExamsForStudent($student, $school_class, $course );
+
+        $not_taken_exams = array_udiff($assigned_exams, $assigned_taken_exams, 
+            function ( $assigned_exam, $assigned_taken_exam) {
+                return $assigned_exam->getId() - $assigned_taken_exam->getId();
             }
         );
         return $this->render('SchoolUserBundle:Student:ListCourses.html.twig', array(
             'course' => $course,
-            'taken_exams' =>$taken_exams,
             'not_taken_exams' => $not_taken_exams,
+            'lectures' => $lectures,
+            'taken_exams' => $taken_exams,
+            'teacher' => $teacher,
         ));
     }
     

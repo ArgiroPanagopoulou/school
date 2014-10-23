@@ -1,20 +1,16 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 
-{% block title %} Students {% endblock %}
-
-{% block header_javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/schooluser/vendor/bootstrap/tab.js') }}"></script>
-{% endblock %}
+{% block title %} My Students {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
-            
-    <h3> Students </h3>
+    <div class="page-header">       
+        <h2> My Students </h2>
+    </div>
     
     <ul class="nav nav-tabs" role="tablist" id="myTab">
         {% for school_class in classes %}
-        <li ><a href="#{{ school_class.id }}" role="tab" data-toggle="tab"> {{ school_class.name }}</a></li>
+        <li ><a href="#{{ school_class.id }}" role="tab" data-toggle="tab"> {{ school_class.name }} - {{ school_class.schoolYear }} </a></li>
         {% endfor %}
     </ul>
    

@@ -16,10 +16,8 @@ class Alerts
     
     public function checkRegistrationAlerts()
     {   
-        $users = $this->manager->getRepository('SchoolUserBundle:User')->loadUsersNoRole();
+        $registration_users = $this->manager->getRepository('SchoolUserBundle:User')->loadUsersNoRole();
         
-        $number_of_alerts = count($users);
-        
-        return $number_of_alerts;
+        return $registration_users;
     }
 }

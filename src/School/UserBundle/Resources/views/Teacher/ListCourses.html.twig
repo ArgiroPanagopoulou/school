@@ -1,24 +1,41 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 
-{% block title %}List Courses{% endblock %}
+{% block title %} Courses{% endblock %}
 
 
 {% block body %}
 <div class="container-fluid">
-    <h3> Courses List </h3>
+    <div class="page-header">
+        <h2> Courses </h2>
+    </div>
     
-    <ul>
-        {% for year, courses in grouped %}
-            <li> {{ year }} </li>            
-            <ul>
-                {% for course in courses %}           
-                    <li> {{ course.course.name }} - 
-                        {{ course.class.name }} <a href="{{ path('teacher_list_exams', {'course_id': course.course.id, 'class_id': course.class.id}) }}"> (Assign Exam) </a> 
-                    </li>           
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                {% for year, courses in grouped %}
+                    <dt> {{ year }} </dt>
+                    
+                    <dd> <ul class="list-unstyled">
+                        {% for course in courses %}
+                            <li> {{ course.course.name }} - {{ course.class.name }} 
+                                <a href="{{ path('teacher_list_exams', {'course_id': course.course.id, 'class_id': course.class.id}) }}"> Assign Exam 
+                                    <span class="glyphicon glyphicon-pencil"> </span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </dd>
                 {% endfor %}
-            </ul>
-        {% endfor %}
-    </ul>
+            </dl>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="well">
+                
+                <p class="text-left"> Choose a course from the list in order to assign an exam for the specific school class! </p>
+            </div>
+        </div>
+    </div>
    
 </div>
 {% endblock %}

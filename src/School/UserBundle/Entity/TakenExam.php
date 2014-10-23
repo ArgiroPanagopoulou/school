@@ -237,11 +237,16 @@ class TakenExam
     
     public function getStatus()
     {
-        if($this->endTime >= (new \DateTime()))
-        {
-            return 'In Progress';
-        }else {
+        if($this->score != null) {
             return 'Completed';
+        } else {
+            return 'In Progress';
         }
+        // if($this->endTime >= (new \DateTime()))
+        // {
+            // return 'In Progress';
+        // }else {
+            // return 'Completed';
+        // }
     }
 }

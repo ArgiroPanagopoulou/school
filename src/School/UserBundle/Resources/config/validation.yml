@@ -26,3 +26,9 @@ School\UserBundle\Entity\AssignedExam:
         stopDateValid:
             - "True": 
                 message: "Stop Date must be greater than start date" 
+                
+School\UserBundle\Form\Model\ChangePassword:
+    properties:
+        oldPassword: 
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                message: "Wrong value for your current password"

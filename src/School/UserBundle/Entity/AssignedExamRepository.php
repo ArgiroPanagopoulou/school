@@ -10,7 +10,8 @@ class AssignedExamRepository extends EntityRepository
     {
         $assigned_exams = $this->getEntityManager()
             ->createQuery("SELECT a 
-                FROM SchoolUserBundle:AssignedExam a 
+                FROM SchoolUserBundle:AssignedExam a
+                LEFT JOIN a.takenExams t 
                 LEFT JOIN a.exam e 
                 WHERE a.schoolClass = :class 
                     AND e.course = :course 

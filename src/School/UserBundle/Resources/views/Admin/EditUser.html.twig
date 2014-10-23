@@ -18,7 +18,9 @@
 {% block body %}
 {{ parent() }}
     <div class="container-fluid">
-        <h3>Edit User {{user.lastName}} {{ user.firstName }}</h3>
+        <div class="page-header">
+            <h2> Edit User <small> {{user.lastName}} {{ user.firstName }}</small> </h2>
+        </div>
         
         {% for flashMessage in app.session.flashbag.get('notice') %}
             <div class="alert alert-success" role="alert">
@@ -30,7 +32,7 @@
             {{ form_errors(form) }}
 
             <div class="form-group">
-                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.firstName) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.firstName,{'attr': {'class': 'form-control'}}) }}
@@ -38,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.lastName) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.lastName,{'attr': {'class': 'form-control'}}) }}
@@ -46,7 +48,7 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.birthDate, 'Birth Date', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.birthDate, 'Birth Date', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.birthDate) }}
                 <div class="col-sm-4">
                     <div class='input-group date' id='datetimepicker'>
@@ -58,7 +60,7 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.occupation, 'Occupation', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.occupation, 'Occupation', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.occupation) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.occupation,{'attr': {'class': 'form-control'}}) }}
@@ -66,7 +68,7 @@
             </div>
             
             <div class="form-group">
-                {{ form_label(form.username, 'Username', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.username, 'Username', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.username) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.username,{'attr': {'class': 'form-control'}}) }}
@@ -74,7 +76,7 @@
             </div>
 
             <div class="form-group">
-                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
                 {{ form_errors(form.email) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
@@ -84,7 +86,7 @@
         
             {% if app.user.role == 'ROLE_ADMIN' %}
                 <div class="form-group"> 
-                    {{ form_label(form.role, 'Role', {'label_attr': {'class': 'col-sm-1 control-label'}}) }} 
+                    {{ form_label(form.role, 'Role', {'label_attr': {'class': 'col-sm-2 control-label'}}) }} 
                     {{ form_errors(form.role) }} 
                     <div class="col-sm-4">
                         {{ form_widget(form.role) }} 
@@ -92,7 +94,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-4">
+                    <div class="col-sm-offset-2 col-sm-4">
                         <div class="checkbox">
                             {{ form_label(form.is_active, 'Active') }}
                             {{ form_errors(form.is_active) }}
@@ -104,7 +106,7 @@
             {% endif %} 
             
             <div class="form-group">
-                <div class="col-sm-offset-1 col-sm-4">
+                <div class="col-sm-offset-2 col-sm-4">
                     {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
                 </div>
             </div>

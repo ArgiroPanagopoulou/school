@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class LectureRepository extends EntityRepository
 {
+    public function loadLecturesPerCourse($course)
+    {
+        $lectures = $this->getEntityManager()
+            ->createQuery("SELECT l 
+                FROM SchoolUserBundle:Lecture l 
+                WHERE l.course = :course
+                ORDER BY l.uploadDate DESC"
+            )->setParameter('course', $course)
+        ->getResult();
+        
+        return $lectures;
+    }
 }

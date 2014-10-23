@@ -1,14 +1,22 @@
 school_user_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: SchoolUserBundle:Login:index }
+
+user_edit:
+    pattern: /users/edit/{userId}
+    defaults: { _controller: SchoolUserBundle:UserProfile:editUser }
+
+user_profile:
+    pattern: /user_profile/
+    defaults: { _controller: SchoolUserBundle:UserProfile:myProfile }
     
+user_change_password:
+    pattern: /user/change_password/
+    defaults: { _controller: SchoolUserBundle:UserProfile:changePassword }
+  
 admin_users:
     pattern: /admin/users/
     defaults: { _controller: SchoolUserBundle:Admin:listUsers }
-    
-user_edit:
-    pattern: /users/edit/{userId}
-    defaults: { _controller: SchoolUserBundle:Homepage:editUser }
     
 admin_assign_teachers:
     pattern: /admin/assign_teachers/

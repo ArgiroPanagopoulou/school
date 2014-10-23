@@ -4,7 +4,9 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h3> {{ course.name }} </h3>
+    <div class="page-header" style="border-bottom: none">
+        <h2> {{ course.name }} </h2>
+    </div>
     
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="alert alert-success" role="alert">
@@ -12,70 +14,102 @@
         </div>
     {% endfor %}
     
-    Lectures:
-    <ul>
-        {% for lecture in course.lectures %}
-        <li> {{ lecture.name }} - {{ lecture.uploadDate|date("m/d/Y") }} <a href="{{ asset(lecture.getWebPath()) }}"> (Download) </a> </li>
-        {% endfor %}
+    
+    <ul class="nav nav-tabs" role="tablist">       
+        <li class="active"> <a href="#exams" role="tab" data-toggle="tab">  My Exams 
+            <span class="badge">{% if not_taken_exams|length >0 %}{{ not_taken_exams|length }}{% endif %}</span> </a>
+        </li>
+        <li> <a href="#pastExams" role="tab" data-toggle="tab">  Past Exams 
+            <span class="badge">{% if taken_exams|length > 0 %}{{ taken_exams|length }}{% endif %}</span> </a>
+        </li>
+        <li> <a href="#lectures" role="tab" data-toggle="tab"> My lectures 
+            <span class="badge">{% if lectures|length > 0 %}{{ lectures|length }}{% endif %}</span> </a>
+        </li>
+        <li> <a href="#teacher" role="tab" data-toggle="tab"> My teacher </a> </li>
     </ul>
-    
-    {% if not_taken_exams is not empty %}
-        <strong> Assigned Exams:  </strong> 
-        
-        <table class="table table-bordered">
-            <thead>
-                <th> Exam </th>
-                <th> Start Date </th>
-                <th> End Date </th>
-                <th> Duration </th>
-                <th> </th>
-            </thead>
-            <tbody>
-            {% for not_taken_exam in not_taken_exams %}
-                <tr>
-                    <td> {{ not_taken_exam.exam.name }}  
-                        {% for t in not_taken_exam.takenExams %} 
-                            <strong> ({{ t.status }}) </strong>
-                        {% endfor %} 
-                    </td>
-                    <td> {{ not_taken_exam.start|date("d/m/y \\a\\t g:ia") }} </td>
-                    <td> {{ not_taken_exam.stop|date("d/m/y \\a\\t g:ia") }} </td>
-                    <td> {{ not_taken_exam.duration }} hours</td>
-                    <td> <a href="{{ path('student_exam', {'assignedExam_id': not_taken_exam.id}) }}"> Take the exam </a> </td>
-                </tr>
-            {% endfor %}
-            <tbody>
-        </table>
-    {% endif %}
-    
-    {% if taken_exams is not empty %}
-        <strong> Past Exams </strong>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-bordered">
-                
-                    <thead>    
+
+    <!-- Tab panes -->
+    <div class="tab-content" style="padding-top: 30px">
+        <div class="tab-pane active" id="exams">
+            {% if not_taken_exams is not empty %}
+                <table class="table table-hover">
+                    <thead>
                         <th> Exam </th>
-                        <th> Date taken </th>
-                        <th> Score </th>
+                        <th> Start Date </th>
+                        <th> End Date </th>
+                        <th> Duration </th>
+                        <th> </th>
                     </thead>
-                    
-                    <tbody> 
-                        {% for taken_exam in taken_exams %}
-                        <tr> 
-                            <td>{{taken_exam.exam.name}} </td>
-                            {% for t in taken_exam.takenExams %} 
-                                <td> {{ t.assignedExam.start|date("d/m/Y") }}  </td> 
-                                {% set points = 0 %}
-                                <td> {{ t.score }} /   {% for question in taken_exam.exam.examQuestions %} {% set points = points + question.points %} {% endfor %} {{ points }} </td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
+                    <tbody>
+                        {% for assigned_exam in not_taken_exams %}
+                            <tr>
+                                <td> {{ assigned_exam.exam.name }} 
+                                    {% for taken_exam in taken_exams %} 
+                                        {% if taken_exam.assignedExam.id == assigned_exam.id %} 
+                                            <strong> ({{ taken_exam.status }}) </strong>
+                                        {% endif %} 
+                                    {% endfor %}
+                                </td>
+                                <td> {{ assigned_exam.start|date("d/m/Y") }} </td>
+                                <td> {{ assigned_exam.stop|date("d/m/Y") }} </td>
+                                <td> {{ assigned_exam.duration }} hours </td>
+                                <td> <a href="{{ path('student_exam', {'assignedExam_id': assigned_exam.id }) }}"> 
+                                    Take the exam <span class="glyphicon glyphicon-pencil"> </span>
+                                    </a> 
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-            </div>
+            {% endif %}
         </div>
-    {% endif %}
+        <div class="tab-pane" id="pastExams">
+            {% if taken_exams is not empty %}
+                <div class="row">
+                    <div class="col-md-8">
+                        <table class="table table-hover">
+                            <thead>
+                                <th> Exam </th>
+                                <th> Submit Date </th>
+                                <th> Score </th>
+                            </thead>
+                            <tbody>
+                                {% for taken_exam in taken_exams %}   
+                                    <tr>
+                                        <td> {{ taken_exam.exam.name }} </td>
+                                        <td> {{ taken_exam.startTime|date("d-m-Y") }} </td>
+                                        {% set points = 0 %}
+                                        <td> {{ taken_exam.score }} 
+                                            {% for question in taken_exam.exam.examQuestions %} 
+                                                {% set points = points + question.points %} 
+                                            {% endfor %} 
+                                            / {{ points }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="tab-pane" id="lectures">
+            <ol>
+                {% for lecture in lectures %}
+                    <li> ({{ lecture.uploadDate|date("m-d-Y") }}) {{ lecture.name }} -  
+                        <a href="{{ asset(lecture.getWebPath()) }}">  Download <span class="glyphicon glyphicon-download-alt"> </span> </a> 
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="tab-pane" id="teacher">
+            <p> Teacher assigned for this course: <br/>
+                {% if teacher is not null %}
+                    <strong> {{ teacher.user.lastName }} {{ teacher.user.firstName }} </strong>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

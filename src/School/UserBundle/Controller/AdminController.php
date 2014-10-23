@@ -1,5 +1,4 @@
 <?php
-
 namespace School\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -271,9 +270,8 @@ class AdminController extends Controller
     
     public function alertsAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('SchoolUserBundle:User')->loadUsersNoRole();
-        
+        $users = $this->get('alerts')->checkRegistrationAlerts();
+
         //pagination
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(

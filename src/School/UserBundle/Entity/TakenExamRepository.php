@@ -17,4 +17,18 @@ class TakenExamRepository extends EntityRepository
         
         return $taken_exam;
     }
+    
+    public function findTakenExamsByStudentCourse($student, $course)
+    {
+        $taken_exams = $this->getEntityManager()
+            ->createQuery('SELECT t 
+                FROM SchoolUserBundle:TakenExam t 
+                LEFT JOIN t.exam e 
+                WHERE t.student = :student AND e.course = :course'
+            )->setParameter('student', $student)
+            ->setParameter('course', $course)
+        ->getResult();
+        
+        return $taken_exams;
+    }
 }

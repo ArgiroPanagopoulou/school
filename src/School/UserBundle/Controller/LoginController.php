@@ -81,25 +81,6 @@ class LoginController extends Controller
                     array('form' => $form->createView(),));
         }           
     }
-   
-    /**
-    * @Security("has_role('ROLE_TEACHER')")
-    */
-    public function teacherAction()
-    {
-        $user = $this->get('security.context')->getToken()->getUser();
-        var_dump($user);
-        return new Response('Teacher Area');
-    }
-    
-    /**
-    * @Security("has_role('ROLE_STUDENT')")
-    */
-    public function studentAction()
-    {
-        return new Response('Student Area');
-    }
-    
     
     public function loginSuccessAction()
     {

@@ -94,13 +94,19 @@
             {% endif %}
         </div>
         <div class="tab-pane" id="lectures">
-            <ol>
-                {% for lecture in lectures %}
-                    <li> ({{ lecture.uploadDate|date("m-d-Y") }}) {{ lecture.name }} -  
-                        <a href="{{ asset(lecture.getWebPath()) }}">  Download <span class="glyphicon glyphicon-download-alt"> </span> </a> 
-                    </li>
-                {% endfor %}
-            </ol>
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-noborder table-condensed table-hover">
+                        {% for lecture in lectures %}
+                            <tr>
+                                <td> {{ lecture.uploadDate|date("m-d-Y") }} </td>
+                                <td> {{ lecture.name }} </td> 
+                                <td> <a href="{{ asset(lecture.getWebPath()) }}">  Download <span class="glyphicon glyphicon-download-alt"> </span> </a> </td>   
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane" id="teacher">
             <p> Teacher assigned for this course: <br/>

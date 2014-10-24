@@ -19,49 +19,35 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
+    
 
-    <h4> Filter Students </h4>
     {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
     
-    <div class="row">
-        <div class="col-md-8">
-            <div class="form-group">        
-                {{ form_label(form.assigned, 'By class assignment', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                {{ form_errors(form.assigned) }}
-                <div class="col-sm-4">
-                    {{ form_widget(form.assigned, {'attr': {'class': 'form-control'}}) }} 
-                </div>
+        <div class="form-group">        
+            {{ form_label(form.assigned, 'Filter by class assignment', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            {{ form_errors(form.assigned) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.assigned, {'attr': {'class': 'form-control'}}) }} 
             </div>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-8">
-            <div class="form-group">
-                {{ form_label(form.schoolClass, 'By class', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                {{ form_errors(form.schoolClass) }}
-                <div class="col-sm-4">
-                    {{ form_widget(form.schoolClass, {'attr': {'class': 'form-control'}}) }}
-                </div>
+
+        <div class="form-group">
+            {{ form_label(form.schoolClass, 'Filter by class', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            {{ form_errors(form.schoolClass) }}
+            <div class="col-sm-3">
+                {{ form_widget(form.schoolClass, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="col-sm-4">
+                {{ form_widget(form.filter, {'attr': {'class': 'btn btn-default'}})  }}
             </div>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-4"> 
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-4">
-                    {{ form_widget(form.update, {'attr': {'class': 'btn btn-default'}})  }}
-                </div>
-            </div>
-        </div>
-    </div>
         
     {{ form_end(form) }}
     
 
     <form action="{{ path('admin_selected_students') }}" method="post" role="form">        
-        <table class="table table-hover">
+        <table class="table table-hover spacer-top">
             <thead>
                 <tr>
                     <th> Full Name  </th>
@@ -86,7 +72,7 @@
         </table>
         
         <div class="form-group">
-        <div class="col-sm-3">
+        <div class="col-sm-3 spacer-bottom">
             <select required name="studentAction" class="form-control">
                 <option value=""> - Select an action - </option>
                 <option value="assignment">Assign to a class </option>
@@ -96,6 +82,5 @@
         </div>
         <input type="submit" name="submit" value="Submit" class="btn btn-default">
     </form>        
-
 
 {% endblock %}

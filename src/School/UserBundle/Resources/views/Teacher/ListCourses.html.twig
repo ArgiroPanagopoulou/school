@@ -17,7 +17,7 @@
                     
                     <dd> <ul class="list-unstyled">
                         {% for course in courses %}
-                            <li> {{ course.course.name }} - {{ course.class.name }} 
+                            <li> {{ course.class.name }} - {{ course.course.name }}  
                                 <a href="{{ path('teacher_list_exams', {'course_id': course.course.id, 'class_id': course.class.id}) }}"> Assign Exam 
                                     <span class="glyphicon glyphicon-pencil"> </span>
                                 </a>

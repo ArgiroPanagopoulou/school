@@ -17,14 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 */
 class StudentController extends Controller
 {
-    public function studentProfileAction()
-    {
-        $student = $this->get('security.context')->getToken()->getUser()->getStudent();
-
-        return $this->render('SchoolUserBundle:Student:StudentProfile.html.twig', array(
-            'student' => $student,
-        ));
-    }
     
     public function listCoursesAction($course_id)
     {

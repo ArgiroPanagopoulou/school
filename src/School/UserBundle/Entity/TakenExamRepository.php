@@ -31,4 +31,17 @@ class TakenExamRepository extends EntityRepository
         
         return $taken_exams;
     }
+    
+    public function findTakenExamsByStudent($student)
+    {
+        $taken_exams = $this->getEntityManager()
+            ->createQuery('SELECT t 
+                FROM SchoolUserBundle:TakenExam t 
+                WHERE t.student = :student
+                ORDER BY t.startTime DESC'
+            )->setParameter('student', $student)
+        ->getResult();
+        
+        return $taken_exams;
+    }
 }

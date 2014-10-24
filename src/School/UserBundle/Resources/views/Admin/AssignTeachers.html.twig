@@ -24,7 +24,7 @@
     {{ form_start(form , {'attr': {'class': 'form-horizontal'}}) }}
 
         <div class="form-group">
-            {{ form_label(form.schoolyear, 'Year', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_label(form.schoolyear, 'Year', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
             {{ form_errors(form.schoolyear) }}
             <div class="col-sm-3">
                 {{ form_widget(form.schoolyear, {'attr': {'class': 'form-control'}}) }}
@@ -32,7 +32,7 @@
         </div>
         
         <div class="form-group">
-            {{ form_label(form.courses, 'Course', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_label(form.courses, 'Course', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
             {{ form_errors(form.courses) }}
             <div class="col-sm-3">
                 {{ form_widget(form.courses, {'attr': {'class': 'form-control'}}) }}
@@ -40,7 +40,7 @@
         </div>
         
         <div class="form-group">
-            {{ form_label(form.schoolClasses, 'Class', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_label(form.schoolClasses, 'Class', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
             {{ form_errors(form.schoolClasses) }}
             <div class="col-sm-3"> 
                 {{ form_widget(form.schoolClasses, {'attr': {'class': 'form-control'}}) }}
@@ -48,22 +48,22 @@
         </div>
 
         <div class="form-group">
-            {{ form_label(form.teacher, 'Teacher', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
+            {{ form_label(form.teacher, 'Teacher', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
             {{ form_errors(form.teacher) }}
             <div class="col-sm-3">
                 {{ form_widget(form.teacher, {'attr': {'class': 'form-control'}}) }}
             </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-4">
-                {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+ 
+            <div class="col-sm-4">
+                {{ form_widget(form.assign, {'attr': {'class': 'btn btn-default'}}) }}
             </div>
         </div>
 
     {{ form_end(form) }}
-        
-    <h3> Assigned teachers </h3>
+    
+    <div class="page-header">
+        <h2> Assigned teachers </h2>
+    </div>
     <table class="table table-hover">
         <thead>
         <tr>

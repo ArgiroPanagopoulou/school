@@ -32,7 +32,7 @@ class StudentFilterType extends AbstractType
         
         
         $builder
-            ->add('update', 'submit');
+            ->add('filter', 'submit');
     }
     
     public function getName()

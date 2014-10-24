@@ -10,20 +10,26 @@
     
     <ul class="nav nav-tabs" role="tablist" id="myTab">
         {% for school_class in classes %}
-        <li ><a href="#{{ school_class.id }}" role="tab" data-toggle="tab"> {{ school_class.name }} - {{ school_class.schoolYear }} </a></li>
+        <li ><a href="#{{ school_class.id }}" role="tab" data-toggle="tab"> <strong> {{ school_class.name }} - {{ school_class.schoolYear }} </strong> </a></li>
         {% endfor %}
     </ul>
    
     <div class="tab-content">
-    {% for school_class in classes %}
-        <div class="tab-pane fade" id="{{ school_class.id }}"> 
-            <ul class="list-group">
-            {% for student in school_class.students %} 
-                <li class="list-group-item"> {{ student.user.lastName }} {{ student.user.firstName }} </li>  
-            {% endfor %} 
-            </ul>
-        </div>
-    {% endfor %}
+        {% for school_class in classes %}
+            <div class="tab-pane fade" id="{{ school_class.id }}"> 
+                <ul class="list-group student-profile">
+                {% for student in school_class.students %} 
+                    <li class="list-group-item"> {{ student.user.lastName }} {{ student.user.firstName }}
+                        <div class="pull-right">
+                            <a href="{{ path('teacher_student_profile', {'student_id': student.id }) }}" data-toggle="tooltip" title="Student's personal and academic info"> 
+                                Profile <span class="glyphicon glyphicon-folder-open"> </span>
+                            </a> 
+                        </div>
+                    </li>  
+                {% endfor %} 
+                </ul>
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
@@ -33,6 +39,10 @@
     <script type="text/javascript">
         $(function () {
             $('#myTab a:first').tab('show')
-        })
+        });
+        
+        $(".student-profile a").tooltip({
+            placement : 'top'
+        });
     </script>
 {% endblock %}

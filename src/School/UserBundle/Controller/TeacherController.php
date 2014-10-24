@@ -322,14 +322,17 @@ class TeacherController extends Controller
         ));
     }
     
-    public function studentProfileAction($student_id)
+    public function studentAcademicProfileAction($student_id)
     {
         $em = $this->getDoctrine()->getManager();
         
         $student = $em->getRepository('SchoolUserBundle:Student')->find($student_id);
         
-        return $this->render('SchoolUserBundle:Teacher:StudentProfile.html.twig', array(
+        $taken_exams = $em->getRepository('SchoolUserBundle:TakenExam')->findTakenExamsByStudent($student);
+        
+        return $this->render('SchoolUserBundle:Teacher:StudentAcademicProfile.html.twig', array(
             'student' => $student,
+            'taken_exams' => $taken_exams,
         ));
     }
 }

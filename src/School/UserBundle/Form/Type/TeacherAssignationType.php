@@ -23,7 +23,7 @@ class TeacherAssignationType extends AbstractType
             'property' => 'name',
         ));
         
-        $builder->add('save', 'submit');
+        $builder->add('assign', 'submit');
         
         $populate_courses = function (FormInterface $form, SchoolYear $schoolyear = null) {
 

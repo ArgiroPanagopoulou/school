@@ -76,11 +76,7 @@ teacher_load_students:
     
 teacher_student_profile:
     pattern: /teacher/student/{student_id}
-    defaults: { _controller: SchoolUserBundle:Teacher:studentProfile }
-    
-student_profile:
-    pattern: /student/my_profile/
-    defaults: { _controller: SchoolUserBundle:Student:studentProfile }
+    defaults: { _controller: SchoolUserBundle:Teacher:studentAcademicProfile }
 
 student_list_courses:
     pattern: /student/courses/{course_id}

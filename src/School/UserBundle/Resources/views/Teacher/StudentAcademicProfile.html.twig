@@ -1,0 +1,67 @@
+{% extends 'SchoolUserBundle::base.html.twig' %}
+
+{% block title %} Student Profile {% endblock %}
+
+{% block body %}
+    
+    <div class="page-header">
+        <h2> Student Profile <small> {{ student.user.lastName }} {{ student.user.firstName }} </small> </h2>
+    </div>
+    
+    
+    <h3> Personal Info </h3>
+    <dl class="dl-horizontal spacer-bottom">
+        <dt> Full Name </dt>
+        <dd> {{ student.user.lastName }} {{ student.user.firstName }} </dd>
+        
+        <dt> Birth Date </dt>
+        <dd> {{ student.user.birthDate|date('d-m-Y') }} </dd>
+        
+        <dt> Occupation </dt>
+        <dd> {{ student.user.occupation }} </dd>
+        
+        <dt> Email </dt>
+        <dd> {{ student.user.email }} </dd>
+    </dl>
+    
+    <div class="page-header">
+        
+    </div>
+    <h3> Completed Exams </h3>
+    
+    {% if taken_exams is not empty %}
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th> Exam </th>
+                        <th> Submit Date </th>
+                        <th> Score </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for taken_exam in taken_exams %}
+                        <tr>
+                            <td> {{ taken_exam.exam.name }} </td>
+                            <td> {{ taken_exam.startTime|date('d-m-Y') }} </td>
+                            {% set points = 0 %}
+                            <td> {{ taken_exam.score }} 
+                                {% for question in taken_exam.exam.examQuestions %} 
+                                    {% set points = points + question.points %} 
+                                {% endfor %} 
+                                / {{ points }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="well">
+        Nothing to show!
+    </div>
+    {% endif %}
+{% endblock %}

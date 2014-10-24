@@ -39,7 +39,9 @@
         <dd> {{ logged_in_user.role.name }} </dd>
         <dd> <a href="{{ path('user_change_password') }}"> Change Password  </a> </dd>
     </dl>
- 
+    
+    <div class="page-header">
+    </div>
     
     {% if is_granted("ROLE_STUDENT") %}
         <h3> Student Info </h3>
@@ -66,7 +68,7 @@
 
                 {% for c in logged_in_user.teacher.courseClasses %}
                     <dd> 
-                        {{ c.course.name }} -  {{ c.class.name }}
+                        {{ c.class.name }} - {{ c.course.name }}  
                     </dd>
                 {% endfor %}
             </dl>

@@ -9,7 +9,7 @@
 {% block title %}Add Exam{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+
     <div class="page-header">
         <h2> Add an exam <small> {{ course.name }} </small> </h2>
     </div>
@@ -110,5 +110,5 @@
         </ol>  
         {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}})  }}
     {{ form_end(form) }}
-</div>  
+ 
 {% endblock %}

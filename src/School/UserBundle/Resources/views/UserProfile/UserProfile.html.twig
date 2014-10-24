@@ -1,7 +1,7 @@
 {% extends 'SchoolUserBundle::base.html.twig' %}
 
 {% block body %}
-<div class="container-fluid">
+
     <div class="page-header">
         <h2> My Profile  </h2>
     </div>
@@ -13,68 +13,65 @@
         </div>
     {% endfor %}
     
-    <div class="row">
-        <div class="col-md-6">
-            <h3> Personal Info 
-                <small> 
-                    <a href="{{ path('user_edit', {'userId': logged_in_user.id }) }}"> 
-                        <span class="glyphicon glyphicon-edit"> </span> Edit 
-                    </a> 
-                </small>
-            </h3>
-            <dl class="dl-horizontal">
-                <dt> Last Name </dt>
-                <dt> First Name </dt>
-                <dt> Username </dt>
-                <dt> Email </dt>
-                <dt> Birth Date </dt>
-                <dt> Occupation </dt>
-                <dt> Role </dt> 
-                <dt> Password </dt>
-                
-                <dd> {{ logged_in_user.lastName }} </dd>
-                <dd> {{ logged_in_user.firstName }} </dd>
-                <dd> {{ logged_in_user.username }} </dd>
-                <dd> {{ logged_in_user.email }} </dd>
-                <dd> {{ logged_in_user.birthDate|date('d/m/Y') }} </dd>
-                <dd> {{ logged_in_user.occupation }} </dd>
-                <dd> {{ logged_in_user.role.name }} </dd>
-                <dd> <a href="{{ path('user_change_password') }}"> Change Password  </a> </dd>
-            </dl>
-        </div>
-    
-        {% if is_granted("ROLE_STUDENT") %}
-            <h3> Student Info </h3>
-            <div class="col-md-6">
-                <dl class="dl-horizontal">
-                    <dt> School Year </dt>
-                    <dt> School Class </dt>
-                    <dt> Courses </dt>
-                   
-                    <dd> {{ logged_in_user.student.schoolClass.schoolYear.name }} </dd>
-                    <dd> {{ logged_in_user.student.schoolClass.name }} </dd>
-                    {% for course in logged_in_user.student.schoolClass.schoolYear.courses %}
-                        <dd>
-                            {{ course.name }} 
-                        </dd>
-                    {% endfor %}                    
-                </dl>
-            </div>
-        {% elseif is_granted("ROLE_TEACHER") %}
-            <h3> Teacher Info </h3>
-            <div class="col-md-6">
-                <dl class="dl-horizontal">
-                    <dt> Courses </dt>
-
-                    {% for c in logged_in_user.teacher.courseClasses %}
-                        <dd> 
-                            {{ c.course.name }} -  {{ c.class.name }}
-                        </dd>
-                    {% endfor %}
-                </dl>
-            </div>
-        {% endif %}
+    <h3> Personal Info 
+        <small> 
+            <a href="{{ path('user_edit', {'userId': logged_in_user.id }) }}"> 
+                <span class="glyphicon glyphicon-edit"> </span> Edit 
+            </a> 
+        </small>
+    </h3>
+    <dl class="dl-horizontal">
+        <dt> Last Name </dt>
+        <dt> First Name </dt>
+        <dt> Username </dt>
+        <dt> Email </dt>
+        <dt> Birth Date </dt>
+        <dt> Occupation </dt>
+        <dt> Role </dt> 
+        <dt> Password </dt>
         
-    </div>
-</div>
+        <dd> {{ logged_in_user.lastName }} </dd>
+        <dd> {{ logged_in_user.firstName }} </dd>
+        <dd> {{ logged_in_user.username }} </dd>
+        <dd> {{ logged_in_user.email }} </dd>
+        <dd> {{ logged_in_user.birthDate|date('d/m/Y') }} </dd>
+        <dd> {{ logged_in_user.occupation }} </dd>
+        <dd> {{ logged_in_user.role.name }} </dd>
+        <dd> <a href="{{ path('user_change_password') }}"> Change Password  </a> </dd>
+    </dl>
+ 
+    
+    {% if is_granted("ROLE_STUDENT") %}
+        <h3> Student Info </h3>
+        
+            <dl class="dl-horizontal">
+                <dt> School Year </dt>
+                <dt> School Class </dt>
+                <dt> Courses </dt>
+               
+                <dd> {{ logged_in_user.student.schoolClass.schoolYear.name }} </dd>
+                <dd> {{ logged_in_user.student.schoolClass.name }} </dd>
+                {% for course in logged_in_user.student.schoolClass.schoolYear.courses %}
+                    <dd>
+                        {{ course.name }} 
+                    </dd>
+                {% endfor %}                    
+            </dl>
+
+    {% elseif is_granted("ROLE_TEACHER") %}
+        <h3> Teacher Info </h3>
+
+            <dl class="dl-horizontal">
+                <dt> Courses </dt>
+
+                {% for c in logged_in_user.teacher.courseClasses %}
+                    <dd> 
+                        {{ c.course.name }} -  {{ c.class.name }}
+                    </dd>
+                {% endfor %}
+            </dl>
+
+    {% endif %}
+        
+
 {% endblock %}

@@ -10,6 +10,7 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap/css/bootstrap.css') }}" />
             <link rel="stylesheet" href="{{ asset('bundles/schooluser/vendor/bootstrap/css/bootstrap-theme.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/schooluser/css/container.css') }}" />
         {% endblock %}
         
         {% block header_javascripts %}
@@ -22,30 +23,31 @@
     </head>
     <body>
         {% block menu %}  
-           
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="{{ path('homepage') }}">Second Chance Schools</a>
+           <div class="container">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="{{ path('homepage') }}"> Second Chance School </a>
+                            </div>
+        
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            {{ knp_menu_render('SchoolUserBundle:MenuBuilder:mainMenu') }}
+                            {{ knp_menu_render('SchoolUserBundle:MenuBuilder:userMenu') }}
                         </div>
-    
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        {{ knp_menu_render('SchoolUserBundle:MenuBuilder:mainMenu') }}
-                        {{ knp_menu_render('SchoolUserBundle:MenuBuilder:userMenu') }}
                     </div>
-                </div>
-            </nav>
-                        
+                </nav>
+                {% block body %} {% endblock %}
+            </div>            
         {% endblock %}
         
-        {% block body %} {% endblock %}
+        
     </body>
     {% block javascripts %} {% endblock %}
 </html>

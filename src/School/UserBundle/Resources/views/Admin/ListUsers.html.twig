@@ -4,7 +4,7 @@
 
 {% block body %}
 {{ parent() }}
-<div class="container-fluid">
+
     
     <div class="page-header">
         <h2> Users </h2>
@@ -39,7 +39,7 @@
                             <td> {{ u.username }} </td>                            
                             <td> {% if u.role is not null %}  {{ u.role.name }} {% endif %}</td>
                             
-                            <td> <a href="{{ path('user_edit', {'userId': u.id }) }}"> Edit </a></td>
+                            <td> <a href="{{ path('user_edit', {'userId': u.id }) }}"> <span class="glyphicon glyphicon-edit"> </span> Edit  </a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -53,7 +53,7 @@
         </div>
         <div class="col-md-6"></div>
     </div>
-</div>
+
 {% endblock %}
 
 

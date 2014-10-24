@@ -9,7 +9,7 @@
 
 {% block body %}
 {{ parent() }}
-<div class="container-fluid">
+
     <div class="page-header">
         <h2> Teacher assignment </h2>
     </div>
@@ -42,7 +42,7 @@
         <div class="form-group">
             {{ form_label(form.schoolClasses, 'Class', {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
             {{ form_errors(form.schoolClasses) }}
-            <div class="col-sm-3">
+            <div class="col-sm-3"> 
                 {{ form_widget(form.schoolClasses, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
@@ -91,5 +91,5 @@
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>
-</div>
+
 {% endblock %}

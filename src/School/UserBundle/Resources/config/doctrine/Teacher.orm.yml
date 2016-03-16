@@ -1,7 +1,7 @@
 School\UserBundle\Entity\Teacher:
     type: entity
     repositoryClass: School\UserBundle\Entity\TeacherRepository
-    table: null
+    table: teacher
     id:
         id:
             type: integer
